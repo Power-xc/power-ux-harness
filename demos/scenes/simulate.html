@@ -154,25 +154,12 @@
       <div
         id="head"
         class="abs"
-        style="
-          left: 40px;
-          top: 16px;
-          display: flex;
-          gap: 12px;
-          align-items: baseline;
-          line-height: 24px;
-        "
+        style="left: 40px; top: 16px; display: flex; gap: 12px; align-items: baseline; line-height: 24px"
       >
-        <span class="mono" style="font-size: 13px; font-weight: 600"
-          >SIM-REG-01</span
-        ><span style="font-weight: 600">회원가입 후보안 시뮬레이션</span
-        ><span class="small muted">v0.3</span>
+        <span class="mono" style="font-size: 13px; font-weight: 600">SIM-REG-01</span
+        ><span style="font-weight: 600">회원가입 후보안 시뮬레이션</span><span class="small muted">v0.3</span>
       </div>
-      <div
-        id="sent"
-        class="abs small muted"
-        style="left: 40px; top: 44px; line-height: 20px"
-      >
+      <div id="sent" class="abs small muted" style="left: 40px; top: 44px; line-height: 20px">
         합성 시뮬레이션 — 가설이며 사용자 증거가 아니에요
       </div>
     </div>
@@ -269,8 +256,7 @@
               `<div id="p${i}" class="ph" style="top:${PY + i * PP}px"><span class="c">${c}</span><span class="t">${t}</span><span class="chip ${i === 3 ? "dash" : "gray"}">${s}</span></div>`,
           ).join("") +
           P.map(
-            (_, i) =>
-              `<div id="pl${i}" class="hr" style="left:40px;width:800px;top:${PY + (i + 1) * PP - 1}px"></div>`,
+            (_, i) => `<div id="pl${i}" class="hr" style="left:40px;width:800px;top:${PY + (i + 1) * PP - 1}px"></div>`,
           ).join(""),
       );
 
@@ -351,11 +337,7 @@
             fade($("pl" + i), t, T.ph + i * T.phStep);
           });
           SCREENS.forEach((_, j) => fade($("t" + j), t, T.th + j * T.thStep));
-          CELLS.forEach((col, j) =>
-            col.forEach((_, i) =>
-              fade($(`g${j}${i}`), t, T.cell + (j * 4 + i) * T.cellStep),
-            ),
-          );
+          CELLS.forEach((col, j) => col.forEach((_, i) => fade($(`g${j}${i}`), t, T.cell + (j * 4 + i) * T.cellStep)));
           fade($("rep"), t, T.rep);
           fade($("lg"), t, T.rep);
           fade($("rec"), t, T.rec);

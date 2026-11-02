@@ -12,7 +12,7 @@
 
   // 한 글자 단위로 보이는 부분 문자열
   function typeText(full, t, start, cps = 24) {
-    const n = Math.floor(clamp((t - start) / 1000 * cps, 0, full.length));
+    const n = Math.floor(clamp(((t - start) / 1000) * cps, 0, full.length));
     return full.slice(0, n);
   }
   const blink = (t) => Math.floor(t / 500) % 2 === 0;
@@ -34,10 +34,11 @@
   }
   // 타이핑: 보이는 글자 + 레이아웃 자리만 차지하는 나머지(visibility:hidden) + 2px 캐럿
   function typeInto(el, full, t, start, cps = 24, caret = true, caretUntil = Infinity) {
-    const n = Math.floor(clamp((t - start) / 1000 * cps, 0, full.length));
+    const n = Math.floor(clamp(((t - start) / 1000) * cps, 0, full.length));
     const typing = t >= start && n < full.length;
     const showCaret = caret && t >= start && (typing || t < caretUntil) && (typing || blink(t));
-    el.innerHTML = esc(full.slice(0, n)) +
+    el.innerHTML =
+      esc(full.slice(0, n)) +
       `<span class="caret" style="visibility:${showCaret ? "visible" : "hidden"}"></span>` +
       `<span class="hide">${esc(full.slice(n))}</span>`;
     return n;
@@ -54,10 +55,14 @@
     return Object.fromEntries(keys.map((k) => [k, kf[kf.length - 1][k]]));
   }
   // 취소선이 그려지는 정도
-  const strike = (el, t, start, dur = 200) => { el.style.transform = `scaleX(${progress(t, start, dur)})`; };
+  const strike = (el, t, start, dur = 200) => {
+    el.style.transform = `scaleX(${progress(t, start, dur)})`;
+  };
 
   // 마지막 상태를 HOLD 만큼 유지한 뒤 처음 상태로 교차 페이드해 반복 이음새를 만든다.
-  const HOLD = 2400, SEAM = 400, SEAM_FADE = 300;
+  const HOLD = 2400,
+    SEAM = 400,
+    SEAM_FADE = 300;
   function defineDemo({ width, height, end, draw }) {
     const stage = document.getElementById("stage");
     stage.style.width = width + "px";
@@ -74,7 +79,9 @@
       stage.parentNode.insertBefore(snap, stage.nextSibling);
     };
     return {
-      width, height, duration: end + HOLD + SEAM,
+      width,
+      height,
+      duration: end + HOLD + SEAM,
       render(t) {
         if (!snap) prepare();
         draw(Math.min(t, end));
@@ -83,7 +90,21 @@
     };
   }
 
-  Object.assign(window, { clamp, progress, easeOutCubic, easeInCubic, lerp, typeText, typeInto, blink, fade, opacityAt, path, strike, defineDemo });
+  Object.assign(window, {
+    clamp,
+    progress,
+    easeOutCubic,
+    easeInCubic,
+    lerp,
+    typeText,
+    typeInto,
+    blink,
+    fade,
+    opacityAt,
+    path,
+    strike,
+    defineDemo,
+  });
   window.$ = (id) => document.getElementById(id);
   window.svg = (d, extra = "") => `<svg class="ic" viewBox="0 0 24 24" ${extra}>${d}</svg>`;
 })();

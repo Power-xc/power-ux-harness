@@ -59,17 +59,9 @@
       <div
         id="head"
         class="abs"
-        style="
-          left: 40px;
-          top: 16px;
-          display: flex;
-          gap: 12px;
-          align-items: baseline;
-          line-height: 24px;
-        "
+        style="left: 40px; top: 16px; display: flex; gap: 12px; align-items: baseline; line-height: 24px"
       >
-        <span class="mono" style="font-size: 13px; font-weight: 600"
-          >MET-SHR-01</span
+        <span class="mono" style="font-size: 13px; font-weight: 600">MET-SHR-01</span
         ><span style="font-weight: 600">독서 노트 공유하기</span
         ><span class="small muted">v0.2 · HEART × 목표–신호–지표</span>
       </div>
@@ -112,7 +104,7 @@
       );
       // 실측: 핀은 기기 안 부품의 모서리에서 계산한다.
       // 삭제 아이콘은 상태바 바로 아래라, 핀을 아이콘 왼쪽 옆에 둔다(모서리 규칙 대신).
-const pinTarget = (id) => {
+      const pinTarget = (id) => {
         const r = W.rect(id === "m-del" ? $(id).querySelector("svg") : $(id));
         return id === "m-del" ? { ...r, left: r.left - 4, top: r.top + 18 } : r;
       };
@@ -122,13 +114,9 @@ const pinTarget = (id) => {
         ["m-cancel", 3],
         ["m-del", 4],
       ];
-      stage.insertAdjacentHTML(
-        "beforeend",
-        PINS.map(([id, n]) => W.pin(n, pinTarget(id), "p" + n)).join(""),
-      );
+      stage.insertAdjacentHTML("beforeend", PINS.map(([id, n]) => W.pin(n, pinTarget(id), "p" + n)).join(""));
 
-      const ev = (n, name) =>
-        `<div class="ev"><span class="pn">${n}</span><span>${name}</span></div>`;
+      const ev = (n, name) => `<div class="ev"><span class="pn">${n}</span><span>${name}</span></div>`;
       const ROWS = [
         {
           h: 56,
@@ -143,12 +131,7 @@ const pinTarget = (id) => {
         {
           h: 56,
           off: 1,
-          c: [
-            "Engagement",
-            "이번 목표가 아니에요",
-            "—",
-            "제외 — 공유 빈도는 성공 기준이 아님",
-          ],
+          c: ["Engagement", "이번 목표가 아니에요", "—", "제외 — 공유 빈도는 성공 기준이 아님"],
         },
         {
           h: 56,
@@ -163,12 +146,7 @@ const pinTarget = (id) => {
         {
           h: 56,
           off: 0,
-          c: [
-            "Retention",
-            "계속 공유해요",
-            "두 번째 공유" + ev(2, "share_complete"),
-            "첫 공유 뒤 30일 안 재공유 비율",
-          ],
+          c: ["Retention", "계속 공유해요", "두 번째 공유" + ev(2, "share_complete"), "첫 공유 뒤 30일 안 재공유 비율"],
         },
         {
           h: 96,
@@ -176,10 +154,7 @@ const pinTarget = (id) => {
           c: [
             "Task success",
             "막힘 없이 공유해요",
-            "공유 시작 · 완료 · 취소" +
-              ev(1, "share_sheet_open") +
-              ev(2, "share_complete") +
-              ev(3, "share_cancel"),
+            "공유 시작 · 완료 · 취소" + ev(1, "share_sheet_open") + ev(2, "share_complete") + ev(3, "share_cancel"),
             "공유 시작 대비 완료율",
           ],
         },
@@ -201,18 +176,12 @@ const pinTarget = (id) => {
       let y = HY;
       stage.insertAdjacentHTML(
         "beforeend",
-        tr("hd", y, HH + 8, ["범주", "목표", "신호", "지표"], "th").replace(
-          /padding[^;]*;/,
-          "",
-        ),
+        tr("hd", y, HH + 8, ["범주", "목표", "신호", "지표"], "th").replace(/padding[^;]*;/, ""),
       );
       y += HH + 8;
       const RT = [];
       ROWS.forEach((r, i) => {
-        stage.insertAdjacentHTML(
-          "beforeend",
-          tr(r.off ? "off" : "", y, r.h, r.c, "r" + i),
-        );
+        stage.insertAdjacentHTML("beforeend", tr(r.off ? "off" : "", y, r.h, r.c, "r" + i));
         RT.push(y);
         y += r.h;
       });

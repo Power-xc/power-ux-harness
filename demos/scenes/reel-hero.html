@@ -1,51 +1,152 @@
 <!doctype html>
-<html lang="ko"><head><meta charset="utf-8">
-<link rel="stylesheet" href="shared.css"><script src="timeline.js"></script>
-<style>
-  /* 릴스 전용 세로 배치: 요청 한 줄 · 맞는 스킬이 켜짐 · 스킬 10개 원래 이름 목록 (hero.html의 SK 표에서 가져옴) */
-  #req { position: absolute; left: 60px; top: 34px; width: 840px; font: 600 34px/1.3 var(--ui); white-space: nowrap; }
-  #pat { position: absolute; left: 60px; top: 84px; width: 840px; font: 500 28px/1.3 var(--mono); color: var(--accent); white-space: nowrap; }
-  .row { position: absolute; left: 60px; width: 840px; height: 44px; display: flex; align-items: center; gap: 18px; }
-  .dot { width: 20px; height: 20px; border: 2px solid var(--lowc); border-radius: 50%; flex: none; position: relative; }
-  .dot i { position: absolute; inset: 2px; border-radius: 50%; background: var(--ok); opacity: 0; }
-  .step { width: 130px; flex: none; color: var(--muted); font-size: 26px; white-space: nowrap; }
-  .sid { flex: none; font: 500 30px var(--mono); color: var(--muted); white-space: nowrap; }
-  .row.on .dot { border-color: var(--accent); } .row.on .dot i { background: var(--accent); opacity: 1; }
-  .row.on .step { color: var(--fg); } .row.on .sid { color: var(--accent); font-weight: 700; }
-  .row.done { opacity: .5; } .row.done .dot { border-color: var(--ok); } .row.done .dot i { opacity: 1; }
-</style></head>
-<body><div id="stage">
-  <div id="req"></div><div id="pat"></div>
-</div>
-<script>
-// [단계, 스킬, 요청, 패턴, 머무는 시간(ms)] — 앞 4개는 천천히, 나머지는 빠르게
-const SK = [
-  ["탐색", "ux-simulate", "기획서랑 링크 줄 테니 어떤 UX가 맞을지 봐 줘", "Synthetic persona → 가설", 950],
-  ["확인", "ux-research", "왜 온보딩 중간에 그만두는지 알고 싶어", "Leading question → Open question", 950],
-  ["정의", "ux-flow", "회원가입부터 첫 주문까지 화면 목록이랑 예외 경로", "Dead end → Recovery path", 950],
-  ["설계", "ux-spec", "개발자한테 넘길 화면설계서", "Component states", 950],
-  ["문구", "ux-writing", "오류 문구 다듬어 줘", "Error message: 원인 + 해결", 520],
-  ["검토", "ux-review", "삭제를 토스트로만 알리는데 되돌리기를 줄지", "Toast → Snackbar + Undo", 520],
-  ["접근성", "ux-a11y", "터치 영역 크기", "Target size · WCAG 2.5.8", 520],
-  ["기만 패턴", "ux-dark-patterns", "부가 서비스가 기본으로 체크돼 있는데 괜찮아?", "사전 선택 · 공정위 다크패턴 유형", 520],
-  ["측정", "ux-metrics", "성공 지표 정해 줘", "Vanity metric → Success metric + Guardrail", 520],
-  ["AI", "ux-ai", "답변에 출처랑 다시 생성 버튼을 어떻게 넣을지", "Source · Stop · Regenerate", 520],
-];
-const T0 = 100, Y0 = 140, PITCH = 48;
-let acc = T0;
-const starts = SK.map((s) => { const a = acc; acc += s[4]; return a; });
-const rows = SK.map((s, i) => {
-  const el = document.createElement("div"); el.className = "row"; el.style.top = (Y0 + i * PITCH) + "px";
-  el.innerHTML = `<span class="dot"><i></i></span><span class="step">${s[0]}</span><span class="sid">${s[1]}</span>`;
-  $("stage").appendChild(el); return el;
-});
-window.DEMO = defineDemo({ width: 960, height: 670, end: 7000,
-  draw(t) {
-    let idx = 0; starts.forEach((s, i) => { if (t >= s) idx = i; });
-    rows.forEach((el, i) => { el.className = "row" + (t < starts[i] ? "" : i === idx ? " on" : " done"); });
-    const u = t - starts[idx];
-    $("req").textContent = "› " + SK[idx][2]; $("pat").textContent = SK[idx][3];
-    // 요청이 바뀔 때마다 짧게 나타난다
-    fade($("req"), u, 0, 140); fade($("pat"), u, 60, 140);
-  } });
-</script></body></html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="shared.css" />
+    <script src="timeline.js"></script>
+    <style>
+      /* 릴스 전용 세로 배치: 요청 한 줄 · 맞는 스킬이 켜짐 · 스킬 10개 원래 이름 목록 (hero.html의 SK 표에서 가져옴) */
+      #req {
+        position: absolute;
+        left: 60px;
+        top: 34px;
+        width: 840px;
+        font: 600 34px/1.3 var(--ui);
+        white-space: nowrap;
+      }
+      #pat {
+        position: absolute;
+        left: 60px;
+        top: 84px;
+        width: 840px;
+        font: 500 28px/1.3 var(--mono);
+        color: var(--accent);
+        white-space: nowrap;
+      }
+      .row {
+        position: absolute;
+        left: 60px;
+        width: 840px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        gap: 18px;
+      }
+      .dot {
+        width: 20px;
+        height: 20px;
+        border: 2px solid var(--lowc);
+        border-radius: 50%;
+        flex: none;
+        position: relative;
+      }
+      .dot i {
+        position: absolute;
+        inset: 2px;
+        border-radius: 50%;
+        background: var(--ok);
+        opacity: 0;
+      }
+      .step {
+        width: 130px;
+        flex: none;
+        color: var(--muted);
+        font-size: 26px;
+        white-space: nowrap;
+      }
+      .sid {
+        flex: none;
+        font: 500 30px var(--mono);
+        color: var(--muted);
+        white-space: nowrap;
+      }
+      .row.on .dot {
+        border-color: var(--accent);
+      }
+      .row.on .dot i {
+        background: var(--accent);
+        opacity: 1;
+      }
+      .row.on .step {
+        color: var(--fg);
+      }
+      .row.on .sid {
+        color: var(--accent);
+        font-weight: 700;
+      }
+      .row.done {
+        opacity: 0.5;
+      }
+      .row.done .dot {
+        border-color: var(--ok);
+      }
+      .row.done .dot i {
+        opacity: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div id="req"></div>
+      <div id="pat"></div>
+    </div>
+    <script>
+      // [단계, 스킬, 요청, 패턴, 머무는 시간(ms)] — 앞 4개는 천천히, 나머지는 빠르게
+      const SK = [
+        ["탐색", "ux-simulate", "기획서랑 링크 줄 테니 어떤 UX가 맞을지 봐 줘", "Synthetic persona → 가설", 950],
+        ["확인", "ux-research", "왜 온보딩 중간에 그만두는지 알고 싶어", "Leading question → Open question", 950],
+        ["정의", "ux-flow", "회원가입부터 첫 주문까지 화면 목록이랑 예외 경로", "Dead end → Recovery path", 950],
+        ["설계", "ux-spec", "개발자한테 넘길 화면설계서", "Component states", 950],
+        ["문구", "ux-writing", "오류 문구 다듬어 줘", "Error message: 원인 + 해결", 520],
+        ["검토", "ux-review", "삭제를 토스트로만 알리는데 되돌리기를 줄지", "Toast → Snackbar + Undo", 520],
+        ["접근성", "ux-a11y", "터치 영역 크기", "Target size · WCAG 2.5.8", 520],
+        [
+          "기만 패턴",
+          "ux-dark-patterns",
+          "부가 서비스가 기본으로 체크돼 있는데 괜찮아?",
+          "사전 선택 · 공정위 다크패턴 유형",
+          520,
+        ],
+        ["측정", "ux-metrics", "성공 지표 정해 줘", "Vanity metric → Success metric + Guardrail", 520],
+        ["AI", "ux-ai", "답변에 출처랑 다시 생성 버튼을 어떻게 넣을지", "Source · Stop · Regenerate", 520],
+      ];
+      const T0 = 100,
+        Y0 = 140,
+        PITCH = 48;
+      let acc = T0;
+      const starts = SK.map((s) => {
+        const a = acc;
+        acc += s[4];
+        return a;
+      });
+      const rows = SK.map((s, i) => {
+        const el = document.createElement("div");
+        el.className = "row";
+        el.style.top = Y0 + i * PITCH + "px";
+        el.innerHTML = `<span class="dot"><i></i></span><span class="step">${s[0]}</span><span class="sid">${s[1]}</span>`;
+        $("stage").appendChild(el);
+        return el;
+      });
+      window.DEMO = defineDemo({
+        width: 960,
+        height: 670,
+        end: 7000,
+        draw(t) {
+          let idx = 0;
+          starts.forEach((s, i) => {
+            if (t >= s) idx = i;
+          });
+          rows.forEach((el, i) => {
+            el.className = "row" + (t < starts[i] ? "" : i === idx ? " on" : " done");
+          });
+          const u = t - starts[idx];
+          $("req").textContent = "› " + SK[idx][2];
+          $("pat").textContent = SK[idx][3];
+          // 요청이 바뀔 때마다 짧게 나타난다
+          fade($("req"), u, 0, 140);
+          fade($("pat"), u, 60, 140);
+        },
+      });
+    </script>
+  </body>
+</html>

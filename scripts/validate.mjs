@@ -9,25 +9,13 @@ const SKILL_ID = /^ux-[a-z0-9]+(-[a-z0-9]+)*$/;
 const CASE_ID = /^[a-z0-9][a-z0-9-]{0,63}$/;
 const FRONTMATTER_KEYS = ["name", "description", "license", "metadata"];
 const CASE_KEYS = ["id", "prompt", "expectSkill", "shouldNotFire", "why"];
-const REQUIRED_H2 = [
-  "Trigger",
-  "Input",
-  "Process",
-  "Output",
-  "Hard Gates",
-  "Skill Chaining",
-  "Constraints",
-];
+const REQUIRED_H2 = ["Trigger", "Input", "Process", "Output", "Hard Gates", "Skill Chaining", "Constraints"];
 const MAX_DESCRIPTION = 300;
 const MAX_LINES = 200;
 const MAX_WORDS = 1100;
 const MIN_POSITIVE_CASES = 2;
 const MIN_BOUNDARY_CASES = 1;
-const MANIFESTS = [
-  ".claude-plugin/plugin.json",
-  ".claude-plugin/marketplace.json",
-  ".codex-plugin/plugin.json",
-];
+const MANIFESTS = [".claude-plugin/plugin.json", ".claude-plugin/marketplace.json", ".codex-plugin/plugin.json"];
 const SKIP_DIRS = new Set(["node_modules", ".git"]);
 const BINARY_EXT = /\.(gif|png|jpe?g|webp|mp4|woff2?|ico|pdf)$/i;
 const ALLOW_MARK = "// validate-allow";
@@ -46,11 +34,7 @@ const HYGIENE_RULES = [
   { re: /generated with/i, msg: "도구 표기" }, // validate-allow
 ];
 const EMAIL = /[A-Za-z0-9._%+-]+@([A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)+)/g;
-const SAFE_EMAIL_DOMAINS = new Set([
-  "example.com",
-  "example.org",
-  "example.net",
-]);
+const SAFE_EMAIL_DOMAINS = new Set(["example.com", "example.org", "example.net"]);
 const MODEL_NAME = /\b(claude|gpt|gemini)-[a-z0-9.-]*\d/i; // validate-allow
 
 const toPosix = (p) => p.split("\\").join("/");
@@ -74,15 +58,11 @@ function walk(dir, out = []) {
 
 function listFiles(root) {
   try {
-    const out = execFileSync(
-      "git",
-      ["ls-files", "-z", "--cached", "--others", "--exclude-standard"],
-      {
-        cwd: root,
-        encoding: "utf8",
-        stdio: ["ignore", "pipe", "ignore"],
-      },
-    );
+    const out = execFileSync("git", ["ls-files", "-z", "--cached", "--others", "--exclude-standard"], {
+      cwd: root,
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "ignore"],
+    });
     const files = out
       .split("\0")
       .filter(Boolean)
@@ -133,11 +113,7 @@ function listSkills(root) {
 
 function checkSkillFolders(ctx) {
   for (const id of ctx.skills) {
-    if (!SKILL_ID.test(id))
-      ctx.fail(
-        `skills/${id}`,
-        "폴더 이름은 ux-로 시작하는 소문자 kebab-case여야 한다",
-      );
+    if (!SKILL_ID.test(id)) ctx.fail(`skills/${id}`, "폴더 이름은 ux-로 시작하는 소문자 kebab-case여야 한다");
     if (!existsSync(join(ctx.root, "skills", id, "SKILL.md"))) {
       ctx.fail(`skills/${id}`, "SKILL.md가 없다");
     }
@@ -149,15 +125,12 @@ function checkFrontmatter(ctx, id, text) {
   const fm = parseFrontmatter(text);
   if (!fm) return ctx.fail(file, "frontmatter(---)가 없거나 닫히지 않았다");
   for (const key of Object.keys(fm)) {
-    if (!FRONTMATTER_KEYS.includes(key))
-      ctx.fail(file, `허용되지 않은 frontmatter 키: ${key}`);
+    if (!FRONTMATTER_KEYS.includes(key)) ctx.fail(file, `허용되지 않은 frontmatter 키: ${key}`);
   }
-  if (fm.name !== id)
-    ctx.fail(file, `name(${fm.name ?? "없음"})이 폴더명(${id})과 다르다`);
+  if (fm.name !== id) ctx.fail(file, `name(${fm.name ?? "없음"})이 폴더명(${id})과 다르다`);
   const length = [...(fm.description ?? "")].length;
   if (length === 0) ctx.fail(file, "description이 비어 있다");
-  else if (length > MAX_DESCRIPTION)
-    ctx.fail(file, `description이 ${length}자로 ${MAX_DESCRIPTION}자를 넘는다`);
+  else if (length > MAX_DESCRIPTION) ctx.fail(file, `description이 ${length}자로 ${MAX_DESCRIPTION}자를 넘는다`);
   if (!fm.license) ctx.fail(file, "license가 없다");
 }
 
@@ -186,8 +159,7 @@ function checkSize(ctx, id, text) {
   const lines = text.replace(/\n$/, "").split("\n").length;
   const words = text.split(/\s+/).filter(Boolean).length;
   if (lines > MAX_LINES) ctx.fail(file, `${lines}줄로 ${MAX_LINES}줄을 넘는다`);
-  if (words > MAX_WORDS)
-    ctx.fail(file, `${words}단어로 ${MAX_WORDS}단어를 넘는다`);
+  if (words > MAX_WORDS) ctx.fail(file, `${words}단어로 ${MAX_WORDS}단어를 넘는다`);
 }
 
 function sectionLines(text, name) {
@@ -215,11 +187,9 @@ function checkHardGates(ctx, id, text) {
     .map((cell) => cell.match(/^G(\d+)$/))
     .filter(Boolean)
     .map((m) => Number(m[1]));
-  if (numbers.length === 0)
-    return ctx.fail(file, "Hard Gates 표에 G1 이상의 행이 없다");
+  if (numbers.length === 0) return ctx.fail(file, "Hard Gates 표에 G1 이상의 행이 없다");
   numbers.forEach((n, i) => {
-    if (n !== i + 1)
-      ctx.fail(file, `Hard Gates 번호가 G${i + 1}부터 연속되지 않는다 (G${n})`);
+    if (n !== i + 1) ctx.fail(file, `Hard Gates 번호가 G${i + 1}부터 연속되지 않는다 (G${n})`);
   });
 }
 
@@ -234,8 +204,7 @@ function checkSkillMd(ctx) {
     checkSize(ctx, id, text);
     checkHardGates(ctx, id, text);
     const refDir = join(ctx.root, "skills", id, "references");
-    if (existsSync(refDir))
-      references += readdirSync(refDir).filter((f) => f.endsWith(".md")).length;
+    if (existsSync(refDir)) references += readdirSync(refDir).filter((f) => f.endsWith(".md")).length;
   }
   ctx.stats.references = references;
 }
@@ -248,11 +217,7 @@ function checkSkillReferences(ctx) {
   for (const file of targets) {
     for (const { text, line } of linesOutsideFences(readText(file))) {
       for (const m of text.matchAll(/`(ux-[a-z0-9-]+)`/g)) {
-        if (!ctx.skills.includes(m[1]))
-          ctx.fail(
-            ctx.rel(file),
-            `${line}행: 존재하지 않는 스킬 \`${m[1]}\` 참조`,
-          );
+        if (!ctx.skills.includes(m[1])) ctx.fail(ctx.rel(file), `${line}행: 존재하지 않는 스킬 \`${m[1]}\` 참조`);
       }
     }
   }
@@ -260,10 +225,8 @@ function checkSkillReferences(ctx) {
 
 function extractLinks(text) {
   const links = [];
-  for (const m of text.matchAll(/!?\[[^\]]*\]\(\s*<?([^)\s>]+)>?[^)]*\)/g))
-    links.push(m[1]);
-  for (const m of text.matchAll(/<img\b[^>]*?\bsrc="([^"]+)"/gi))
-    links.push(m[1]);
+  for (const m of text.matchAll(/!?\[[^\]]*\]\(\s*<?([^)\s>]+)>?[^)]*\)/g)) links.push(m[1]);
+  for (const m of text.matchAll(/<img\b[^>]*?\bsrc="([^"]+)"/gi)) links.push(m[1]);
   for (const m of text.matchAll(/\bsrcset="([^"]+)"/gi)) {
     for (const part of m[1].split(",")) links.push(part.trim().split(/\s+/)[0]);
   }
@@ -290,10 +253,7 @@ function checkTildes(ctx) {
       const plain = text.replace(/`[^`]*`/g, "");
       const cells = plain.trim().startsWith("|") ? plain.split("|") : [plain];
       if (cells.some((c) => (c.match(/(?<!\\)~/g) ?? []).length >= 2))
-        ctx.fail(
-          ctx.rel(file),
-          `${line}행: 물결표 두 개가 취소선으로 렌더링된다 — 범위는 \\~로 쓴다`,
-        );
+        ctx.fail(ctx.rel(file), `${line}행: 물결표 두 개가 취소선으로 렌더링된다 — 범위는 \\~로 쓴다`);
     }
   }
 }
@@ -304,41 +264,30 @@ function isNonEmptyString(v) {
 
 function validateCase(ctx, c, i, seen) {
   const where = `evals/cases.json#${i}`;
-  if (typeof c !== "object" || c === null || Array.isArray(c))
-    return ctx.fail(where, "케이스는 객체여야 한다");
+  if (typeof c !== "object" || c === null || Array.isArray(c)) return ctx.fail(where, "케이스는 객체여야 한다");
   for (const key of Object.keys(c)) {
     if (!CASE_KEYS.includes(key)) ctx.fail(where, `허용되지 않은 키: ${key}`);
   }
-  if (typeof c.id !== "string" || !CASE_ID.test(c.id))
-    ctx.fail(where, "id 형식이 맞지 않는다");
+  if (typeof c.id !== "string" || !CASE_ID.test(c.id)) ctx.fail(where, "id 형식이 맞지 않는다");
   else if (seen.has(c.id)) ctx.fail(where, `id 중복: ${c.id}`);
   else seen.add(c.id);
   if (!isNonEmptyString(c.prompt)) ctx.fail(where, "prompt가 비어 있다");
   if (!isNonEmptyString(c.why)) ctx.fail(where, "why가 비어 있다");
-  if (!ctx.skills.includes(c.expectSkill))
-    ctx.fail(where, `expectSkill이 실제 스킬이 아니다: ${c.expectSkill}`);
+  if (!ctx.skills.includes(c.expectSkill)) ctx.fail(where, `expectSkill이 실제 스킬이 아니다: ${c.expectSkill}`);
   if ("shouldNotFire" in c) {
     if (!ctx.skills.includes(c.shouldNotFire))
       ctx.fail(where, `shouldNotFire가 실제 스킬이 아니다: ${c.shouldNotFire}`);
-    else if (c.shouldNotFire === c.expectSkill)
-      ctx.fail(where, "shouldNotFire가 expectSkill과 같다");
+    else if (c.shouldNotFire === c.expectSkill) ctx.fail(where, "shouldNotFire가 expectSkill과 같다");
   }
 }
 
 function checkCoverage(ctx, cases) {
   for (const id of ctx.skills) {
     const positive = cases.filter((c) => c?.expectSkill === id).length;
-    const boundary = cases.filter(
-      (c) =>
-        (c?.expectSkill === id && c.shouldNotFire) || c?.shouldNotFire === id,
-    ).length;
+    const boundary = cases.filter((c) => (c?.expectSkill === id && c.shouldNotFire) || c?.shouldNotFire === id).length;
     if (positive < MIN_POSITIVE_CASES)
-      ctx.fail(
-        "evals/cases.json",
-        `${id}: 양성 케이스가 ${positive}개로 ${MIN_POSITIVE_CASES}개 미만`,
-      );
-    if (boundary < MIN_BOUNDARY_CASES)
-      ctx.fail("evals/cases.json", `${id}: 경계 케이스가 없다`);
+      ctx.fail("evals/cases.json", `${id}: 양성 케이스가 ${positive}개로 ${MIN_POSITIVE_CASES}개 미만`);
+    if (boundary < MIN_BOUNDARY_CASES) ctx.fail("evals/cases.json", `${id}: 경계 케이스가 없다`);
   }
 }
 
@@ -352,8 +301,7 @@ function checkEvals(ctx) {
   } catch (e) {
     return ctx.fail("evals/cases.json", `JSON 파싱 실패: ${e.message}`);
   }
-  if (!data || !Array.isArray(data.cases))
-    return ctx.fail("evals/cases.json", '{ "cases": [...] } 형태여야 한다');
+  if (!data || !Array.isArray(data.cases)) return ctx.fail("evals/cases.json", '{ "cases": [...] } 형태여야 한다');
   const seen = new Set();
   data.cases.forEach((c, i) => validateCase(ctx, c, i, seen));
   checkCoverage(ctx, data.cases);
@@ -408,8 +356,7 @@ function checkManifests(ctx) {
       continue;
     }
     for (const v of collectVersions(data)) {
-      if (v !== pkgVersion)
-        ctx.fail(rel, `version ${v}이 package.json(${pkgVersion})과 다르다`);
+      if (v !== pkgVersion) ctx.fail(rel, `version ${v}이 package.json(${pkgVersion})과 다르다`);
     }
   }
 }
@@ -428,11 +375,9 @@ function checkHygiene(ctx) {
           if (rule.re.test(line)) ctx.fail(rel, `${at}: ${rule.msg}`);
         }
         for (const m of line.matchAll(EMAIL)) {
-          if (!SAFE_EMAIL_DOMAINS.has(m[1].toLowerCase()))
-            ctx.fail(rel, `${at}: 이메일 주소`);
+          if (!SAFE_EMAIL_DOMAINS.has(m[1].toLowerCase())) ctx.fail(rel, `${at}: 이메일 주소`);
         }
-        if (inSkills && MODEL_NAME.test(line))
-          ctx.fail(rel, `${at}: 모델 이름 고정`);
+        if (inSkills && MODEL_NAME.test(line)) ctx.fail(rel, `${at}: 모델 이름 고정`);
       });
   }
 }

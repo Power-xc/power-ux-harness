@@ -52,19 +52,10 @@
       <div
         id="head"
         class="abs"
-        style="
-          left: 40px;
-          top: 16px;
-          display: flex;
-          gap: 12px;
-          align-items: baseline;
-          line-height: 24px;
-        "
+        style="left: 40px; top: 16px; display: flex; gap: 12px; align-items: baseline; line-height: 24px"
       >
-        <span class="mono" style="font-size: 13px; font-weight: 600"
-          >RSH-NOTE-01</span
-        ><span style="font-weight: 600">독서 노트 리서치 계획</span
-        ><span class="small muted">v0.2</span>
+        <span class="mono" style="font-size: 13px; font-weight: 600">RSH-NOTE-01</span
+        ><span style="font-weight: 600">독서 노트 리서치 계획</span><span class="small muted">v0.2</span>
       </div>
     </div>
     <script>
@@ -73,8 +64,7 @@
       const stage = $("stage");
       const vrow = (id, left, top, width, l, v) =>
         `<div id="${id}" class="w-vrow vr" style="left:${left}px;top:${top}px;width:${width}px"><span class="l">${l}</span><span class="v">${v}</span></div>`;
-      const strikeText = (id, text) =>
-        `<span class="o" id="${id}">${text}<i class="strike" id="${id}s"></i></span>`;
+      const strikeText = (id, text) => `<span class="o" id="${id}">${text}<i class="strike" id="${id}s"></i></span>`;
 
       // 질문과 결정
       stage.insertAdjacentHTML(
@@ -129,30 +119,9 @@
             ) => `<div id="m${i}" class="cell" style="left:${cx(k.c)}px;top:${cy(k.r)}px"><div class="nm">${k.n}</div><div class="sp">${k.s}</div></div>
     ${k.pick ? `<div id="mp${i}" class="cell pick" style="left:${cx(k.c)}px;top:${cy(k.r)}px"><div class="nm">${k.n}</div><div class="sp">${k.s}</div></div>` : ""}`,
           ).join("") +
-          vrow(
-            "m_n",
-            40,
-            cy(1) + CH + 16,
-            800,
-            "인원",
-            "5명 — 반복 사용성 테스트 기준",
-          ) +
-          vrow(
-            "m_r",
-            40,
-            cy(1) + CH + 48,
-            360,
-            "모집",
-            "최근 3개월 안에 노트를 그만둔 사람",
-          ) +
-          vrow(
-            "m_c",
-            40,
-            cy(1) + CH + 80,
-            352,
-            "동의",
-            "녹화·개인정보 처리 안내를 먼저",
-          ),
+          vrow("m_n", 40, cy(1) + CH + 16, 800, "인원", "5명 — 반복 사용성 테스트 기준") +
+          vrow("m_r", 40, cy(1) + CH + 48, 360, "모집", "최근 3개월 안에 노트를 그만둔 사람") +
+          vrow("m_c", 40, cy(1) + CH + 80, 352, "동의", "녹화·개인정보 처리 안내를 먼저"),
       );
 
       // 인터뷰 가이드: 고치기 전(취소선 + 문제 칩) → 고친 후(PASS)
@@ -161,14 +130,7 @@
       stage.insertAdjacentHTML(
         "beforeend",
         `<div id="glb" class="lbl" style="left:${GX}px;top:136px">인터뷰 가이드</div>` +
-          vrow(
-            "a0",
-            GX,
-            168,
-            GW,
-            "고치기 전",
-            strikeText("a0t", "노트 기능이 유용하다고 생각하세요?"),
-          ) +
+          vrow("a0", GX, 168, GW, "고치기 전", strikeText("a0t", "노트 기능이 유용하다고 생각하세요?")) +
           vrow(
             "a1",
             GX,
@@ -213,22 +175,8 @@
             name: "과제 카드",
             sub: "참가자에게 보여 줘요",
           }) +
-          vrow(
-            "b0",
-            BX,
-            TY,
-            BW,
-            "고치기 전",
-            strikeText("b0t", "‘공유’ 버튼을 눌러 보세요"),
-          ) +
-          vrow(
-            "b1",
-            BX,
-            TY + 32,
-            BW,
-            "문제",
-            `<span class="chip p2">화면 라벨 노출</span>`,
-          ) +
+          vrow("b0", BX, TY, BW, "고치기 전", strikeText("b0t", "‘공유’ 버튼을 눌러 보세요")) +
+          vrow("b1", BX, TY + 32, BW, "문제", `<span class="chip p2">화면 라벨 노출</span>`) +
           vrow(
             "b2",
             BX,
@@ -279,12 +227,7 @@
           fade($("mlb"), t, T.mlb);
           fade($("mhd"), t, T.mhd);
           T.cells.forEach((s, i) => fade($("m" + i), t, s));
-          [0, 1].forEach((i) =>
-            opacityAt(
-              $("mp" + i),
-              t < T.pick ? 0 : easeOutCubic(progress(t, T.pick, 240)),
-            ),
-          );
+          [0, 1].forEach((i) => opacityAt($("mp" + i), t < T.pick ? 0 : easeOutCubic(progress(t, T.pick, 240))));
           fade($("m_n"), t, T.mn);
           fade($("m_r"), t, T.mr);
           fade($("m_c"), t, T.mc);

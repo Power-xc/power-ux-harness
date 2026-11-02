@@ -64,19 +64,10 @@
       <div
         id="head"
         class="abs"
-        style="
-          left: 40px;
-          top: 16px;
-          display: flex;
-          gap: 12px;
-          align-items: baseline;
-          line-height: 24px;
-        "
+        style="left: 40px; top: 16px; display: flex; gap: 12px; align-items: baseline; line-height: 24px"
       >
-        <span class="mono" style="font-size: 13px; font-weight: 600"
-          >FLW-ORD-01</span
-        ><span style="font-weight: 600">주문 흐름</span
-        ><span class="small muted">v0.4</span>
+        <span class="mono" style="font-size: 13px; font-weight: 600">FLW-ORD-01</span
+        ><span style="font-weight: 600">주문 흐름</span><span class="small muted">v0.4</span>
       </div>
     </div>
     <script>
@@ -100,13 +91,7 @@
         ["주문 완료", "SCR-ORD-05"],
       ];
       // 7 상태: 화면마다 [이름, 오류색 여부]
-      const STATES = [
-        [["오류", 1]],
-        [["로딩"], ["빈 목록"]],
-        [["빈 장바구니"]],
-        [["처리 중"], ["실패", 1]],
-        [["끝"]],
-      ];
+      const STATES = [[["오류", 1]], [["로딩"], ["빈 목록"]], [["빈 장바구니"]], [["처리 중"], ["실패", 1]], [["끝"]]];
 
       const row = (title, sub, action) => W.listRow({ title, sub, action });
       const pay = (label, on) =>
@@ -268,10 +253,8 @@
         draw(t) {
           fade($("head"), t, 200);
           TT.forEach((s, i) => fade($("t" + i), t, s));
-          for (let i = 0; i < 4; i++)
-            W.arrowAt($("a" + i), easeOutCubic(progress(t, TT[i] + 350, 300)));
-          for (let i = 0; i < 5; i++)
-            fade($("s" + i), t, CHIP_T + i * CHIP_STEP);
+          for (let i = 0; i < 4; i++) W.arrowAt($("a" + i), easeOutCubic(progress(t, TT[i] + 350, 300)));
+          for (let i = 0; i < 5; i++) fade($("s" + i), t, CHIP_T + i * CHIP_STEP);
           fade($("elb"), t, X0_T);
           W.arrowAt($("x0"), easeOutCubic(progress(t, X0_T, 400)));
           fade($("e0"), t, X0_T + 450);

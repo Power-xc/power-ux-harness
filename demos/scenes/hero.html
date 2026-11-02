@@ -1,88 +1,243 @@
 <!doctype html>
-<html lang="ko"><head><meta charset="utf-8">
-<link rel="stylesheet" href="shared.css">
-<script src="timeline.js"></script><script src="brand.js"></script>
-<style>
-  .row { position: absolute; left: 32px; width: 280px; height: 40px; display: flex; align-items: center; gap: 10px; }
-  .dot { width: 12px; height: 12px; border: 1.5px solid var(--lowc); border-radius: 50%; flex: none; position: relative; }
-  .dot i { position: absolute; inset: 2px; border-radius: 50%; background: var(--ok); opacity: 0; }
-  .step { width: 64px; flex: none; color: var(--muted); font-size: 13px; white-space: nowrap; }
-  .sid { flex: none; font: 13px var(--mono); color: var(--muted); white-space: nowrap; }
-  .row.on .dot { border-color: var(--accent); } .row.on .dot i { background: var(--accent); opacity: 1; }
-  .row.on .step { color: var(--fg); } .row.on .sid { color: var(--accent); font-weight: 600; }
-  .row.done { opacity: .5; } .row.done .dot { border-color: var(--ok); } .row.done .dot i { opacity: 1; }
-  .frame { position: absolute; left: 330px; top: 84px; width: 250px; height: 440px; border: 1px solid var(--line); border-radius: 24px; }
-  .pane { position: absolute; left: 347px; top: 100px; width: 216px; height: 408px; overflow: hidden; }
-  .lay { position: absolute; inset: 0; }
-  .ring { position: absolute; border: 1px solid var(--p1); border-radius: 12px; }
-  .a0 { position: absolute; }
-  .fl { font-size: 14px; line-height: 1.45; }
-  .big { font-size: 18px; font-weight: 600; line-height: 1.35; }
-  .cap { font: 12px var(--mono); color: var(--muted); }
-  .btn.full { display: grid; width: 100%; padding: 0 10px; }
-  .side { position: absolute; left: 610px; width: 238px; top: 84px; height: 440px; }
-  .pat { position: absolute; left: 0; top: 14px; width: 238px; font-size: 17px; font-weight: 600; line-height: 1.35; }
-  .blk { position: absolute; left: 0; width: 238px; font-size: 13px; line-height: 1.5; }
-  .blk .chip { margin-bottom: 6px; }
-  .blk div { display: block; }
-  .ibtn { display: grid; place-items: center; border-radius: 8px; border: 1px solid var(--line); color: var(--fg); }
-</style></head>
-<body><div id="stage">
-  <div id="brand" class="abs mono muted" style="left:32px;top:16px;font-size:12px"></div>
-  <div id="prompt" class="abs mono" style="left:32px;top:40px;font-size:15px"></div>
-  <div class="frame"></div>
-</div>
-<script>
-const ic = {
-  heart: svg('<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/>'),
-  share: svg('<path d="M12 15V4M8 8l4-4 4 4M5 13v6h14v-6"/>'),
-  trash: svg('<path d="M5 7h14M10 7V4h4v3M7 7l1 13h8l1-13"/>'),
-  check: svg('<path d="M5 12.5l4.5 4.5L19 7.5"/>', 'style="width:14px;height:14px;stroke-width:2"'),
-};
-const O = (s) => `<span class="accent" style="font-weight:600">${s}</span>`;
-const SK = [
-  { step: "탐색", id: "ux-simulate", req: "기획서랑 링크 줄 테니 어떤 UX가 맞을지 봐 줘",
-    pat: "Synthetic persona → 가설",
-    bt: "「사용자 78%가 B안 선호」 → 바로 개발",
-    at: "「합성 시뮬레이션 · 가설」 B안 추천 → 실제 사용자 5명으로 확인",
-    b: `<div class="a0 big" style="left:10px;top:76px;width:196px">사용자 78%가<br>B안 선호</div><div class="a0" style="left:10px;top:150px;width:196px"><span class="btn primary full">바로 개발</span></div>`,
-    a: `<div class="a0" style="left:10px;top:76px"><span class="chip accent">합성 시뮬레이션 · 가설</span></div><div class="a0 big" style="left:10px;top:108px">B안 추천</div><div class="a0" style="left:10px;top:150px;width:196px"><span class="btn full">실제 사용자 5명으로 확인</span></div>`,
-    rb: [0, 62, 216, 140], ra: [0, 62, 216, 140] },
-  { step: "확인", id: "ux-research", req: "왜 온보딩 중간에 그만두는지 알고 싶어",
-    pat: "Leading question → Open question",
-    bt: "「새 온보딩, 편하셨죠?」",
-    at: "「마지막으로 가입하다 멈춘 때를 처음부터 들려주세요」",
-    b: `<div class="a0 cap" style="left:10px;top:72px">인터뷰 질문</div><div class="a0 big" style="left:10px;top:98px;width:196px">새 온보딩,<br>편하셨죠?</div>`,
-    a: `<div class="a0 cap" style="left:10px;top:72px">인터뷰 질문</div><div class="a0 big" style="left:10px;top:98px;width:196px">마지막으로 가입하다 멈춘 때를 처음부터 들려주세요</div>`,
-    rb: [0, 62, 216, 104], ra: [0, 62, 216, 134] },
-  { step: "정의", id: "ux-flow", req: "회원가입부터 첫 주문까지 화면 목록이랑 예외 경로",
-    pat: "Dead end → Recovery path",
-    bt: "「네트워크 오류. 잠시 후 다시 시도하세요」 · 버튼 없음",
-    at: "「연결이 끊겼어요. 장바구니는 저장했어요」 + [다시 시도] [오프라인으로 보기]",
-    b: `<div class="a0 fl" style="left:10px;top:92px;width:196px">네트워크 오류. 잠시 후 다시 시도하세요</div>`,
-    a: `<div class="a0 fl" style="left:10px;top:76px;width:196px">연결이 끊겼어요. 장바구니는 저장했어요</div><div class="a0" style="left:10px;top:132px;width:196px"><span class="btn primary full">다시 시도</span></div><div class="a0" style="left:10px;top:176px;width:196px"><span class="btn full">오프라인으로 보기</span></div>`,
-    rb: [0, 78, 216, 70], ra: [0, 62, 216, 160] },
-  { step: "설계", id: "ux-spec", req: "개발자한테 넘길 화면설계서",
-    pat: "Component states",
-    bt: "저장 버튼에 「누르면 저장」 한 줄",
-    at: "기본 → 저장 중 → 완료 → 실패로 바뀌고 상태마다 문구",
-    custom: "spec", S: 1250,
-    b: `<div class="a0" style="left:10px;top:100px;width:196px"><span id="sbtn" class="btn full">저장</span></div><div id="scap" class="a0 cap" style="left:10px;top:146px;width:196px;text-align:center">누르면 저장</div>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="shared.css" />
+    <script src="timeline.js"></script>
+    <script src="brand.js"></script>
+    <style>
+      .row {
+        position: absolute;
+        left: 32px;
+        width: 280px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .dot {
+        width: 12px;
+        height: 12px;
+        border: 1.5px solid var(--lowc);
+        border-radius: 50%;
+        flex: none;
+        position: relative;
+      }
+      .dot i {
+        position: absolute;
+        inset: 2px;
+        border-radius: 50%;
+        background: var(--ok);
+        opacity: 0;
+      }
+      .step {
+        width: 64px;
+        flex: none;
+        color: var(--muted);
+        font-size: 13px;
+        white-space: nowrap;
+      }
+      .sid {
+        flex: none;
+        font: 13px var(--mono);
+        color: var(--muted);
+        white-space: nowrap;
+      }
+      .row.on .dot {
+        border-color: var(--accent);
+      }
+      .row.on .dot i {
+        background: var(--accent);
+        opacity: 1;
+      }
+      .row.on .step {
+        color: var(--fg);
+      }
+      .row.on .sid {
+        color: var(--accent);
+        font-weight: 600;
+      }
+      .row.done {
+        opacity: 0.5;
+      }
+      .row.done .dot {
+        border-color: var(--ok);
+      }
+      .row.done .dot i {
+        opacity: 1;
+      }
+      .frame {
+        position: absolute;
+        left: 330px;
+        top: 84px;
+        width: 250px;
+        height: 440px;
+        border: 1px solid var(--line);
+        border-radius: 24px;
+      }
+      .pane {
+        position: absolute;
+        left: 347px;
+        top: 100px;
+        width: 216px;
+        height: 408px;
+        overflow: hidden;
+      }
+      .lay {
+        position: absolute;
+        inset: 0;
+      }
+      .ring {
+        position: absolute;
+        border: 1px solid var(--p1);
+        border-radius: 12px;
+      }
+      .a0 {
+        position: absolute;
+      }
+      .fl {
+        font-size: 14px;
+        line-height: 1.45;
+      }
+      .big {
+        font-size: 18px;
+        font-weight: 600;
+        line-height: 1.35;
+      }
+      .cap {
+        font: 12px var(--mono);
+        color: var(--muted);
+      }
+      .btn.full {
+        display: grid;
+        width: 100%;
+        padding: 0 10px;
+      }
+      .side {
+        position: absolute;
+        left: 610px;
+        width: 238px;
+        top: 84px;
+        height: 440px;
+      }
+      .pat {
+        position: absolute;
+        left: 0;
+        top: 14px;
+        width: 238px;
+        font-size: 17px;
+        font-weight: 600;
+        line-height: 1.35;
+      }
+      .blk {
+        position: absolute;
+        left: 0;
+        width: 238px;
+        font-size: 13px;
+        line-height: 1.5;
+      }
+      .blk .chip {
+        margin-bottom: 6px;
+      }
+      .blk div {
+        display: block;
+      }
+      .ibtn {
+        display: grid;
+        place-items: center;
+        border-radius: 8px;
+        border: 1px solid var(--line);
+        color: var(--fg);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div id="brand" class="abs mono muted" style="left: 32px; top: 16px; font-size: 12px"></div>
+      <div id="prompt" class="abs mono" style="left: 32px; top: 40px; font-size: 15px"></div>
+      <div class="frame"></div>
+    </div>
+    <script>
+      const ic = {
+        heart: svg('<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/>'),
+        share: svg('<path d="M12 15V4M8 8l4-4 4 4M5 13v6h14v-6"/>'),
+        trash: svg('<path d="M5 7h14M10 7V4h4v3M7 7l1 13h8l1-13"/>'),
+        check: svg('<path d="M5 12.5l4.5 4.5L19 7.5"/>', 'style="width:14px;height:14px;stroke-width:2"'),
+      };
+      const O = (s) => `<span class="accent" style="font-weight:600">${s}</span>`;
+      const SK = [
+        {
+          step: "탐색",
+          id: "ux-simulate",
+          req: "기획서랑 링크 줄 테니 어떤 UX가 맞을지 봐 줘",
+          pat: "Synthetic persona → 가설",
+          bt: "「사용자 78%가 B안 선호」 → 바로 개발",
+          at: "「합성 시뮬레이션 · 가설」 B안 추천 → 실제 사용자 5명으로 확인",
+          b: `<div class="a0 big" style="left:10px;top:76px;width:196px">사용자 78%가<br>B안 선호</div><div class="a0" style="left:10px;top:150px;width:196px"><span class="btn primary full">바로 개발</span></div>`,
+          a: `<div class="a0" style="left:10px;top:76px"><span class="chip accent">합성 시뮬레이션 · 가설</span></div><div class="a0 big" style="left:10px;top:108px">B안 추천</div><div class="a0" style="left:10px;top:150px;width:196px"><span class="btn full">실제 사용자 5명으로 확인</span></div>`,
+          rb: [0, 62, 216, 140],
+          ra: [0, 62, 216, 140],
+        },
+        {
+          step: "확인",
+          id: "ux-research",
+          req: "왜 온보딩 중간에 그만두는지 알고 싶어",
+          pat: "Leading question → Open question",
+          bt: "「새 온보딩, 편하셨죠?」",
+          at: "「마지막으로 가입하다 멈춘 때를 처음부터 들려주세요」",
+          b: `<div class="a0 cap" style="left:10px;top:72px">인터뷰 질문</div><div class="a0 big" style="left:10px;top:98px;width:196px">새 온보딩,<br>편하셨죠?</div>`,
+          a: `<div class="a0 cap" style="left:10px;top:72px">인터뷰 질문</div><div class="a0 big" style="left:10px;top:98px;width:196px">마지막으로 가입하다 멈춘 때를 처음부터 들려주세요</div>`,
+          rb: [0, 62, 216, 104],
+          ra: [0, 62, 216, 134],
+        },
+        {
+          step: "정의",
+          id: "ux-flow",
+          req: "회원가입부터 첫 주문까지 화면 목록이랑 예외 경로",
+          pat: "Dead end → Recovery path",
+          bt: "「네트워크 오류. 잠시 후 다시 시도하세요」 · 버튼 없음",
+          at: "「연결이 끊겼어요. 장바구니는 저장했어요」 + [다시 시도] [오프라인으로 보기]",
+          b: `<div class="a0 fl" style="left:10px;top:92px;width:196px">네트워크 오류. 잠시 후 다시 시도하세요</div>`,
+          a: `<div class="a0 fl" style="left:10px;top:76px;width:196px">연결이 끊겼어요. 장바구니는 저장했어요</div><div class="a0" style="left:10px;top:132px;width:196px"><span class="btn primary full">다시 시도</span></div><div class="a0" style="left:10px;top:176px;width:196px"><span class="btn full">오프라인으로 보기</span></div>`,
+          rb: [0, 78, 216, 70],
+          ra: [0, 62, 216, 160],
+        },
+        {
+          step: "설계",
+          id: "ux-spec",
+          req: "개발자한테 넘길 화면설계서",
+          pat: "Component states",
+          bt: "저장 버튼에 「누르면 저장」 한 줄",
+          at: "기본 → 저장 중 → 완료 → 실패로 바뀌고 상태마다 문구",
+          custom: "spec",
+          S: 1250,
+          b: `<div class="a0" style="left:10px;top:100px;width:196px"><span id="sbtn" class="btn full">저장</span></div><div id="scap" class="a0 cap" style="left:10px;top:146px;width:196px;text-align:center">누르면 저장</div>
         <div id="schips" class="a0" style="left:0;top:200px;width:216px;display:flex;justify-content:center;gap:4px;opacity:0"><span class="chip gray">기본</span><span class="chip gray">저장 중</span><span class="chip gray">완료</span><span class="chip gray">실패</span></div>`,
-    rb: [0, 88, 216, 82], ra: [0, 88, 216, 82] },
-  { step: "문구", id: "ux-writing", req: "오류 문구 다듬어 줘",
-    pat: "Error message: 원인 + 해결",
-    bt: "「오류가 발생했습니다. (E-402)」 [확인]",
-    at: "「카드 한도를 넘어 결제하지 못했어요」 [다른 카드로 결제] [나중에 결제하기]",
-    b: `<div class="a0 fl" style="left:10px;top:92px;width:196px">오류가 발생했습니다. (E-402)</div><div class="a0" style="left:10px;top:148px;width:196px"><span class="btn full">확인</span></div>`,
-    a: `<div class="a0 fl" style="left:10px;top:76px;width:196px">카드 한도를 넘어 결제하지 못했어요</div><div class="a0" style="left:10px;top:132px;width:196px"><span class="btn primary full">다른 카드로 결제</span></div><div class="a0" style="left:10px;top:176px;width:196px"><span class="btn full">나중에 결제하기</span></div>`,
-    rb: [0, 78, 216, 108], ra: [0, 62, 216, 160] },
-  { step: "검토", id: "ux-review", req: "삭제를 토스트로만 알리는데 되돌리기를 줄지",
-    pat: "Toast → Snackbar + Undo",
-    bt: "「삭제되었습니다」 Toast가 잠깐 떴다 사라짐",
-    at: "「노트를 삭제했어요 · 되돌리기」 Snackbar가 남고, 되돌리기를 누르면 복구",
-    custom: "review", S: 1250,
-    b: `<div class="a0 title" style="left:10px;top:10px">독서 노트</div>
+          rb: [0, 88, 216, 82],
+          ra: [0, 88, 216, 82],
+        },
+        {
+          step: "문구",
+          id: "ux-writing",
+          req: "오류 문구 다듬어 줘",
+          pat: "Error message: 원인 + 해결",
+          bt: "「오류가 발생했습니다. (E-402)」 [확인]",
+          at: "「카드 한도를 넘어 결제하지 못했어요」 [다른 카드로 결제] [나중에 결제하기]",
+          b: `<div class="a0 fl" style="left:10px;top:92px;width:196px">오류가 발생했습니다. (E-402)</div><div class="a0" style="left:10px;top:148px;width:196px"><span class="btn full">확인</span></div>`,
+          a: `<div class="a0 fl" style="left:10px;top:76px;width:196px">카드 한도를 넘어 결제하지 못했어요</div><div class="a0" style="left:10px;top:132px;width:196px"><span class="btn primary full">다른 카드로 결제</span></div><div class="a0" style="left:10px;top:176px;width:196px"><span class="btn full">나중에 결제하기</span></div>`,
+          rb: [0, 78, 216, 108],
+          ra: [0, 62, 216, 160],
+        },
+        {
+          step: "검토",
+          id: "ux-review",
+          req: "삭제를 토스트로만 알리는데 되돌리기를 줄지",
+          pat: "Toast → Snackbar + Undo",
+          bt: "「삭제되었습니다」 Toast가 잠깐 떴다 사라짐",
+          at: "「노트를 삭제했어요 · 되돌리기」 Snackbar가 남고, 되돌리기를 누르면 복구",
+          custom: "review",
+          S: 1250,
+          b: `<div class="a0 title" style="left:10px;top:10px">독서 노트</div>
         <div id="rl" class="a0" style="left:0;top:50px;width:216px;border-bottom:1px solid var(--line)">
           <div class="li" style="height:44px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 10px;font-size:13px"><span>데미안 — 3장 메모</span><span class="muted" style="font-size:12px">삭제</span></div>
           <div id="r2" style="height:44px;overflow:hidden;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 10px;font-size:13px;white-space:nowrap"><span>어린 왕자 — 문장 모음</span><span class="muted" style="font-size:12px">삭제</span></div>
@@ -91,134 +246,217 @@ const SK = [
         <div id="rrip" class="ripple" style="left:195px;top:116px"></div><div id="rrip2" class="ripple" style="left:186px;top:355px"></div>
         <div id="toast" class="a0 field" style="left:0;top:340px;width:216px;height:36px;display:flex;align-items:center;padding:0 12px;font-size:13px">삭제되었습니다</div>
         <div id="snack" class="a0 field" style="left:0;top:340px;width:216px;height:36px;display:flex;align-items:center;justify-content:space-between;padding:0 12px;font-size:13px"><span>노트를 삭제했어요</span>${O("되돌리기")}</div>`,
-    rb: [0, 334, 216, 48], ra: [0, 334, 216, 48] },
-  { step: "접근성", id: "ux-a11y", req: "터치 영역 크기",
-    pat: "Target size · WCAG 2.5.8",
-    bt: "아이콘 버튼 3개가 20×20px로 붙어 있음",
-    at: "버튼마다 44×44px 누르는 영역, 간격 확보",
-    custom: "a11y", S: 1250,
-    b: `<div id="ibar" class="a0" style="left:0;top:110px;width:216px;display:flex;justify-content:center;align-items:center"><span class="ibtn">${ic.heart}</span><span class="ibtn">${ic.share}</span><span class="ibtn">${ic.trash}</span></div><div id="icap" class="a0 cap" style="left:0;top:182px;width:216px;text-align:center">20×20px</div>`,
-    rb: [60, 100, 96, 40], ra: [20, 100, 176, 60] },
-  { step: "기만 패턴", id: "ux-dark-patterns", req: "부가 서비스가 기본으로 체크돼 있는데 괜찮아?",
-    pat: "사전 선택 · 공정위 다크패턴 유형",
-    bt: "[✓] 부가 서비스 추가 +2,900원이 미리 체크됨",
-    at: "[ ] 기본 해제, 사용자가 직접 고름",
-    custom: "dark", S: 1250,
-    b: `<div class="a0" style="left:10px;top:112px;width:196px;display:flex;align-items:center;gap:10px;font-size:14px"><span id="cbx" style="width:20px;height:20px;border:1px solid var(--accent);border-radius:5px;display:grid;place-items:center;color:var(--accent);flex:none"><span id="ck" style="display:grid">${ic.check}</span></span><span style="flex:1">부가 서비스 추가</span><span class="cap">+2,900원</span></div>
+          rb: [0, 334, 216, 48],
+          ra: [0, 334, 216, 48],
+        },
+        {
+          step: "접근성",
+          id: "ux-a11y",
+          req: "터치 영역 크기",
+          pat: "Target size · WCAG 2.5.8",
+          bt: "아이콘 버튼 3개가 20×20px로 붙어 있음",
+          at: "버튼마다 44×44px 누르는 영역, 간격 확보",
+          custom: "a11y",
+          S: 1250,
+          b: `<div id="ibar" class="a0" style="left:0;top:110px;width:216px;display:flex;justify-content:center;align-items:center"><span class="ibtn">${ic.heart}</span><span class="ibtn">${ic.share}</span><span class="ibtn">${ic.trash}</span></div><div id="icap" class="a0 cap" style="left:0;top:182px;width:216px;text-align:center">20×20px</div>`,
+          rb: [60, 100, 96, 40],
+          ra: [20, 100, 176, 60],
+        },
+        {
+          step: "기만 패턴",
+          id: "ux-dark-patterns",
+          req: "부가 서비스가 기본으로 체크돼 있는데 괜찮아?",
+          pat: "사전 선택 · 공정위 다크패턴 유형",
+          bt: "[✓] 부가 서비스 추가 +2,900원이 미리 체크됨",
+          at: "[ ] 기본 해제, 사용자가 직접 고름",
+          custom: "dark",
+          S: 1250,
+          b: `<div class="a0" style="left:10px;top:112px;width:196px;display:flex;align-items:center;gap:10px;font-size:14px"><span id="cbx" style="width:20px;height:20px;border:1px solid var(--accent);border-radius:5px;display:grid;place-items:center;color:var(--accent);flex:none"><span id="ck" style="display:grid">${ic.check}</span></span><span style="flex:1">부가 서비스 추가</span><span class="cap">+2,900원</span></div>
         <div class="a0" style="left:10px;top:176px;width:196px"><span class="btn primary full">다음</span></div>`,
-    rb: [0, 98, 216, 48], ra: [0, 98, 216, 48] },
-  { step: "측정", id: "ux-metrics", req: "성공 지표 정해 줘",
-    pat: "Vanity metric → Success metric + Guardrail",
-    bt: "페이지뷰 · 클릭 수 · 체류 시간",
-    at: "주 지표 「첫 주문 완료율」 · 가드레일 「오류 문의 수」",
-    b: `<div class="a0 fl" style="left:10px;top:76px;width:196px;line-height:2.1">페이지뷰<br>클릭 수<br>체류 시간</div>`,
-    a: `<div class="a0" style="left:10px;top:76px"><span class="chip accent">주 지표</span></div><div class="a0 big" style="left:10px;top:106px">첫 주문 완료율</div><div class="a0" style="left:10px;top:164px"><span class="chip gray">가드레일</span></div><div class="a0 big" style="left:10px;top:194px">오류 문의 수</div>`,
-    rb: [0, 62, 216, 114], ra: [0, 62, 216, 176] },
-  { step: "AI", id: "ux-ai", req: "답변에 출처랑 다시 생성 버튼을 어떻게 넣을지",
-    pat: "Source · Stop · Regenerate",
-    bt: "AI 답이 출처 없이 단정하고 멈출 버튼 없음",
-    at: "출처 칩 + [중지] / [다시 생성] + 「AI 답은 틀릴 수 있어요」",
-    b: `<div class="a0 fl" style="left:10px;top:84px;width:196px">이 기능은 모든 요금제에서 쓸 수 있습니다.</div>`,
-    a: `<div class="a0 fl" style="left:10px;top:70px;width:196px">이 기능은 모든 요금제에서 쓸 수 있습니다.</div><div class="a0" style="left:10px;top:124px;display:flex;gap:6px"><span class="chip gray">출처 1</span><span class="chip gray">출처 2</span></div><div class="a0" style="left:10px;top:162px;width:196px;display:flex;gap:8px"><span class="btn" style="flex:1;height:32px;padding:0 8px">중지</span><span class="btn" style="flex:1.4;height:32px;padding:0 8px">다시 생성</span></div><div class="a0 cap" style="left:10px;top:206px;width:196px;font-family:var(--ui)">AI 답은 틀릴 수 있어요</div>`,
-    rb: [0, 70, 216, 60], ra: [0, 58, 216, 180] },
-];
+          rb: [0, 98, 216, 48],
+          ra: [0, 98, 216, 48],
+        },
+        {
+          step: "측정",
+          id: "ux-metrics",
+          req: "성공 지표 정해 줘",
+          pat: "Vanity metric → Success metric + Guardrail",
+          bt: "페이지뷰 · 클릭 수 · 체류 시간",
+          at: "주 지표 「첫 주문 완료율」 · 가드레일 「오류 문의 수」",
+          b: `<div class="a0 fl" style="left:10px;top:76px;width:196px;line-height:2.1">페이지뷰<br>클릭 수<br>체류 시간</div>`,
+          a: `<div class="a0" style="left:10px;top:76px"><span class="chip accent">주 지표</span></div><div class="a0 big" style="left:10px;top:106px">첫 주문 완료율</div><div class="a0" style="left:10px;top:164px"><span class="chip gray">가드레일</span></div><div class="a0 big" style="left:10px;top:194px">오류 문의 수</div>`,
+          rb: [0, 62, 216, 114],
+          ra: [0, 62, 216, 176],
+        },
+        {
+          step: "AI",
+          id: "ux-ai",
+          req: "답변에 출처랑 다시 생성 버튼을 어떻게 넣을지",
+          pat: "Source · Stop · Regenerate",
+          bt: "AI 답이 출처 없이 단정하고 멈출 버튼 없음",
+          at: "출처 칩 + [중지] / [다시 생성] + 「AI 답은 틀릴 수 있어요」",
+          b: `<div class="a0 fl" style="left:10px;top:84px;width:196px">이 기능은 모든 요금제에서 쓸 수 있습니다.</div>`,
+          a: `<div class="a0 fl" style="left:10px;top:70px;width:196px">이 기능은 모든 요금제에서 쓸 수 있습니다.</div><div class="a0" style="left:10px;top:124px;display:flex;gap:6px"><span class="chip gray">출처 1</span><span class="chip gray">출처 2</span></div><div class="a0" style="left:10px;top:162px;width:196px;display:flex;gap:8px"><span class="btn" style="flex:1;height:32px;padding:0 8px">중지</span><span class="btn" style="flex:1.4;height:32px;padding:0 8px">다시 생성</span></div><div class="a0 cap" style="left:10px;top:206px;width:196px;font-family:var(--ui)">AI 답은 틀릴 수 있어요</div>`,
+          rb: [0, 70, 216, 60],
+          ra: [0, 58, 216, 180],
+        },
+      ];
 
-const T0 = 300, PER = 2400, N = SK.length, STEP_Y = 80, PITCH = 44, DEF_S = 1250;
-const stage = $("stage");
-const ease = easeOutCubic;
-SK.forEach((s, i) => {
-  const row = document.createElement("div");
-  row.className = "row"; row.style.top = (STEP_Y + i * PITCH) + "px";
-  row.innerHTML = `<span class="dot"><i></i></span><span class="step">${s.step}</span><span class="sid">${s.id}</span>`;
-  stage.appendChild(row); s.row = row;
+      const T0 = 300,
+        PER = 2400,
+        N = SK.length,
+        STEP_Y = 80,
+        PITCH = 44,
+        DEF_S = 1250;
+      const stage = $("stage");
+      const ease = easeOutCubic;
+      SK.forEach((s, i) => {
+        const row = document.createElement("div");
+        row.className = "row";
+        row.style.top = STEP_Y + i * PITCH + "px";
+        row.innerHTML = `<span class="dot"><i></i></span><span class="step">${s.step}</span><span class="sid">${s.id}</span>`;
+        stage.appendChild(row);
+        s.row = row;
 
-  const pane = document.createElement("div");
-  pane.className = "pane";
-  pane.innerHTML = `<div class="lay lb">${s.b}</div>${s.a ? `<div class="lay la">${s.a}</div>` : ""}<div class="ring"></div>`;
-  stage.appendChild(pane); s.pane = pane;
+        const pane = document.createElement("div");
+        pane.className = "pane";
+        pane.innerHTML = `<div class="lay lb">${s.b}</div>${s.a ? `<div class="lay la">${s.a}</div>` : ""}<div class="ring"></div>`;
+        stage.appendChild(pane);
+        s.pane = pane;
 
-  const side = document.createElement("div");
-  side.className = "side";
-  side.innerHTML = `<div class="pat">${s.pat}</div>
+        const side = document.createElement("div");
+        side.className = "side";
+        side.innerHTML = `<div class="pat">${s.pat}</div>
     <div class="blk bb" style="top:118px"><span class="chip p1">고치기 전</span><div>${s.bt}</div></div>
     <div class="blk ba" style="top:236px"><span class="chip ok">고친 후</span><div>${s.at}</div></div>`;
-  stage.appendChild(side); s.side = side;
-});
+        stage.appendChild(side);
+        s.side = side;
+      });
 
-const custom = {
-  spec(u, s, S) {
-    const btn = $("sbtn"), cap = $("scap"), chips = $("schips").children;
-    const k = u < S ? -1 : Math.min(3, Math.floor((u - S) / 280));
-    const ST = [["저장", "primary", ""], ["저장하는 중…", "", "var(--muted)"], ["저장했어요", "", "var(--ok)"], ["저장하지 못했어요", "", "var(--p1)"]];
-    if (k < 0) { btn.textContent = "저장"; btn.style.cssText = ""; btn.className = "btn full"; cap.textContent = "누르면 저장"; }
-    else {
-      btn.textContent = ST[k][0]; btn.className = "btn full " + ST[k][1];
-      btn.style.cssText = ST[k][2] ? `color:${ST[k][2]};border-color:${ST[k][2]}` : "";
-      cap.textContent = ["기본", "로딩", "완료", "실패"][k];
-    }
-    opacityAt($("schips"), k < 0 ? 0 : progress(u, S, 200));
-    [...chips].forEach((c, j) => { c.className = "chip " + (j === k ? ["accent", "accent", "ok", "p1"][j] : "gray"); c.style.opacity = j === k ? 1 : 0.55; });
-  },
-  review(u, s, S) {
-    const ROW = 44, r2 = $("r2");
-    // 1차(Toast): 삭제 350, 접힘 400~640, 토스트 600~1150, 초기화 1250~1500
-    // 2차(Snackbar): 삭제 1400, 접힘 1450~1670, 스낵바 1550~, 되돌리기 1950, 복구 2000~2200
-    let h = ROW;
-    if (u >= 2000) h = ROW * ease(progress(u, 2000, 200));
-    else if (u >= 1450) h = ROW * (1 - ease(progress(u, 1450, 220)));
-    else if (u >= 1150) h = ROW * ease(progress(u, 1150, 180));
-    else if (u >= 400) h = ROW * (1 - ease(progress(u, 400, 240)));
-    r2.style.height = h + "px"; r2.style.opacity = h / ROW; r2.style.borderTopWidth = h < 1 ? 0 : 1;
-    fade($("toast"), u, 600, 220, 1100, 160);
-    fade($("snack"), u, 1550, 220, 2200, 160);
-    const rp = (st) => { const p = progress(u, st, 320); return p > 0 && p < 1 ? p : null; };
-    const p1 = rp(350), p2 = rp(1400), p3 = rp(1950);
-    $("rrip").style.opacity = p1 !== null ? 1 - p1 : p2 !== null ? 1 - p2 : 0;
-    $("rrip").style.transform = `scale(${1 + 2.2 * ease(p1 ?? p2 ?? 0)})`;
-    $("rrip2").style.opacity = p3 !== null ? 1 - p3 : 0;
-    $("rrip2").style.transform = `scale(${1 + 2.2 * ease(p3 ?? 0)})`;
-  },
-  a11y(u, s, S) {
-    const p = ease(progress(u, S, 420)), size = lerp(20, 44, p), gap = lerp(2, 8, p);
-    const bar = $("ibar"); bar.style.gap = gap + "px";
-    [...bar.children].forEach((b) => { b.style.width = b.style.height = size + "px"; b.style.borderColor = p < 0.02 ? "transparent" : "var(--line)"; b.style.opacity = 1; });
-    $("icap").textContent = u < S + 200 ? "20×20px" : "44×44px";
-  },
-  dark(u, s, S) {
-    const p = progress(u, S + 80, 220);
-    $("ck").style.opacity = 1 - p;
-  },
-};
-const lerpRect = (a, b, p) => a.map((v, i) => lerp(v, b[i], p));
+      const custom = {
+        spec(u, s, S) {
+          const btn = $("sbtn"),
+            cap = $("scap"),
+            chips = $("schips").children;
+          const k = u < S ? -1 : Math.min(3, Math.floor((u - S) / 280));
+          const ST = [
+            ["저장", "primary", ""],
+            ["저장하는 중…", "", "var(--muted)"],
+            ["저장했어요", "", "var(--ok)"],
+            ["저장하지 못했어요", "", "var(--p1)"],
+          ];
+          if (k < 0) {
+            btn.textContent = "저장";
+            btn.style.cssText = "";
+            btn.className = "btn full";
+            cap.textContent = "누르면 저장";
+          } else {
+            btn.textContent = ST[k][0];
+            btn.className = "btn full " + ST[k][1];
+            btn.style.cssText = ST[k][2] ? `color:${ST[k][2]};border-color:${ST[k][2]}` : "";
+            cap.textContent = ["기본", "로딩", "완료", "실패"][k];
+          }
+          opacityAt($("schips"), k < 0 ? 0 : progress(u, S, 200));
+          [...chips].forEach((c, j) => {
+            c.className = "chip " + (j === k ? ["accent", "accent", "ok", "p1"][j] : "gray");
+            c.style.opacity = j === k ? 1 : 0.55;
+          });
+        },
+        review(u, s, S) {
+          const ROW = 44,
+            r2 = $("r2");
+          // 1차(Toast): 삭제 350, 접힘 400~640, 토스트 600~1150, 초기화 1250~1500
+          // 2차(Snackbar): 삭제 1400, 접힘 1450~1670, 스낵바 1550~, 되돌리기 1950, 복구 2000~2200
+          let h = ROW;
+          if (u >= 2000) h = ROW * ease(progress(u, 2000, 200));
+          else if (u >= 1450) h = ROW * (1 - ease(progress(u, 1450, 220)));
+          else if (u >= 1150) h = ROW * ease(progress(u, 1150, 180));
+          else if (u >= 400) h = ROW * (1 - ease(progress(u, 400, 240)));
+          r2.style.height = h + "px";
+          r2.style.opacity = h / ROW;
+          r2.style.borderTopWidth = h < 1 ? 0 : 1;
+          fade($("toast"), u, 600, 220, 1100, 160);
+          fade($("snack"), u, 1550, 220, 2200, 160);
+          const rp = (st) => {
+            const p = progress(u, st, 320);
+            return p > 0 && p < 1 ? p : null;
+          };
+          const p1 = rp(350),
+            p2 = rp(1400),
+            p3 = rp(1950);
+          $("rrip").style.opacity = p1 !== null ? 1 - p1 : p2 !== null ? 1 - p2 : 0;
+          $("rrip").style.transform = `scale(${1 + 2.2 * ease(p1 ?? p2 ?? 0)})`;
+          $("rrip2").style.opacity = p3 !== null ? 1 - p3 : 0;
+          $("rrip2").style.transform = `scale(${1 + 2.2 * ease(p3 ?? 0)})`;
+        },
+        a11y(u, s, S) {
+          const p = ease(progress(u, S, 420)),
+            size = lerp(20, 44, p),
+            gap = lerp(2, 8, p);
+          const bar = $("ibar");
+          bar.style.gap = gap + "px";
+          [...bar.children].forEach((b) => {
+            b.style.width = b.style.height = size + "px";
+            b.style.borderColor = p < 0.02 ? "transparent" : "var(--line)";
+            b.style.opacity = 1;
+          });
+          $("icap").textContent = u < S + 200 ? "20×20px" : "44×44px";
+        },
+        dark(u, s, S) {
+          const p = progress(u, S + 80, 220);
+          $("ck").style.opacity = 1 - p;
+        },
+      };
+      const lerpRect = (a, b, p) => a.map((v, i) => lerp(v, b[i], p));
 
-window.DEMO = defineDemo({ width: 880, height: 560, end: T0 + PER * N,
-  draw(t) {
-    $("brand").textContent = BRAND;
-    const idx = Math.min(N - 1, Math.max(0, Math.floor((t - T0) / PER)));
-    SK.forEach((s, i) => {
-      const start = T0 + PER * i, u = t - start;
-      s.row.className = "row" + (t < start ? "" : i === idx && u < PER ? " on" : " done");
-      if (i === N - 1 && t >= start) s.row.className = "row on";
-      const last = i === N - 1, S = s.S || DEF_S;
-      const outAt = last ? Infinity : PER - 170;
-      fade(s.pane, u, 140, 220, outAt, 170, 4);
-      fade(s.side, u, 140, 220, outAt, 170, 4);
-      if (u < 0 || u > PER) return;
-      const lb = s.pane.querySelector(".lb"), la = s.pane.querySelector(".la"), ring = s.pane.querySelector(".ring");
-      const pc = ease(progress(u, S, 260));
-      if (la) { opacityAt(lb, 1 - pc); opacityAt(la, pc); }
-      if (custom[s.custom]) custom[s.custom](u, s, S);
-      const r = lerpRect(s.rb, s.ra, pc);
-      ring.style.left = r[0] + "px"; ring.style.top = r[1] + "px"; ring.style.width = r[2] + "px"; ring.style.height = r[3] + "px";
-      ring.style.borderColor = u < S ? "var(--p1)" : "var(--ok)";
-      opacityAt(ring, u < S ? progress(u, 480, 200) : Math.max(progress(u, S + 40, 200), 0.001));
-      const bb = s.side.querySelector(".bb"), ba = s.side.querySelector(".ba");
-      fade(bb, u, 520, 220); bb.style.opacity = bb.style.opacity * (1 - 0.55 * progress(u, S, 200));
-      fade(ba, u, S + 40, 220);
-    });
-    const u0 = t - (T0 + PER * idx);
-    $("prompt").style.visibility = t < T0 ? "visible" : "visible";
-    typeInto($("prompt"), "› " + SK[idx].req, Math.max(0, t < T0 ? t - T0 + 400 : u0), 0, 75, true, 700);
-    if (t < T0) $("prompt").innerHTML = '› <span class="caret" style="visibility:' + (blink(t) ? "visible" : "hidden") + '"></span>';
-  } });
-</script></body></html>
+      window.DEMO = defineDemo({
+        width: 880,
+        height: 560,
+        end: T0 + PER * N,
+        draw(t) {
+          $("brand").textContent = BRAND;
+          const idx = Math.min(N - 1, Math.max(0, Math.floor((t - T0) / PER)));
+          SK.forEach((s, i) => {
+            const start = T0 + PER * i,
+              u = t - start;
+            s.row.className = "row" + (t < start ? "" : i === idx && u < PER ? " on" : " done");
+            if (i === N - 1 && t >= start) s.row.className = "row on";
+            const last = i === N - 1,
+              S = s.S || DEF_S;
+            const outAt = last ? Infinity : PER - 170;
+            fade(s.pane, u, 140, 220, outAt, 170, 4);
+            fade(s.side, u, 140, 220, outAt, 170, 4);
+            if (u < 0 || u > PER) return;
+            const lb = s.pane.querySelector(".lb"),
+              la = s.pane.querySelector(".la"),
+              ring = s.pane.querySelector(".ring");
+            const pc = ease(progress(u, S, 260));
+            if (la) {
+              opacityAt(lb, 1 - pc);
+              opacityAt(la, pc);
+            }
+            if (custom[s.custom]) custom[s.custom](u, s, S);
+            const r = lerpRect(s.rb, s.ra, pc);
+            ring.style.left = r[0] + "px";
+            ring.style.top = r[1] + "px";
+            ring.style.width = r[2] + "px";
+            ring.style.height = r[3] + "px";
+            ring.style.borderColor = u < S ? "var(--p1)" : "var(--ok)";
+            opacityAt(ring, u < S ? progress(u, 480, 200) : Math.max(progress(u, S + 40, 200), 0.001));
+            const bb = s.side.querySelector(".bb"),
+              ba = s.side.querySelector(".ba");
+            fade(bb, u, 520, 220);
+            bb.style.opacity = bb.style.opacity * (1 - 0.55 * progress(u, S, 200));
+            fade(ba, u, S + 40, 220);
+          });
+          const u0 = t - (T0 + PER * idx);
+          $("prompt").style.visibility = t < T0 ? "visible" : "visible";
+          typeInto($("prompt"), "› " + SK[idx].req, Math.max(0, t < T0 ? t - T0 + 400 : u0), 0, 75, true, 700);
+          if (t < T0)
+            $("prompt").innerHTML =
+              '› <span class="caret" style="visibility:' + (blink(t) ? "visible" : "hidden") + '"></span>';
+        },
+      });
+    </script>
+  </body>
+</html>

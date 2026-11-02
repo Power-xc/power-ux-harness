@@ -1,13 +1,6 @@
 #!/usr/bin/env node
 // 스킬을 프로젝트의 .agents/skills 또는 .claude/skills 로 복사한다.
-import {
-  existsSync,
-  mkdirSync,
-  readdirSync,
-  readFileSync,
-  statSync,
-  writeFileSync,
-} from "node:fs";
+import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -43,8 +36,7 @@ function parseArgs(argv) {
     list: false,
   };
   const valueOf = (i, flag) => {
-    if (argv[i + 1] === undefined)
-      throw new UsageError(`${flag} 값이 필요하다`);
+    if (argv[i + 1] === undefined) throw new UsageError(`${flag} 값이 필요하다`);
     return argv[i + 1];
   };
   for (let i = 0; i < argv.length; i++) {
@@ -62,10 +54,7 @@ function parseArgs(argv) {
     else if (arg === "-h" || arg === "--help") opts.help = true;
     else throw new UsageError(`알 수 없는 옵션: ${arg}`);
   }
-  if (!TOOL_CHOICES.includes(opts.tool))
-    throw new UsageError(
-      `--tool 은 ${TOOL_CHOICES.join("|")} 중 하나여야 한다`,
-    );
+  if (!TOOL_CHOICES.includes(opts.tool)) throw new UsageError(`--tool 은 ${TOOL_CHOICES.join("|")} 중 하나여야 한다`);
   return opts;
 }
 
@@ -113,14 +102,10 @@ function installSkill(id, targetRoot, opts, tally) {
     const shown = join(id, rel);
     if (result === "installed") {
       tally.installed++;
-      console.log(
-        `${opts.dryRun ? "설치 예정" : "설치"}  ${join(targetRoot, shown)}`,
-      );
+      console.log(`${opts.dryRun ? "설치 예정" : "설치"}  ${join(targetRoot, shown)}`);
     } else if (result === "skipped") {
       tally.skipped++;
-      console.log(
-        `건너뜀  ${join(targetRoot, shown)} (내용이 달라 보존, 덮어쓰려면 --force)`,
-      );
+      console.log(`건너뜀  ${join(targetRoot, shown)} (내용이 달라 보존, 덮어쓰려면 --force)`);
     }
   }
 }
@@ -141,14 +126,11 @@ function run(argv) {
   const ids = opts.only ?? all;
   const unknown = ids.filter((id) => !all.includes(id));
   if (unknown.length > 0) {
-    throw new UsageError(
-      `알 수 없는 스킬: ${unknown.join(", ")}\n설치 가능: ${all.join(", ")}`,
-    );
+    throw new UsageError(`알 수 없는 스킬: ${unknown.join(", ")}\n설치 가능: ${all.join(", ")}`);
   }
   const tally = { installed: 0, skipped: 0 };
   const roots = targetRoots(opts);
-  for (const root of roots)
-    for (const id of ids) installSkill(id, root, opts, tally);
+  for (const root of roots) for (const id of ids) installSkill(id, root, opts, tally);
   console.log(
     `${opts.dryRun ? "[dry-run] " : ""}설치 ${tally.installed} · 건너뜀 ${tally.skipped} · 위치 ${roots.join(", ")}`,
   );
