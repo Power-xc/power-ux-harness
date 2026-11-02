@@ -49,10 +49,13 @@ body {
   overflow: hidden;
   background: var(--bg);
 }
-#stage.snap {
+/* 반복 이음용 복제본: id를 지우므로 #stage 규칙이 빠진다. 위치·배경·클립을 여기서 채운다. */
+.snap {
   position: absolute;
   left: 0;
   top: 0;
+  overflow: hidden;
+  background: var(--bg);
   pointer-events: none;
 }
 .abs {
