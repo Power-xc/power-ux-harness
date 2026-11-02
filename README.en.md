@@ -38,6 +38,7 @@ Following one feature from the first question to release looks like this. You ca
 
 | Step             | Skill              | Produces                                                                    |
 | ---------------- | ------------------ | --------------------------------------------------------------------------- |
+| Context          | `ux-benchmark`     | Context card · comparable sources · insights · context-fit proposals        |
 | Explore          | `ux-simulate`      | Source table · synthetic personas · ranked candidates · real-user test plan |
 | Confirm          | `ux-research`      | Research plan · interview guide · usability-test tasks · synthesis          |
 | Define           | `ux-flow`          | Flow diagram · screen list · screen × state table · navigation              |

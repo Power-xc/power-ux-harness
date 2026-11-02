@@ -228,6 +228,45 @@
       "expectSkill": "ux-research",
       "shouldNotFire": "ux-simulate",
       "why": "실제 사용자 검증 설계"
+    },
+    {
+      "id": "benchmark-1",
+      "prompt": "@ux benchmark 처음 보내는 계좌로 큰돈 보낼 때 화면 — 60대 이용자가 늘었어",
+      "expectSkill": "ux-benchmark",
+      "why": "명시 별칭"
+    },
+    {
+      "id": "benchmark-2",
+      "prompt": "@ux context 동네 반찬 정기배송 앱",
+      "expectSkill": "ux-benchmark",
+      "why": "명시 별칭 — 맥락 카드만"
+    },
+    {
+      "id": "benchmark-3",
+      "prompt": "비슷한 서비스들은 예약 취소를 어떻게 처리하는지 찾아보고 우리 동물병원 예약 앱에 맞게 제안해 줘",
+      "expectSkill": "ux-benchmark",
+      "why": "비슷한 서비스 조사와 우리 맥락에 맞춘 제안"
+    },
+    {
+      "id": "benchmark-4",
+      "prompt": "우리 앱 사용자 절반이 70대인데, 다른 서비스들은 이런 경우 화면을 어떻게 바꿨는지 사례 찾아서 정리해 줘",
+      "expectSkill": "ux-benchmark",
+      "shouldNotFire": "ux-simulate",
+      "why": "실제 서비스 사례 조사와 맥락 적용 — 가상 페르소나로 후보안을 돌리는 요청이 아님"
+    },
+    {
+      "id": "benchmark-5",
+      "prompt": "가입 흐름 A안 B안 중 뭐가 덜 막힐지 가상 페르소나로 돌려 봐",
+      "expectSkill": "ux-simulate",
+      "shouldNotFire": "ux-benchmark",
+      "why": "정해진 후보안을 합성 페르소나로 비교 — 사례 조사 요청이 아님"
+    },
+    {
+      "id": "benchmark-6",
+      "prompt": "우리 결제 화면 지금 만든 거 보고 문제점 찾아 줘. 다른 앱보다 이탈이 많아",
+      "expectSkill": "ux-review",
+      "shouldNotFire": "ux-benchmark",
+      "why": "만든 화면 평가 — 다른 서비스 사례 조사가 목적이 아님"
     }
   ]
 }
