@@ -256,7 +256,7 @@ acceptance: 삭제 직후 되돌리기 한 번으로 노트가 같은 자리에 
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/ai-dark.gif">
-  <img src="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/ai-light.gif" width="800" alt="책 3장 요약 답변이 쪽 번호 출처 칩과 함께 나오고, 확인하지 못한 내용을 밝히고, 이유를 고르는 피드백과 중지 뒤 다시 생성 버전 버튼이 나타나는 모습">
+  <img src="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/ai-light.gif" width="800" alt="책 3장 요약 대화 화면에서 답변이 흘러나오는 동안 중지 버튼이 보이고 끝나면 다시 생성 · 1/2 버튼으로 바뀌며, 쪽 번호 출처 칩·확인하지 못한 내용·이유를 고르는 피드백을 번호 주석으로 짚는 모습">
 </picture>
 
 - **이럴 때** — 「AI 챗 화면 설계」, 「답변에 출처랑 다시 생성 버튼을 어떻게 넣을지」, 「에이전트가 메일을 보내기 전에 어떤 확인 화면이 필요한지」

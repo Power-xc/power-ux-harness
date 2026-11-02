@@ -1,62 +1,123 @@
 <!doctype html>
 <html lang="ko"><head><meta charset="utf-8">
-<link rel="stylesheet" href="shared.css"><script src="timeline.js"></script>
+<link rel="stylesheet" href="shared.css"><link rel="stylesheet" href="wire.css"><script src="timeline.js"></script><script src="wire.js"></script>
 <style>
-  .nt { position: absolute; left: 640px; width: 200px; font-size: 13px; color: var(--muted); padding-left: 14px; }
-  .nt::before { content: ""; position: absolute; left: 0; top: 10px; width: 8px; height: 1px; background: var(--muted); }
-  #ans { position: absolute; left: 32px; top: 116px; width: 560px; line-height: 28px; }
-  .cite { display: inline-flex; align-items: center; height: 22px; padding: 0 8px; margin: 0 2px; border: 1px solid var(--accent); border-radius: 999px; color: var(--accent); font: 600 12px/1 var(--ui); vertical-align: 1px; }
-  .rc { height: 26px; font-weight: 500; }
+  .at { position: absolute; left: 16px; right: 16px; }
+  .notice { display: flex; gap: 8px; align-items: flex-start; padding: 4px 12px; border-radius: 8px; background: var(--subtle); font: 400 13px/18px var(--ui); }
+  .notice .wi { margin-top: 1px; color: var(--muted); }
+  .ib { width: 44px; height: 44px; display: grid; place-items: center; color: var(--muted); }
+  .act .pill { position: absolute; right: 0; top: 0; height: 44px; padding: 0 16px; display: flex; align-items: center; gap: 8px; border: 1px solid var(--line); border-radius: 22px; background: var(--bg); font: 600 13px/20px var(--ui); white-space: nowrap; }
+  .rs { display: flex; gap: 6px; }
+  .rs span { flex: 1; height: 44px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 22px; font: 400 12px/16px var(--ui); white-space: nowrap; }
+  .thumb { position: absolute; width: 90px; height: 163px; }
+  .thumb .w-device { border-width: 3px; transform: scale(0.3); transform-origin: 0 0; }
+  .cap { position: absolute; width: 116px; text-align: center; font-size: 12px; line-height: 16px; color: var(--muted); }
+  .cap b { display: block; font-size: 13px; color: var(--fg); }
 </style></head>
 <body><div id="stage">
-  <div id="user" class="abs" style="right:288px;top:24px;max-width:360px;padding:8px 14px;border-radius:14px;background:var(--subtle)">이 책 3장을 요약해 줘</div>
-  <div id="stat" class="abs small muted" style="left:32px;top:84px;display:flex;align-items:center;gap:8px"><span id="statText">읽는 중 · 3장 42~57쪽</span><span id="dots" style="display:inline-flex;gap:4px"><i></i><i></i><i></i></span></div>
-  <div id="ans"></div>
-  <div id="info" class="abs small muted" style="left:32px;top:218px;display:flex;align-items:center;gap:8px"><span>확인하지 못한 내용: 저자 인터뷰 인용은 책에 없어요</span></div>
-  <div id="fb" class="abs" style="left:32px;top:252px;display:flex;align-items:center;gap:14px;color:var(--muted)"><span style="width:1px;height:16px;background:var(--line)"></span><span class="chip gray">정확해요</span><span class="chip gray">출처가 틀려요</span><span class="chip gray">너무 길어요</span></div>
-  <div class="field abs" style="left:32px;top:350px;width:560px;height:44px;border-radius:12px"></div>
-  <div id="stop" class="btn" style="position:absolute;right:300px;top:357px;height:30px;font-size:13px;padding:0 12px;border-radius:8px"><span style="display:flex;align-items:center;gap:6px"><i style="width:10px;height:10px;border:1.5px solid currentColor;border-radius:2px"></i>중지</span></div>
-  <div id="regen" class="btn" style="position:absolute;right:300px;top:357px;height:30px;font-size:13px;padding:0 12px;border-radius:8px">다시 생성 · 1/2</div>
-  <div id="n1" class="nt" style="top:354px">중지할 수 있어요</div>
-  <div id="n2" class="nt" style="top:122px">주장마다 출처</div>
-  <div id="n3" class="nt" style="top:216px">모르는 건 모른다고</div>
-  <div id="n4" class="nt" style="top:252px">버전 보존 · 이유 있는 피드백</div>
+  <div id="head" class="abs" style="left:40px;top:16px;display:flex;gap:12px;align-items:baseline;line-height:24px"><span class="mono" style="font-size:13px;font-weight:600">SCR-CHAT-01</span><span style="font-weight:600">책 요약 대화</span><span class="small muted">v1.0</span></div>
 </div>
 <script>
-const S = (d) => svg(d, 'style="width:16px;height:16px"');
-const infoI = S('<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8v.01"/>');
-const up = S('<path d="M7 10v11M15 5.9L14 10h5.8a2 2 0 0 1 1.9 2.6l-2.3 8a2 2 0 0 1-1.9 1.4H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.8a2 2 0 0 0 1.8-1.1L12 2a3.1 3.1 0 0 1 3 3.9z"/>');
-const down = S('<path d="M17 14V3M9 18.1L10 14H4.2a2 2 0 0 1-1.9-2.6l2.3-8A2 2 0 0 1 6.5 2H20a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2.8a2 2 0 0 0-1.8 1.1L12 22a3.1 3.1 0 0 1-3-3.9z"/>');
-$("info").insertAdjacentHTML("afterbegin", infoI);
-$("fb").insertAdjacentHTML("afterbegin", up + down);
-document.querySelectorAll("#dots i").forEach((d) => { d.style.cssText = "width:5px;height:5px;border-radius:50%;background:var(--muted);display:block"; });
-// 답변: 글자 수 기준으로 스트리밍, 인용은 자리 1칸을 차지하며 닿는 순간 칩으로 등장
+const DX = 40, DY = 56, DEV_H = 560, W_ = 880, H_ = 640;
+const TOP = { bubble: 80, status: 140, answer: 180, notice: 292, act: 360, reasons: 428, input: 496 };
 const PARTS = ["3장은 주인공이 처음으로 스스로 선택하는 장면을 다뤄요 ", { c: "42쪽" }, ". 저자는 이 선택을 성장의 시작으로 봐요 ", { c: "57쪽" }, "."];
+const REASONS = ["정확해요", "출처가 틀려요", "너무 길어요"];
+const NOTICE = "확인하지 못한 내용: 저자 인터뷰 인용은 책에 없어요";
+const NOTES = [
+  ["진행 문구", "“읽는 중 · 3장 42~57쪽”으로 지금 하는 일을 적고, 끝나면 “읽음” · 낭독기에는 끝났을 때 한 번만 알려요"],
+  ["출처 칩", "주장마다 쪽 번호 “42쪽” “57쪽” · 누르면 책의 그 쪽으로 이동"],
+  ["주의 문구", "“확인하지 못한 내용: 저자 인터뷰 인용은 책에 없어요” · 답 바로 아래에 구체적으로"],
+  ["중지 · 다시 생성", "생성 중에는 “중지”, 끝나면 같은 자리에서 “다시 생성 · 1/2” · 이전 결과는 버전으로 남겨요"],
+  ["피드백 + 이유", "좋아요·싫어요 아이콘과 이유 “정확해요” “출처가 틀려요” “너무 길어요”"],
+];
+const STATES = [["gen", "생성 중", "중지 버튼"], ["stop", "중지함", "받은 부분 유지"], ["done", "완료", "다시 생성 · 1/2"]];
+
+// 답변 html: n = 보이는 글자 수(문자열 + 출처 칩 1칸). 남은 글자는 자리만 차지한다.
 const TOTAL = PARTS.reduce((n, p) => n + (typeof p === "string" ? p.length : 1), 0);
-const S0 = 2000, S1 = 6000;
-function renderAns(t) {
-  const n = clamp((t - S0) / (S1 - S0), 0, 1) * TOTAL;
+function answerHtml(n, citeAlpha = (pos) => (pos < n ? 1 : 0)) {
   let pos = 0, html = "";
   PARTS.forEach((p) => {
-    if (typeof p === "string") {
-      const k = Math.floor(clamp(n - pos, 0, p.length));
-      html += p.slice(0, k) + `<span class="hide">${p.slice(k)}</span>`; pos += p.length;
-    } else {
-      const o = easeOutCubic(progress(t, S0 + pos / TOTAL * (S1 - S0), 240));
-      html += `<span class="cite" style="opacity:${o}">[${p.c}]</span>`; pos += 1;
-    }
+    if (typeof p === "string") { const k = Math.floor(clamp(n - pos, 0, p.length)); html += p.slice(0, k) + `<span class="hide">${p.slice(k)}</span>`; pos += p.length; }
+    else { html += W.cite(p.c, { style: `opacity:${citeAlpha(pos)}` }); pos += 1; }
   });
-  $("ans").innerHTML = html;
+  return html;
 }
-window.DEMO = defineDemo({ width: 880, height: 420, end: 7800,
+
+// 책 요약 대화 화면. main이면 id를 붙이고 모든 상태를 겹쳐 둔다. 아니면 상태 하나를 정적으로 그린다.
+function screen(state, main) {
+  const id = (s) => (main ? s : "");
+  const gen = state === "gen", stop = state === "stop", done = state === "done";
+  const n = main ? TOTAL : done ? TOTAL : stop ? 34 : 14;
+  const label = done ? "읽음 · 3장 42~57쪽" : "읽는 중 · 3장 42~57쪽";
+  const pill = (pid, icon, text, show) => `<span class="pill" ${pid ? `id="${pid}"` : ""} style="${show ? "" : "visibility:hidden"}">${W.icon(icon, 16)}${text}</span>`;
+  const ico = (name) => `<span class="ib">${W.icon(name)}</span>`;
+  return W.statusBar() + W.appBar("책 요약", { actions: ["more"] }) +
+    `<div class="at" style="top:${TOP.bubble}px;display:flex;justify-content:flex-end">${W.bubble("이 책 3장을 요약해 줘", { id: id("bub") })}</div>
+    <div class="at" style="top:${TOP.status}px">${W.working(label, { id: id("wk"), dots: main || !done })}</div>
+    <div class="at" style="top:${TOP.answer}px">${W.answer(answerHtml(n), { id: id("ans") })}</div>
+    <div class="at notice" ${id('id="ntc"')} style="top:${TOP.notice}px;${main || done ? "" : "visibility:hidden"}">${W.icon("info", 16)}<span>${NOTICE}</span></div>
+    <div class="at act" style="top:${TOP.act}px;height:44px"><span ${id('id="fbi"')} style="display:flex;${main || done ? "" : "visibility:hidden"}">${ico("thumbUp")}${ico("thumbDown")}</span>
+      ${pill(id("pStop"), "stop", "중지", main || gen)}${pill(id("pRegen"), "refresh", "다시 생성 · 1/2", main || done)}${stop ? pill("", "refresh", "다시 생성", true) : ""}</div>
+    <div class="at rs" ${id('id="rsn"')} style="top:${TOP.reasons}px;${main || done ? "" : "visibility:hidden"}">${REASONS.map((r) => `<span>${r}</span>`).join("")}</div>
+    <div class="at" style="top:${TOP.input}px">${W.inputBar("질문을 입력해 주세요")}</div>`;
+}
+
+const stage = $("stage");
+stage.insertAdjacentHTML("beforeend", W.device(screen("done", true), { id: "dev", x: DX, y: DY, h: DEV_H }));
+
+// 실측: 핀·지시선은 기기 안 부품의 모서리에서 계산한다.
+const rc = (el) => W.rect(typeof el === "string" ? $(el) : el);
+const R = { wk: rc("wk"), ans: rc("ans"), ntc: rc("ntc"), pill: rc("pRegen"), fb: rc("fbi") };
+const ROW0 = 56, ROW_STEP = 64, NUM_X = 412, GUT = [352, 364, 376, 400, 388];
+const rowY = (k) => ROW0 + ROW_STEP * k + 11;
+const cs = [R.wk, R.ans, R.ntc, R.pill, R.fb].map((r) => W.pinCenter(r));
+const lane = R.fb.bottom + 12; // ⑤는 버튼 줄 아래 빈틈으로 돌아 나온다
+const route = (i, k) => [[cs[i].x + 10, cs[i].y], [GUT[k], cs[i].y], [GUT[k], rowY(k)], [NUM_X, rowY(k)]];
+const paths = [
+  ["ld0", route(0, 0)], ["ld1", route(1, 1)], ["ld2", route(2, 2)], ["ld3", route(3, 4)],
+  ["ld4", [[cs[4].x, cs[4].y + 10], [cs[4].x, lane], [GUT[3], lane], [GUT[3], rowY(4)], [NUM_X, rowY(4)]]],
+];
+stage.insertAdjacentHTML("beforeend", W.leaders(W_, H_, paths) +
+  [R.wk, R.ans, R.ntc, R.pill, R.fb].map((r, i) => W.pin(i + 1, r, "p" + i)).join(""));
+NOTES.forEach(([nm, sp], k) => stage.insertAdjacentHTML("beforeend",
+  `<div id="n${k}" class="w-note" style="left:${NUM_X}px;top:${ROW0 + ROW_STEP * k}px;width:428px"><div class="num">${k + 1}</div><div class="nm">${nm}</div><div class="sp">${sp}</div></div>`));
+stage.insertAdjacentHTML("beforeend", `<div id="hr1" class="hr" style="left:${NUM_X}px;width:${840 - NUM_X}px;top:388px"></div>`);
+STATES.forEach(([st, nm, sub], k) => {
+  const left = NUM_X + k * 116;
+  stage.insertAdjacentHTML("beforeend",
+    `<div id="th${k}" class="abs"><div class="thumb" style="left:${left}px;top:400px"><div class="w-device" style="left:0;top:0;height:${DEV_H}px">${screen(st, false)}<div class="w-home"></div></div></div>` +
+    `<div class="cap" style="left:${left - 13}px;top:572px"><b>${nm}</b>${sub}</div></div>`);
+});
+
+// 타임라인(ms): 화면 → 질문 → 읽는 중 + 중지 → 답변 흘러나옴 → 완료(다시 생성) → 핀·지시선 → 상태 썸네일
+const S0 = 2000, S1 = 4600, DONE = S1;
+const PIN = [6200, 6400, 6600, 6800, 7000], LEAD = [7300, 7550, 7800, 8050, 8300], LEAD_DUR = 450, THUMB = [9300, 9700, 10100];
+const dots = [...document.querySelectorAll("#wk .dots i")];
+window.DEMO = defineDemo({ width: W_, height: H_, end: 10900,
   draw(t) {
-    fade($("user"), t, 300);
-    fade($("stat"), t, 1000);
-    document.querySelectorAll("#dots i").forEach((d, i) => { d.style.opacity = t < 6000 ? (Math.floor(t / 250) % 3 === i ? 1 : 0.3) : 0; });
-    $("statText").textContent = t < 6000 ? "읽는 중 · 3장 42~57쪽" : "읽음 · 3장 42~57쪽";
-    renderAns(t);
-    fade($("stop"), t, 2000, 240, 6000); fade($("regen"), t, 6000);
-    fade($("info"), t, 6400); fade($("fb"), t, 7200);
-    [["n1", 2400], ["n2", 3600], ["n3", 6400], ["n4", 7200]].forEach(([id, s]) => fade($(id), t, s));
+    fade($("head"), t, 200);
+    fade($("dev"), t, 300, 300);
+    fade($("bub"), t, 1000);
+    fade($("wk"), t, 1400);
+    const gen = t < DONE;
+    dots.forEach((d, i) => { d.style.opacity = gen ? (Math.floor(t / 250) % 3 === i ? 1 : 0.3) : 0; });
+    const tx = gen ? "읽는 중 · 3장 42~57쪽" : "읽음 · 3장 42~57쪽";
+    if ($("wk").querySelector(".tx").textContent !== tx) $("wk").querySelector(".tx").textContent = tx;
+    // 답변: 글자 수 기준으로 흘러나오고, 출처 칩은 닿는 순간 나타난다.
+    const n = clamp((t - S0) / (S1 - S0), 0, 1) * TOTAL;
+    $("ans").innerHTML = answerHtml(n, (pos) => easeOutCubic(progress(t, S0 + pos / TOTAL * (S1 - S0), 240)));
+    // 중지는 생성 중에만, 끝나면 같은 자리에서 다시 생성 · 1/2로
+    opacityAt($("pStop"), progress(t, 1800, 240) * (1 - progress(t, DONE, 240)));
+    opacityAt($("pRegen"), progress(t, DONE, 240));
+    fade($("ntc"), t, DONE + 300);
+    fade($("fbi"), t, DONE + 800); fade($("rsn"), t, DONE + 800);
+    for (let k = 0; k < 5; k++) {
+      fade($("p" + k), t, PIN[k], 200);
+      W.leaderAt($("ld" + k), easeOutCubic(progress(t, LEAD[k], LEAD_DUR)));
+      $("ld" + k).style.visibility = t >= LEAD[k] ? "visible" : "hidden";
+      fade($("n" + k), t, LEAD[k] + LEAD_DUR);
+    }
+    fade($("hr1"), t, 9100);
+    THUMB.forEach((s, k) => fade($("th" + k), t, s));
   } });
 </script></body></html>

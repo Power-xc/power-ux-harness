@@ -177,7 +177,7 @@ Given a domain, links and a planning doc, it opens every source and tags it with
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/ai-dark.gif">
-  <img src="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/ai-light.gif" width="800" alt="A chapter summary appears with page-number citation chips, states what it could not verify, offers feedback with reasons, and a Stop button turns into a versioned Regenerate">
+  <img src="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/ai-light.gif" width="800" alt="On a book-summary chat screen a Stop button shows while the answer streams and turns into Regenerate 1/2 when it ends, and numbered callouts point out the page-number source chips, the note on what could not be verified, and feedback with reasons">
 </picture>
 
 - **When** — "Design our AI chat screen", "Where do citations and Regenerate go?", "What should the agent show before it sends an email for me?"
