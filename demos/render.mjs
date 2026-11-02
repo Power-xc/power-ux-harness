@@ -19,6 +19,7 @@ const CHROME =
   );
 const ALL = [
   "hero",
+  "benchmark",
   "simulate",
   "review",
   "writing",
@@ -33,8 +34,13 @@ const ALL = [
 
 const args = process.argv.slice(2);
 const opt = { theme: "both", fps: 12, scale: null, colors: null, at: null };
-// 장면마다 다른 기본값: spec·ai는 예산(600KB)에 맞추려고 색 수를 낮추고, hero는 예산(1.5MB)에 맞추려고 배율과 색 수를 낮추고, 0번 프레임을 시작 틀로 둔다.
-const DEFAULTS = { hero: { scale: 1.25, colors: 64, fromEnd: false }, spec: { colors: 64 }, ai: { colors: 64 } };
+// 장면마다 다른 기본값: benchmark·spec·ai는 예산(600KB)에 맞추려고 색 수를 낮추고, hero는 예산(1.6MB)에 맞추려고 배율과 색 수를 낮추고, 0번 프레임을 시작 틀로 둔다.
+const DEFAULTS = {
+  hero: { scale: 1.25, colors: 64, fromEnd: false },
+  benchmark: { colors: 64 },
+  spec: { colors: 64 },
+  ai: { colors: 64 },
+};
 // 장면 GIF는 끝 상태(고친 후)에서 시작한다. 정지 화면으로 보는 사용자에게도 결과가 보이게 하려는 것이다.
 const fromEndOf = (scene) => DEFAULTS[scene]?.fromEnd ?? true;
 const scaleOf = (scene) => (opt.scale ? Number(opt.scale) : (DEFAULTS[scene]?.scale ?? 1.5));
@@ -69,6 +75,9 @@ async function open(browser, scene, theme, scale) {
   return { page, width, height };
 }
 
+// 장면 GIF 예산(바이트): hero만 11장면을 이어 가서 1.6MB, 나머지는 600KB.
+const HERO_BUDGET = 1_600_000;
+const SCENE_BUDGET = 600_000;
 const rows = [];
 const browser = await puppeteer.launch({ executablePath: CHROME, headless: true, timeout: 120000 });
 try {
@@ -131,7 +140,7 @@ try {
         theme,
         frames: n,
         px: `${Math.round(width * scaleOf(scene))}x${Math.round(height * scaleOf(scene))}`,
-        mb: statSync(gif).size / 1048576,
+        bytes: statSync(gif).size,
       });
     }
   }
@@ -143,8 +152,8 @@ if (rows.length) {
   console.log("\n| 장면 | 테마 | 프레임 | 픽셀 | 크기(MB) | 예산 |");
   console.log("| --- | --- | ---: | --- | ---: | --- |");
   for (const r of rows) {
-    const budget = 1.5;
-    const ok = r.mb <= budget ? "OK" : `초과(>${budget})`;
-    console.log(`| ${r.scene} | ${r.theme} | ${r.frames} | ${r.px} | ${r.mb.toFixed(2)} | ${ok} |`);
+    const budget = r.scene === "hero" ? HERO_BUDGET : SCENE_BUDGET;
+    const ok = r.bytes <= budget ? "OK" : `초과(>${budget / 1000}KB)`;
+    console.log(`| ${r.scene} | ${r.theme} | ${r.frames} | ${r.px} | ${(r.bytes / 1048576).toFixed(2)} | ${ok} |`);
   }
 }

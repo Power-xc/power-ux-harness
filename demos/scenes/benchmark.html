@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="shared.css" />
+    <link rel="stylesheet" href="wire.css" />
+    <script src="timeline.js"></script>
+    <script src="wire.js"></script>
+    <style>
+      .lbl {
+        position: absolute;
+        font: 600 13px/16px var(--ui);
+        color: var(--muted);
+      }
+      .lbl b {
+        margin-right: 6px;
+        color: var(--accent);
+      }
+      .cx {
+        position: absolute;
+        left: 40px;
+        width: 424px;
+        display: flex;
+        gap: 12px;
+        font: 400 13px/24px var(--ui);
+      }
+      .cx .l {
+        flex: none;
+        width: 48px;
+        color: var(--muted);
+      }
+      .cx .hot {
+        color: var(--accent);
+        font-weight: 600;
+      }
+      .key {
+        position: absolute;
+        left: 40px;
+        width: 424px;
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
+      .key .l {
+        flex: none;
+        width: 48px;
+        margin-right: 4px;
+        font: 400 13px/24px var(--ui);
+        color: var(--muted);
+      }
+      .cd {
+        position: absolute;
+        left: 40px;
+        width: 424px;
+        height: 116px;
+        padding: 10px 12px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--bg);
+      }
+      .cd .h {
+        height: 22px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font: 600 13px/22px var(--ui);
+        white-space: nowrap;
+      }
+      .cd .ln {
+        position: absolute;
+        left: 12px;
+        right: 12px;
+        display: flex;
+        gap: 8px;
+        font: 400 13px/18px var(--ui);
+        white-space: nowrap;
+      }
+      .cd .ln .k {
+        flex: none;
+        width: 52px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .cd .dist {
+        position: absolute;
+        left: 12px;
+        right: 12px;
+        top: 84px;
+        height: 22px;
+        padding-top: 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font: 400 13px/22px var(--ui);
+        white-space: nowrap;
+      }
+      .cap {
+        position: absolute;
+        width: 174px;
+      }
+      .cap b {
+        display: block;
+        font: 600 13px/16px var(--ui);
+      }
+      .cap.on b {
+        color: var(--accent);
+      }
+      .cap span {
+        display: block;
+        margin-top: 4px;
+        font: 400 12px/16px var(--ui);
+        color: var(--muted);
+        white-space: normal;
+      }
+      .exc {
+        position: absolute;
+        left: 484px;
+        width: 356px;
+        font: 400 13px/20px var(--ui);
+      }
+      .nm {
+        font: 600 24px/32px var(--ui);
+      }
+      .qrow {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        height: 36px;
+        font: 400 13px/20px var(--ui);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div id="req" class="abs mono" style="left: 40px; top: 16px; font-size: 15px; line-height: 24px"></div>
+    </div>
+    <script>
+      // 문구는 여기 한 곳에서 바꾼다(검증된 사례에 맞춰 문구만 고칠 수 있게).
+      const COPY = {
+        req: "@ux benchmark 처음 보내는 계좌로 큰돈 송금 — 60대 이용자가 늘었어",
+        ctx: [
+          ["사업", "성장기 송금 앱 · 수수료 무료", null],
+          ["사용자", "20~70대 · ", "60대 이상 비중 증가"],
+          ["상황", "이동 중 한 손 · 급할 때", null],
+          ["위험", "", "되돌리기 어려움 · 사기 표적"],
+        ],
+        key: ["디지털 숙련도", "실수 비용", "사기 노출"],
+        cards: [
+          {
+            layer: "직접 경쟁",
+            name: "국내 은행 A — 지연 이체: 정한 시간 뒤 도착, 그 전엔 취소",
+            why: "속은 걸 알아챌 시간이 생겨요",
+            cost: "급한 이체도 늦어져요",
+            dist: "바꿔서 가져옴",
+            distTone: "accent",
+            reason: "처음 계좌 · 큰돈일 때만 30분 뒤 도착",
+          },
+          {
+            layer: "직접 경쟁 · 해외",
+            name: "해외 은행 B — 받는 분 이름 대조: 일치 · 비슷함 · 불일치",
+            why: "받는 분을 눈으로 한 번 더 확인해요",
+            cost: "이름이 다르면 한 번 더 확인해야 해요",
+            dist: "가져옴",
+            distTone: "ok",
+            reason: "받는 분 이름을 크게 보여 줘요",
+          },
+          {
+            layer: "같은 맥락 다른 업종",
+            name: "메일 C — 보낸 뒤 5~30초 안 취소",
+            why: "보낸 직후의 실수를 바로 되돌려요",
+            cost: "그 시간이 지나면 방법이 없어요",
+            dist: "가져오지 않음",
+            distTone: "gray",
+            reason: "돈은 몇 초로는 속은 걸 알아채기 어려워요",
+          },
+        ],
+        base: {
+          name: "기본",
+          sub: "받는 분 이름 크게 확인 · 이름이 다르면 멈춤",
+        },
+        variant: {
+          name: "처음 보내는 계좌 · 100만 원 이상",
+          sub: "확인 질문 두 개 + 보호자 알림 선택 + 30분 뒤 도착",
+        },
+        exc: ["이름 불일치", "받는 분 이름이 달라요. 다시 확인하기 전에는 보낼 수 없어요"],
+        screen: {
+          who: "김하늘",
+          first: "처음 보내는 계좌",
+          amountBase: "300,000원",
+          amountBig: "1,200,000원",
+          q: ["직접 아는 분이에요", "급하게 보내 달라는 요청이 아니에요"],
+          guardian: "보호자에게 알리기 (선택)",
+          baseNote: "받는 분 이름이 맞는지 한 번 더 봐 주세요",
+          note: "30분 뒤에 도착해요. 그 전엔 취소할 수 있어요",
+        },
+      };
+
+      const W_ = 880,
+        H_ = 624;
+      const stage = $("stage");
+
+      // ① 맥락 카드 (왼쪽 위)
+      const CX0 = 72,
+        KEY_Y = CX0 + 4 * 24 + 8,
+        CARD_Y = 238,
+        CARD_H = 116,
+        CARD_STEP = 124;
+      stage.insertAdjacentHTML(
+        "beforeend",
+        `<div id="l1" class="lbl" style="left:40px;top:48px"><b>1</b>맥락 카드</div>` +
+          COPY.ctx
+            .map(
+              ([l, a, hot], i) =>
+                `<div id="cx${i}" class="cx" style="top:${CX0 + i * 24}px"><span class="l">${l}</span><span>${a}${hot ? `<span class="hot">${hot}</span>` : ""}</span></div>`,
+            )
+            .join("") +
+          `<div id="key" class="key" style="top:${KEY_Y}px"><span class="l">결정적</span>${COPY.key
+            .map((k, i) => `<span id="kc${i}" class="chip accent">${k}</span>`)
+            .join("")}</div>`,
+      );
+
+      // ② 비교 대상 세 겹 + ③ 맥락 거리
+      stage.insertAdjacentHTML(
+        "beforeend",
+        `<div id="l2" class="lbl" style="left:40px;top:214px"><b>2</b>비교 대상 세 겹<span style="margin-left:12px"></span><b style="margin-left:0">3</b>맥락 거리</div>` +
+          COPY.cards
+            .map(
+              (c, i) =>
+                `<div id="cd${i}" class="cd" style="top:${CARD_Y + i * CARD_STEP}px">` +
+                `<div class="h"><span class="chip gray">${c.layer}</span><span>${c.name}</span></div>` +
+                `<div id="w${i}" class="ln" style="top:40px"><span class="k">왜 통했나</span><span>${c.why}</span></div>` +
+                `<div id="c${i}" class="ln" style="top:58px"><span class="k">대가</span><span>${c.cost}</span></div>` +
+                `<div id="d${i}" class="dist"><span class="chip ${c.distTone}">${c.dist}</span><span class="muted">${c.reason}</span></div>` +
+                `</div>`,
+            )
+            .join(""),
+      );
+
+      // ④ 제안: 기기 두 대 (오른쪽)
+      const DEV_H = 480,
+        TS = 0.58,
+        TW = 300 * TS,
+        TX = [484, 484 + TW + 8],
+        TY = 76;
+      const S = COPY.screen;
+      const hero = (amount) =>
+        `<div class="blk" style="position:absolute;left:16px;right:16px;top:88px"><div style="font:400 12px/16px var(--ui);color:var(--muted)">받는 분</div><div class="nm">${S.who}</div><div style="margin-top:4px"><span class="chip accent">${S.first}</span></div></div>` +
+        `<div style="position:absolute;left:16px;right:16px;top:176px"><div style="font:400 12px/16px var(--ui);color:var(--muted)">보낼 금액</div><div style="font:600 16px/24px var(--ui)">${amount}</div></div>`;
+      const SCREEN_BASE =
+        W.statusBar() +
+        W.appBar("송금 확인") +
+        hero(S.amountBase) +
+        `<div style="position:absolute;left:16px;right:16px;top:304px">${W.button("보내기", { kind: "primary" })}</div>` +
+        `<div style="position:absolute;left:16px;right:16px;top:368px;text-align:center;font:400 12px/16px var(--ui);color:var(--muted)">${S.baseNote}</div>`;
+      const SCREEN_VAR =
+        W.statusBar() +
+        W.appBar("송금 확인") +
+        hero(S.amountBig) +
+        `<div style="position:absolute;left:16px;right:16px;top:232px">${S.q
+          .map((q) => `<div class="qrow"><span class="w-check on">${W.icon("check", 14)}</span><span>${q}</span></div>`)
+          .join("")}</div>` +
+        `<div style="position:absolute;left:16px;right:16px;top:312px;height:44px;display:flex;align-items:center;justify-content:space-between;font:400 13px/20px var(--ui)"><span>${S.guardian}</span><span class="w-toggle on"></span></div>` +
+        `<div style="position:absolute;left:16px;right:16px;top:364px">${W.button("보내기", { kind: "primary" })}</div>` +
+        `<div style="position:absolute;left:16px;right:16px;top:420px;text-align:center;font:400 12px/16px var(--ui);color:var(--muted)">${S.note}</div>`;
+      const CAP_Y = TY + DEV_H * TS + 8;
+      const dev = (inner, k) => W.thumb(inner, { x: TX[k], y: TY, h: DEV_H, scale: TS, id: "dv" + k });
+      const cap = (k, c, on) =>
+        `<div id="cp${k}" class="cap${on ? " on" : ""}" style="left:${TX[k]}px;top:${CAP_Y}px"><b>${c.name}</b><span>${c.sub}</span></div>`;
+      stage.insertAdjacentHTML(
+        "beforeend",
+        `<div id="l4" class="lbl" style="left:484px;top:48px"><b>4</b>제안</div>` +
+          dev(SCREEN_BASE, 0) +
+          dev(SCREEN_VAR, 1) +
+          cap(0, COPY.base, false) +
+          cap(1, COPY.variant, true) +
+          `<div id="hrx" class="hr" style="left:484px;width:356px;top:${CAP_Y + 122}px"></div>` +
+          `<div id="exc" class="exc" style="top:${CAP_Y + 134}px"><span class="chip p2" style="margin-right:6px">예외</span><b style="font-weight:600">${COPY.exc[0]}</b><div class="muted">${COPY.exc[1]}</div></div>`,
+      );
+
+      const T = {
+        req: 200,
+        l1: 1800,
+        cx: [2000, 2200, 2400, 2600],
+        key: [3100, 3300, 3500],
+        l2: 4100,
+        card: [4300, 5200, 6100],
+        cardStep: 250,
+        dist: [7300, 7800, 8300],
+        l4: 8900,
+        dv: [9100, 9700],
+        cap: [9300, 9900],
+        exc: 10500,
+      };
+
+      window.DEMO = defineDemo({
+        width: W_,
+        height: H_,
+        end: 11000,
+        draw(t) {
+          typeInto($("req"), COPY.req, t, T.req, 40, true, T.l1);
+          fade($("l1"), t, T.l1);
+          T.cx.forEach((s, i) => fade($("cx" + i), t, s));
+          // 결정적 맥락: 칩이 차례로 나오고, 맥락 카드의 해당 줄은 accent로 강조된다.
+          T.key.forEach((s, i) => fade($("kc" + i), t, s, 200));
+          fade($("key"), t, T.key[0] - 100, 1);
+          document.querySelectorAll(".cx .hot").forEach((el) => {
+            el.style.opacity = 0.35 + 0.65 * progress(t, T.key[0], 400);
+          });
+          fade($("l2"), t, T.l2);
+          T.card.forEach((s, i) => {
+            fade($("cd" + i), t, s);
+            fade($("w" + i), t, s + T.cardStep);
+            fade($("c" + i), t, s + 2 * T.cardStep);
+            fade($("d" + i), t, T.dist[i]);
+          });
+          fade($("l4"), t, T.l4);
+          [0, 1].forEach((k) => {
+            fade($("dv" + k), t, T.dv[k], 300);
+            fade($("cp" + k), t, T.cap[k]);
+          });
+          fade($("hrx"), t, T.exc);
+          fade($("exc"), t, T.exc);
+        },
+      });
+    </script>
+  </body>
+</html>
