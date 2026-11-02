@@ -64,6 +64,7 @@ decision이 없으면 question에서 가장 그럴듯한 결정을 하나 제안
 
 ## Skill Chaining
 
+- 사용자를 만나기 전에 자료와 합성 페르소나로 가설 좁히기: `ux-simulate`
 - 결과로 흐름을 다시 그리기: `ux-flow`
 - 관찰한 문제를 화면에서 우선순위로 정리: `ux-review`
 - 정량으로 확인할 지표 설계: `ux-metrics`

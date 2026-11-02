@@ -202,6 +202,32 @@
       "expectSkill": "ux-ai",
       "shouldNotFire": "ux-review",
       "why": "AI 실행 승인"
+    },
+    {
+      "id": "sim-1",
+      "prompt": "@ux simulate 반려동물 보험 가입 흐름 — 기획서랑 비슷한 서비스 링크 첨부",
+      "expectSkill": "ux-simulate",
+      "why": "명시 별칭"
+    },
+    {
+      "id": "sim-2",
+      "prompt": "@ux discover 중고차 시세 조회 서비스, 도메인 조사부터 가장 맞는 UX 제안까지",
+      "expectSkill": "ux-simulate",
+      "why": "탐색 별칭"
+    },
+    {
+      "id": "sim-3",
+      "prompt": "아직 사용자 인터뷰할 시간이 없는데, 기획서랑 시장 자료로 가상 페르소나를 돌려서 온보딩 안 두 개 중 뭐가 나을지 미리 봐 줘",
+      "expectSkill": "ux-simulate",
+      "shouldNotFire": "ux-research",
+      "why": "실제 사용자 없이 자료와 합성 페르소나로 미리 보기"
+    },
+    {
+      "id": "research-5",
+      "prompt": "합성 페르소나로 나온 가설을 실제 사용자 5명으로 확인할 테스트 계획 짜 줘",
+      "expectSkill": "ux-research",
+      "shouldNotFire": "ux-simulate",
+      "why": "실제 사용자 검증 설계"
     }
   ]
 }
