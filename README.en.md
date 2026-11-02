@@ -138,7 +138,7 @@ Given a domain, links and a planning doc, it opens every source and tags it with
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/a11y-dark.gif">
-  <img src="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/a11y-light.gif" width="800" alt="Overlapping 24-pixel circles around 20-pixel icon buttons fail target size, a 2.6 to 1 contrast ratio fails, and focus hidden behind a sticky bar fails">
+  <img src="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/a11y-light.gif" width="800" alt="On a delivery-address screen, overlapping 24-pixel circles around 20-pixel icon buttons (2.5.8), a 2.6 to 1 link contrast (1.4.3) and focus hidden behind a sticky bar (2.4.11) are numbered and marked FAIL, then the same screen gets 44-pixel touch targets, contrast above 4.5 to 1 and scroll padding, and all three pass">
 </picture>
 
 - **When** — "Prepare for an accessibility certification", "Can a screen-reader user finish checkout?", "Are our touch targets big enough?"

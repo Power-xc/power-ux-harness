@@ -199,7 +199,7 @@ acceptance: 삭제 직후 되돌리기 한 번으로 노트가 같은 자리에 
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/a11y-dark.gif">
-  <img src="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/a11y-light.gif" width="800" alt="20픽셀 아이콘 버튼의 24픽셀 원이 겹치는 대상 크기 FAIL, 명도 대비 2.6 대 1 FAIL, 고정 막대 뒤에 가려진 포커스 FAIL을 차례로 표시하는 모습">
+  <img src="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/a11y-light.gif" width="800" alt="배송지 화면에서 20픽셀 아이콘 버튼의 24픽셀 원이 겹치는 대상 크기(2.5.8), 도움말 링크의 명도 대비 2.6 대 1(1.4.3), 고정 막대 뒤에 가려진 포커스(2.4.11)를 번호로 표시해 FAIL로 판정하고, 같은 화면이 44픽셀 터치 영역·4.5 대 1 이상의 대비·스크롤 여백으로 바뀌어 모두 PASS가 되는 모습">
 </picture>
 
 - **이럴 때** — 「웹 접근성 인증 준비」, 「스크린 리더로 결제까지 갈 수 있나」, 「터치 영역 크기」

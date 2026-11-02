@@ -1,73 +1,131 @@
 <!doctype html>
 <html lang="ko"><head><meta charset="utf-8">
-<link rel="stylesheet" href="shared.css"><script src="timeline.js"></script>
+<link rel="stylesheet" href="shared.css"><link rel="stylesheet" href="wire.css"><script src="timeline.js"></script><script src="wire.js"></script>
 <style>
-  #app { position: absolute; left: 40px; top: 20px; width: 300px; height: 360px; border: 1px solid var(--line); border-radius: 18px; overflow: hidden; background: var(--bg); }
-  .ib { position: absolute; top: 18px; width: 20px; height: 20px; border: 1px solid var(--line); border-radius: 4px; display: grid; place-items: center; }
-  .ib svg { width: 14px; height: 14px; }
-  .circ { position: absolute; width: 24px; height: 24px; margin: -12px 0 0 -12px; border-radius: 50%; border: 1px dashed var(--muted); }
-  #bar { position: absolute; left: 0; right: 0; bottom: 0; height: 64px; background: var(--bg); border-top: 1px solid var(--line); }
-  .rj { position: absolute; left: 400px; width: 440px; }
-  .rj .h { display: flex; align-items: center; justify-content: space-between; font-weight: 600; }
-  .rj .d { font-size: 13px; color: var(--muted); }
+  /* 고치기 전 저대비 글자색: 테마마다 배경 대비 2.6:1 근처로 정한다(라이트 2.64 · 다크 2.62). */
+  :root[data-theme="light"] { --low: #9aa0a6; }
+  :root[data-theme="dark"] { --low: #50585f; }
+  .grp { position: absolute; right: 16px; display: flex; }
+  .tb { display: grid; place-items: center; border: 1px solid var(--line); border-radius: 4px; flex: none; }
+  .clip { position: absolute; left: 0; right: 0; top: 136px; bottom: 0; overflow: hidden; }
+  .scr { position: absolute; left: 0; top: -136px; width: 100%; height: 464px; }
+  .at { position: absolute; left: 16px; right: 16px; }
+  .hint { font: 400 13px/24px var(--ui); color: var(--muted); }
+  .lk { position: absolute; right: 16px; font: 400 13px/24px var(--ui); text-decoration: underline; }
+  .row { height: 44px; display: flex; align-items: center; gap: 12px; font: 400 13px/20px var(--ui); }
+  .bar { position: absolute; left: 0; right: 0; bottom: 0; height: 72px; border-top: 1px solid var(--line); background: var(--bg); }
+  .bar .w-btn { position: absolute; right: 16px; top: 11px; width: 120px; }
+  .ring { position: absolute; outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 8px; }
+  .ghost { position: absolute; color: var(--muted); }
+  .ghost .w-check { outline: 2px dashed var(--accent); outline-offset: 2px; border-radius: 4px; }
+  .circ { position: absolute; width: 24px; height: 24px; margin: -12px 0 0 -12px; border: 1px dashed var(--muted); border-radius: 50%; }
+  .w-vrow .chip { margin-left: 4px; }
+  .w-vrow .sb { font: 400 13px/18px var(--ui); color: var(--muted); }
 </style></head>
 <body><div id="stage">
-  <div id="app">
-    <div class="ib" id="ib0" style="left:16px"></div><div class="ib" id="ib1" style="left:38px"></div><div class="ib" id="ib2" style="left:60px"></div>
-    <div id="circs"></div>
-    <svg id="lens" class="abs" style="left:0;top:0;width:300px;height:360px;fill:none" viewBox="0 0 300 360"></svg>
-    <div id="help" class="abs" style="left:16px;top:70px;color:var(--lowc)">도움말</div>
-    <div id="hbox" class="abs" style="left:12px;top:68px;width:54px;height:28px;border:1px solid var(--accent);border-radius:4px"></div>
-    <div id="sw" class="abs" style="left:76px;top:73px;display:flex;gap:4px"><i style="width:18px;height:18px;background:var(--lowc);border:1px solid var(--line)"></i><i style="width:18px;height:18px;background:var(--bg);border:1px solid var(--line)"></i></div>
-    <div class="field abs" style="left:16px;top:118px;width:268px;height:40px"></div>
-    <div class="abs accent" style="left:16px;top:322px;text-decoration:underline;font-size:13px">약관 보기</div>
-    <div id="bar"><span class="btn primary" style="position:absolute;right:16px;top:12px;width:92px;height:40px">다음</span></div>
-    <div id="hid" class="abs" style="left:12px;top:316px;width:68px;height:28px;border:1px dashed var(--p1);border-radius:4px"></div>
-    <div id="hidt" class="abs small p1c" style="left:16px;top:262px;white-space:nowrap">포커스가 막대 뒤에 있어요</div>
-    <div id="ring" class="abs" style="border:2px solid var(--accent);border-radius:6px"></div>
-  </div>
-  <div id="j1" class="rj" style="top:36px"><div class="h"><span>2.5.8 대상 크기(최소)</span><span class="chip p1">FAIL</span></div><div class="d">20×20px · 24px 원이 서로 겹쳐요</div></div>
-  <div id="j2" class="rj" style="top:108px"><div class="h"><span>1.4.3 명도 대비</span><span class="chip p1">FAIL</span></div><div class="d">2.6:1 · 기준 4.5:1</div></div>
-  <div id="j3" class="rj" style="top:180px"><div class="h"><span>2.4.11 포커스 가려짐(최소)</span><span class="chip p1">FAIL</span></div></div>
-  <div id="sum" class="rj" style="top:262px"><div class="hr" style="left:0;right:0;top:-12px"></div><div style="font-weight:600">AA 기준 FAIL 3건 · 자동 검사 2 · 직접 확인 1</div><div class="small muted" style="margin-top:4px">고칠 것: 터치 영역 24px 이상 · 대비 4.5:1 · 고정 막대 높이만큼 스크롤 여백</div></div>
+  <div id="ba" class="w-ba" style="left:40px;top:16px"><span id="chB" class="chip before">고치기 전</span><span id="chA" class="chip after">고친 후</span></div>
 </div>
 <script>
-const G = (d) => svg(d, 'style="width:14px;height:14px"');
-$("ib0").innerHTML = G('<path d="M15 5l-7 7 7 7"/>');
-$("ib1").innerHTML = G('<path d="M12 15V4M8 8l4-4 4 4M5 12v7h14v-7"/>');
-$("ib2").innerHTML = G('<path d="M5 12h.01M12 12h.01M19 12h.01"/>');
-// 아이콘 중심(앱 좌표): 20px 버튼, 간격 2px → 중심 거리 22px (24px 원이 겹침)
-const C = [[26, 28], [48, 28], [70, 28]];
-$("circs").innerHTML = C.map(([x, y]) => `<i class="circ" style="left:${x}px;top:${y}px"></i>`).join("");
-const circs = [...$("circs").children];
-// 겹침(렌즈): 두 원의 교집합을 clipPath로 칠한다
-$("lens").innerHTML = `<defs><clipPath id="cp"><circle cx="48" cy="28" r="12"/></clipPath><clipPath id="cp2"><circle cx="70" cy="28" r="12"/></clipPath></defs>
-  <g id="lg" opacity="0"><g clip-path="url(#cp)"><circle cx="26" cy="28" r="12" fill="var(--p1)"/><circle cx="70" cy="28" r="12" fill="var(--p1)"/></g><g clip-path="url(#cp2)"><circle cx="48" cy="28" r="12" fill="var(--p1)"/></g></g>`;
-const RING = [[16, 18, 20, 20], [38, 18, 20, 20], [60, 18, 20, 20], [16, 118, 268, 40]];
-const PAD = 3;
-window.DEMO = defineDemo({ width: 880, height: 400, end: 8100,
+const DX = 40, DY = 56, DEV_H = 464, W_ = 880, H_ = 544, SCROLL = 64;
+const ICONS = ["search", "info", "more"];
+const grp = (id, size, glyph, top) => `<span class="grp" id="${id}" style="top:${top}px">${ICONS.map((n, k) => `<span class="tb" ${k === 0 ? `id="${id}0"` : ""} style="width:${size}px;height:${size}px">${W.icon(n, glyph)}</span>`).join("")}</span>`;
+const fld = (label, value, top) => `<div class="at w-field" style="top:${top}px"><div class="lb">${label}</div><div class="bx">${value}</div></div>`;
+const inner = W.statusBar() + `<div class="w-appbar" style="position:relative"><span class="t">배송지</span>${grp("gB", 20, 16, 14)}${grp("gA", 44, 24, 2)}</div>
+  <div class="at hint" style="top:108px">받는 분 정보를 입력해 주세요</div>
+  <span class="lk" id="lkB" style="top:108px;color:var(--low)">도움말</span><span class="lk" id="lkA" style="top:108px;color:var(--accent)">도움말</span>
+  <div class="clip"><div class="scr" id="scr">
+    ${fld("받는 분", "김하늘", 148)}${fld("연락처", "010-1234-5678", 232)}${fld("배송 메모", "문 앞에 놓아 주세요", 316)}
+    <div class="at row" id="row" style="top:404px"><span class="w-check" id="ck"></span><span>기본 배송지로 저장</span></div>
+    <div class="ring" id="ring"></div>
+  </div></div>
+  <div class="bar">${W.button("다음", { kind: "primary" })}</div>`;
+const stage = $("stage");
+stage.insertAdjacentHTML("beforeend", W.device(inner, { id: "dev", x: DX, y: DY, h: DEV_H }));
+
+// 실측: 점선·핀·치수선·원은 기기 안 부품의 모서리와 중심에서 계산한다.
+const rc = (id) => W.rect($(id));
+const R = { g0: rc("gB0"), gB: rc("gB"), gA: rc("gA"), gA0: rc("gA0"), lk: rc("lkB"), row: rc("row") };
+const LKF = { left: R.lk.left - 8, top: R.lk.top - 4, width: R.lk.width + 16, height: R.lk.height + 8 }; // 링크 둘레 여유
+const F = [R.gB, LKF, R.row], FP = [4, 6, 6]; // 점선 대상과 간격
+const pinAt = (c, n, id) => `<div class="num" id="${id}" style="left:${c.x - 10}px;top:${c.y - 10}px">${n}</div>`;
+const cornerB = F.map((r, i) => ({ x: r.left - FP[i] - 10, y: r.top - FP[i] - 6 }));
+const cornerA = [R.gA, R.lk, { ...R.row, top: R.row.top - SCROLL }].map((r) => W.pinCenter(r));
+
+// 대비 비율: 그려진 글자색과 배경색에서 직접 계산한다.
+const rgb = (c) => c.match(/\d+/g).slice(0, 3).map(Number);
+const hex = (c) => "#" + rgb(c).map((v) => v.toString(16).padStart(2, "0")).join("");
+const lum = (c) => { const [r, g, b] = rgb(c).map((v) => { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }); return 0.2126 * r + 0.7152 * g + 0.0722 * b; };
+const ratio = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((p, q) => q - p); return (x + 0.05) / (y + 0.05); };
+const bg = getComputedStyle($("dev")).backgroundColor;
+const cmp = (id) => { const c = getComputedStyle($(id)).color; return `${hex(c)} / ${hex(bg)} = ${ratio(c, bg).toFixed(1)}:1`; };
+
+const NUM_X = 376, YB = [64, 116, 168], YA = [256, 308, 360];
+const num = (id, n, top) => `<div id="${id}" class="num" style="left:${NUM_X}px;top:${top + 2}px">${n}</div>`;
+const row = (id, top, l, name, chip, sb) => `<div id="${id}" class="w-vrow" style="top:${top}px"><span class="l">${l}</span><span class="v"><div>${name} ${chip}</div><div class="sb">${sb}</div></span></div>`;
+const FAIL = `<span class="chip p1">FAIL</span>`, PASS = `<span class="chip ok">PASS</span>`;
+const circ = [0, 1, 2].map((k) => ({ x: R.g0.left + 10 + 20 * k, y: R.g0.top + 10 }));
+const tick = (x, y) => `<i class="w-dim" style="left:${x}px;top:${y}px;width:1px;height:8px"></i>`;
+// 20은 라벨(24)이 선(20)보다 넓어 선 오른쪽 끝 밖에 둔다.
+const dim20 = `${W.ext({ axis: "v", at: R.g0.left, from: R.g0.bottom, to: R.g0.bottom + 8 })}${W.ext({ axis: "v", at: R.g0.right - 1, from: R.g0.bottom, to: R.g0.bottom + 8 })}` +
+  W.dim({ axis: "h", at: R.g0.bottom + 8, from: R.g0.left, to: R.g0.right - 1, label: "" }).replace(/<span class="w-dim lb"[^>]*><\/span>/, "") +
+  `<span class="w-dim lb" style="left:${R.g0.right + 3}px;top:${R.g0.bottom}px">20</span>`;
+const dim44 = `${W.ext({ axis: "v", at: R.gA0.left, from: R.gA0.bottom, to: R.gA0.bottom + 8 })}${W.ext({ axis: "v", at: R.gA0.right - 1, from: R.gA0.bottom, to: R.gA0.bottom + 8 })}` +
+  W.dim({ axis: "h", at: R.gA0.bottom + 8, from: R.gA0.left, to: R.gA0.right - 1, label: "44" });
+stage.insertAdjacentHTML("beforeend",
+  `<div id="circ">${circ.map((c) => `<i class="circ" style="left:${c.x}px;top:${c.y}px"></i>`).join("")}</div>` +
+  `<div id="dB">${dim20}</div><div id="dA">${dim44}</div>` +
+  `<div id="gh" class="ghost row" style="left:${R.row.left}px;top:${R.row.top}px;width:${R.row.width}px"><span class="w-check"></span><span>기본 배송지로 저장</span></div>` +
+  W.flag(F[0], { id: "fl0", pad: FP[0] }) + W.flag(F[1], { id: "fl1", pad: FP[1] }) + W.flag(F[2], { id: "fl2", pad: FP[2] }) +
+  cornerB.map((c, i) => pinAt(c, i + 1, "pb" + i)).join("") + cornerA.map((c, i) => pinAt(c, i + 1, "pa" + i)).join("") +
+  [0, 1, 2].map((i) => num("nb" + i, i + 1, YB[i]) + num("na" + i, i + 1, YA[i])).join("") +
+  row("vb0", YB[0], "아이콘", "2.5.8 대상 크기(최소) · AA", FAIL, "KWCAG 6.1.3 · 20×20px · 24px 원이 겹쳐요") +
+  row("vb1", YB[1], "링크", "1.4.3 명도 대비 · AA", FAIL, `KWCAG 5.4.3 · ${cmp("lkB")} · 기준 4.5:1`) +
+  row("vb2", YB[2], "포커스", "2.4.11 포커스 가려짐(최소) · AA", FAIL, "고정 막대에 포커스가 완전히 가려져요") +
+  `<div id="hr" class="hr" style="left:${NUM_X}px;width:${840 - NUM_X}px;top:232px"></div>` +
+  row("va0", YA[0], "아이콘", "2.5.8 대상 크기(최소) · AA", PASS, "KWCAG 6.1.3 · 44×44px · 기준 24×24px") +
+  row("va1", YA[1], "링크", "1.4.3 명도 대비 · AA", PASS, `KWCAG 5.4.3 · ${cmp("lkA")} · 기준 4.5:1`) +
+  row("va2", YA[2], "포커스", "2.4.11 포커스 가려짐(최소) · AA", PASS, "스크롤 여백 72px · 고정 막대 위로 포커스가 보여요"));
+
+// 포커스 링 좌표(내용 좌표): 입력칸 상자 셋과 체크박스
+const sc = W.rect($("scr"));
+const at = (el) => { const r = W.rect(el); return { x: r.left - sc.left, y: r.top - sc.top, w: r.width, h: r.height }; };
+const FOCUS = [...document.querySelectorAll(".scr .w-field .bx")].map(at).concat([at($("ck"))]);
+const ringTo = (t, stops) => { // stops: [[시각, FOCUS 인덱스], ...] 사이를 280ms로 옮긴다
+  let i = 0; stops.forEach(([s], j) => { if (t >= s) i = j; });
+  const from = FOCUS[stops[Math.max(0, i - 1)][1]], to = FOCUS[stops[i][1]], p = i === 0 ? 1 : easeOutCubic(progress(t, stops[i][0], 280));
+  const l = (k) => from[k] + (to[k] - from[k]) * p, ring = $("ring");
+  ring.style.left = l("x") + "px"; ring.style.top = l("y") + "px"; ring.style.width = l("w") + "px"; ring.style.height = l("h") + "px";
+};
+
+// 타임라인(ms): 고치기 전 세 건을 차례로 찾고 → SWAP에서 같은 기기를 고치고 → 세 건 PASS
+const SWAP = 7000, OUT = SWAP - 200;
+window.DEMO = defineDemo({ width: W_, height: H_, end: 10200,
   draw(t) {
-    const cp = progress(t, 400, 240);
-    circs.forEach((c) => { c.style.opacity = cp; c.style.borderColor = t >= 1200 ? "var(--p1)" : "var(--muted)"; });
-    $("lg").setAttribute("opacity", progress(t, 1200, 240));
-    fade($("j1"), t, 1600);
-    // 대비 검사
-    const cp2 = progress(t, 3000, 240);
-    opacityAt($("hbox"), cp2); opacityAt($("sw"), cp2);
-    fade($("j2"), t, 3600);
-    // 포커스 고리: 0.4초씩 이동
-    const kf = [{ t: 5000, i: 0 }, { t: 5400, i: 1 }, { t: 5800, i: 2 }, { t: 6200, i: 3 }];
-    const idx = Math.max(0, kf.filter((k) => t >= k.t).length - 1);
-    const prev = RING[Math.max(0, idx - 1)], cur = RING[idx];
-    const m = idx === 0 ? 1 : easeOutCubic(progress(t, kf[idx].t, 160));
-    const r = cur.map((v, k) => prev[k] + (v - prev[k]) * m);
-    const ring = $("ring");
-    ring.style.left = (r[0] - PAD - 2) + "px"; ring.style.top = (r[1] - PAD - 2) + "px";
-    ring.style.width = (r[2] + 2 * PAD + 4) + "px"; ring.style.height = (r[3] + 2 * PAD + 4) + "px";
-    opacityAt(ring, t >= 5000 && t < 6600 ? progress(t, 5000, 160) : t >= 6600 ? 1 - progress(t, 6600, 180) : 0);
-    // 가려진 대상
-    opacityAt($("hid"), progress(t, 6600, 240)); fade($("hidt"), t, 6600);
-    fade($("j3"), t, 6800);
-    fade($("sum"), t, 7600);
+    fade($("dev"), t, 200, 300);
+    const sw = easeOutCubic(progress(t, SWAP, 240)), on = progress(t, 200, 240);
+    opacityAt($("chB"), Math.min(on, 1 - sw)); opacityAt($("chA"), Math.min(on, sw));
+    // ① 아이콘 버튼: 24px 원이 겹침 → 20 치수 → 점선 → 판정
+    opacityAt($("circ"), easeOutCubic(progress(t, 900, 240)) * (1 - progress(t, OUT, 180)));
+    document.querySelectorAll(".circ").forEach((c) => { c.style.borderColor = t >= 1400 ? "var(--p1)" : "var(--muted)"; });
+    fade($("dB"), t, 1700, 240, OUT);
+    fade($("fl0"), t, 2100, 240, OUT); fade($("pb0"), t, 2300, 200, OUT);
+    fade($("nb0"), t, 2500); fade($("vb0"), t, 2500);
+    // ② 도움말 링크 명도 대비
+    fade($("fl1"), t, 3300, 240, OUT); fade($("pb1"), t, 3500, 200, OUT);
+    fade($("nb1"), t, 3700); fade($("vb1"), t, 3700);
+    // ③ 키보드 포커스: 입력칸을 지나 체크박스로 가면 고정 막대 뒤로 사라진다
+    ringTo(t, t < SWAP ? [[4300, 1], [4700, 2], [5100, 3]] : [[8000, 2], [8500, 3]]);
+    opacityAt($("ring"), t < SWAP ? progress(t, 4300, 160) * (1 - progress(t, OUT, 100)) : progress(t, 8000, 160));
+    fade($("gh"), t, 5700, 240, OUT);
+    fade($("fl2"), t, 5700, 240, OUT); fade($("pb2"), t, 5900, 200, OUT);
+    fade($("nb2"), t, 6100); fade($("vb2"), t, 6100);
+    // 같은 기기에서 고치기: 터치 영역 44 · 링크 색 · 스크롤 여백
+    opacityAt($("gB"), 1 - sw); opacityAt($("gA"), sw);
+    opacityAt($("lkB"), 1 - sw); opacityAt($("lkA"), sw);
+    fade($("hr"), t, SWAP);
+    $("scr").style.transform = `translateY(${-SCROLL * easeOutCubic(progress(t, 8500, 400))}px)`;
+    fade($("dA"), t, 7400); fade($("pa0"), t, 7400, 200); fade($("na0"), t, 7600); fade($("va0"), t, 7600);
+    fade($("pa1"), t, 8000, 200); fade($("na1"), t, 8200); fade($("va1"), t, 8200);
+    fade($("pa2"), t, 9100, 200); fade($("na2"), t, 9300); fade($("va2"), t, 9300);
   } });
 </script></body></html>
