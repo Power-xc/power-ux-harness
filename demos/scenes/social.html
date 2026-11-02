@@ -35,7 +35,8 @@
         left: 64px;
         top: 472px;
         width: 540px;
-        font: 400 20px/36px var(--ui);
+        font: 400 18px/36px var(--ui);
+        white-space: nowrap;
         color: var(--muted);
       }
       .lb {
@@ -63,9 +64,11 @@
   <body>
     <div id="stage">
       <div id="repo" class="abs"></div>
-      <div id="big" class="abs">UX 스킬 10개</div>
-      <div id="desc" class="abs">AI 코딩 에이전트가 시니어 프로덕트 디자이너의 절차로 UX를 설계하고 검토하게 해요</div>
-      <div id="steps" class="abs">탐색 · 확인 · 정의 · 설계 · 문구 · 검토 · 접근성 · 기만 패턴 · 측정 · AI</div>
+      <div id="big" class="abs">UX 스킬 11개</div>
+      <div id="desc" class="abs">
+        같은 기능도 맥락이 바뀌면 정답이 바뀌어요. AI 코딩 에이전트가 맥락부터 읽고 UX를 설계하고 검토하게 해요
+      </div>
+      <div id="steps" class="abs">맥락 · 탐색 · 확인 · 정의 · 설계 · 문구 · 검토 · 접근성 · 기만 패턴 · 측정 · AI</div>
     </div>
     <script>
       document.getElementById("repo").textContent = BRAND;
