@@ -212,7 +212,7 @@ acceptance: 삭제 직후 되돌리기 한 번으로 노트가 같은 자리에 
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/dark-patterns-dark.gif">
-  <img src="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/dark-patterns-light.gif" width="800" alt="구독 해지 화면에서 잘못된 계층 구조·사전 선택·취소 방해·죄책감을 주는 문구 4건을 찾아 표시하고, 같은 크기의 버튼과 체크되지 않은 선택 동의로 고친 화면을 보여 주는 모습">
+  <img src="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/dark-patterns-light.gif" width="800" alt="구독 해지 화면에서 취소·탈퇴 등의 방해, 죄책감 주는 거절 문구, 잘못된 계층구조, 특정옵션의 사전선택 4건을 번호와 P1·P2로 표시하고, 같은 화면이 같은 크기의 두 버튼과 체크 해제된 선택 동의, 중립 문구로 바뀌어 각 항목이 통과하는 모습">
 </picture>
 
 - **이럴 때** — 「구독 해지 흐름이 법에 걸리나」, 「부가 서비스가 기본으로 체크돼 있는데 괜찮아?」, 「팝업이 너무 자주 뜨는데」

@@ -151,7 +151,7 @@ Given a domain, links and a planning doc, it opens every source and tags it with
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/dark-patterns-dark.gif">
-  <img src="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/dark-patterns-light.gif" width="800" alt="Four findings on a cancel screen (false hierarchy, preselection, obstruction, confirmshaming) are flagged, then the fixed screen shows equal buttons and an unchecked optional consent">
+  <img src="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/dark-patterns-light.gif" width="800" alt="Four findings on a subscription-cancel screen (obstruction, a guilt-inducing decline line, false hierarchy and preselection) are numbered and marked P1 or P2, then the same screen shows two equal buttons, an unchecked optional consent and a neutral line, and each item passes">
 </picture>
 
 - **When** — "Is our cancel flow legal?", "An add-on is pre-checked at checkout", "Is this pop-up too frequent?"

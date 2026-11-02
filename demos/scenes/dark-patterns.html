@@ -1,55 +1,85 @@
 <!doctype html>
 <html lang="ko"><head><meta charset="utf-8">
-<link rel="stylesheet" href="shared.css"><script src="timeline.js"></script>
+<link rel="stylesheet" href="shared.css"><link rel="stylesheet" href="wire.css"><script src="timeline.js"></script><script src="wire.js"></script>
 <style>
-  .scr { position: absolute; inset: 0; padding: 16px; }
-  .cb { display: flex; align-items: center; gap: 8px; font-size: 13px; position: absolute; left: 16px; bottom: 16px; }
-  .cb i { width: 16px; height: 16px; border-radius: 4px; border: 1.5px solid var(--muted); display: grid; place-items: center; flex: none; }
-  .cb i.on { background: var(--accent); border-color: var(--accent); color: var(--bg); }
-  .cb i svg { width: 12px; height: 12px; stroke-width: 2; }
-  .mk { position: absolute; border-radius: 6px; }
-  .vd { position: absolute; left: 400px; width: 440px; }
-  .vd .h { display: flex; align-items: center; justify-content: space-between; font-weight: 600; }
-  .vd .d { font-size: 13px; color: var(--muted); }
+  .blk { position: absolute; left: 16px; right: 16px; }
+  .ov { position: absolute; left: 0; top: 0; width: 100%; }
+  .stp { font: 400 12px/16px var(--ui); color: var(--muted); }
+  .ttl .t { font: 600 16px/24px var(--ui); }
+  .ttl .b { margin-top: 4px; font: 400 13px/20px var(--ui); color: var(--muted); }
+  .lnk { height: 48px; margin-top: 8px; display: grid; place-items: center; font: 400 12px/16px var(--ui); color: var(--lowc); }
+  .gap8 { height: 8px; }
+  .cons { height: 44px; display: flex; align-items: center; gap: 12px; font: 400 13px/20px var(--ui); }
+  .ckw { position: relative; flex: none; width: 20px; height: 20px; }
+  .ckw .w-check { position: absolute; left: 0; top: 0; }
+  .w-flag.p2 { border-color: var(--p2); }
+  .w-vrow { left: 428px; width: 412px; }
+  .w-vrow .chip { margin-left: 4px; }
+  .w-vrow .sb { font: 400 13px/18px var(--ui); color: var(--muted); }
 </style></head>
 <body><div id="stage">
-  <div class="phone" style="left:40px;top:20px;padding:0">
-    <div id="bad" class="scr">
-      <div id="step" class="small muted" style="margin-top:2px">4 / 4</div>
-      <div id="ttl" style="position:absolute;left:16px;right:16px;top:44px"><div class="title">정말 떠나시겠어요?</div><div style="margin-top:8px">지금 해지하면 혜택을 모두 잃어요</div></div>
-      <div id="btn" class="btn primary" style="position:absolute;left:16px;right:16px;top:150px;height:48px;font-size:15px">혜택 계속 받기</div>
-      <div id="lnk" style="position:absolute;left:0;right:0;top:210px;text-align:center;font-size:11px;color:var(--muted);opacity:.75">그래도 해지할게요</div>
-      <div id="cbx" class="cb"><i class="on"></i><span>마케팅 정보 수신 동의(선택)</span></div>
-    </div>
-    <div id="good" class="scr">
-      
-      <div style="position:absolute;left:16px;right:16px;top:44px"><div class="title">구독을 해지할까요?</div><div style="margin-top:8px">해지해도 11월 30일까지 쓸 수 있어요</div></div>
-      <div style="position:absolute;left:16px;right:16px;top:150px;display:flex;gap:8px">
-        <span class="btn" style="flex:1;height:44px;font-size:15px">닫기</span><span class="btn primary" style="flex:1;height:44px;font-size:15px">해지하기</span></div>
-      <div class="cb"><i></i><span>마케팅 정보 수신 동의(선택)</span></div>
-    </div>
-    <div id="m1" class="mk" style="left:11px;top:143px;width:238px;height:92px;border:1px dashed var(--p1)"></div>
-    <div id="m2" class="mk" style="left:11px;top:287px;width:238px;height:32px;border:1px dashed var(--p1)"></div>
-    <div id="m3" class="mk" style="left:11px;top:13px;width:52px;height:26px;border:1px dashed var(--p1)"></div>
-    <div id="m4" class="mk" style="left:11px;top:39px;width:238px;height:84px;border:1px dashed var(--p2)"></div>
-  </div>
-  <div id="v1" class="vd" style="top:30px"><div class="h"><span>잘못된 계층 구조</span><span class="chip p1">P1</span></div><div class="d">수락만 크게, 거절은 흐린 글자</div></div>
-  <div id="v2" class="vd" style="top:100px"><div class="h"><span>특정 옵션의 사전 선택</span><span class="chip p1">P1</span></div><div class="d">선택 동의가 미리 체크돼 있어요</div></div>
-  <div id="v3" class="vd" style="top:170px"><div class="h"><span>취소·탈퇴 등의 방해</span><span class="chip p1">P1</span></div><div class="d">가입 1단계 · 해지 4단계</div></div>
-  <div id="v4" class="vd" style="top:240px"><div class="h"><span>죄책감을 주는 문구</span><span class="chip p2">P2</span></div><div class="d">“떠나시겠어요?” · “모두 잃어요”</div></div>
-  <div id="ft" class="vd small muted" style="top:332px">개정 전자상거래법(2025-02-14 시행)의 기만 유형과 대조 · 위반 여부 판단은 법무 확인</div>
+  <div id="ba" class="w-ba" style="left:40px;top:16px"><span id="chB" class="chip before">고치기 전</span><span id="chA" class="chip after">고친 후</span></div>
 </div>
 <script>
-$("cbx").firstElementChild.innerHTML = svg('<path d="M5 12.5l4.5 4.5L19 7.5"/>');
-// 표시 창: [등장, 퇴장]
-const M = [[1000, 2400], [2400, 3800], [3800, 5200], [5200, 6400]];
-window.DEMO = defineDemo({ width: 880, height: 400, end: 8000,
+const DX = 40, DY = 56, DEV_H = 464, W_ = 880, H_ = 544;
+const ov = (id, html) => `<div class="ov" id="${id}">${html}</div>`;
+const inner = W.statusBar() + W.appBar("구독 해지") +
+  `<div class="blk stp" id="step" style="top:104px;height:16px">${ov("stB", "해지 4/4 단계")}${ov("stA", "해지 1/1 단계")}</div>
+  <div class="blk ttl" id="ttl" style="top:160px;height:48px">${ov("tB", '<div class="t">정말 떠나시겠어요?</div><div class="b">모든 혜택을 잃어요</div>')}${ov("tA", '<div class="t">구독을 해지할까요?</div><div class="b">해지해도 11월 30일까지 쓸 수 있어요</div>')}</div>
+  <div class="blk" id="btnw" style="top:248px;height:104px">${ov("bB", W.button("구독 유지", { kind: "primary" }) + '<div class="lnk">해지하기</div>')}${ov("bA", W.button("구독 유지") + '<div class="gap8"></div>' + W.button("해지하기"))}</div>
+  <div class="blk cons" id="cons" style="top:392px"><span class="ckw"><span class="w-check on" id="ckOn">${W.icon("check", 14)}</span><span class="w-check" id="ckOff"></span></span><span>마케팅 정보 수신 동의 (선택)</span></div>`;
+const stage = $("stage");
+stage.insertAdjacentHTML("beforeend", W.device(inner, { id: "dev", x: DX, y: DY, h: DEV_H }));
+
+// 실측: 점선·핀·지시선은 기기 안 부품의 모서리에서 계산한다. 번호는 화면 위에서 아래 순서다.
+const R = [W.rect($("step")), W.rect($("ttl")), W.rect($("btnw")), W.rect($("cons"))];
+const NUM_X = 400, GUT_UP = [352, 364, 376, 388], GUT_DN = [388, 376, 364, 352];
+const pc = R.map((r) => ({ x: r.left - 16, y: r.top - 12 })); // 점선 모서리에 붙는 핀 중심
+const YB = [64, 116, 168, 220], YA = [304, 344, 384, pc[3].y - 12]; // 판정 행 위치(고친 후 ④는 핀과 같은 높이)
+const pathB = R.map((r, i) => [[pc[i].x, pc[i].y - 10], [pc[i].x, pc[i].y - 12], [GUT_UP[i], pc[i].y - 12], [GUT_UP[i], YB[i] + 12], [NUM_X, YB[i] + 12]]);
+const pathA = R.map((r, i) => [[pc[i].x + 10, pc[i].y], [GUT_DN[i], pc[i].y], [GUT_DN[i], YA[i] + 12], [NUM_X, YA[i] + 12]]);
+const flagP2 = (r, id) => W.flag(r, { id }).replace('class="w-flag"', 'class="w-flag p2"').replace('chip p1">P1', 'chip p2">P2'); // 법정 유형이 아닌 압박
+const num = (id, n, top) => `<div id="${id}" class="num" style="left:${NUM_X}px;top:${top + 2}px">${n}</div>`;
+const chip = (p) => `<span class="chip ${p.toLowerCase()}">${p}</span>`;
+const vb = (i, l, type, p, sb) => `<div id="vb${i}" class="w-vrow" style="top:${YB[i]}px"><span class="l">${l}</span><span class="v"><div>${type} ${chip(p)}</div><div class="sb">${sb}</div></span></div>`;
+const va = (i, l, v) => `<div id="va${i}" class="w-vrow" style="top:${YA[i]}px;height:24px"><span class="l">${l}</span><span class="v">${v} <span id="ps${i}" class="chip ok">PASS</span></span></div>`;
+stage.insertAdjacentHTML("beforeend",
+  W.flag(R[0], { id: "fl0" }) + flagP2(R[1], "fl1") + W.flag(R[2], { id: "fl2" }) + W.flag(R[3], { id: "fl3" }) +
+  W.leaders(W_, H_, [...pathB.map((p, i) => ["ld" + i, p]), ...pathA.map((p, i) => ["la" + i, p])]) +
+  pc.map((c, i) => `<div id="p${i}" class="num" style="left:${c.x - 10}px;top:${c.y - 10}px">${i + 1}</div>`).join("") +
+  [0, 1, 2, 3].map((i) => num("nb" + i, i + 1, YB[i]) + num("na" + i, i + 1, YA[i])).join("") +
+  vb(0, "경로", "취소·탈퇴 등의 방해", "P1", "공정위 가이드라인 · 가입 1단계, 해지 4단계") +
+  vb(1, "문구", "죄책감 주는 거절", "P2", "법정 유형 밖 압박 · 혜택을 잃는다는 문구") +
+  vb(2, "버튼", "잘못된 계층구조", "P1", "공정위 가이드라인 · 구독 유지 48px, 해지하기 12px") +
+  vb(3, "동의", "특정옵션의 사전선택", "P1", "공정위 가이드라인 · 마케팅 동의가 미리 체크됨") +
+  `<div id="hr" class="hr" style="left:${NUM_X}px;width:${840 - NUM_X}px;top:280px"></div>` +
+  va(0, "경로", "해지 1단계 · 가입과 같은 수") + va(1, "문구", "해지해도 11월 30일까지 쓸 수 있어요") +
+  va(2, "버튼", "같은 크기 · 같은 위계의 두 버튼") + va(3, "동의", "선택 동의는 체크 해제"));
+
+// 타임라인(ms): 네 건을 차례로 찾고 → SWAP에서 같은 기기를 고친 화면으로 → 고친 항목마다 PASS
+const F = [900, 2000, 3100, 4200], SWAP = 6000, A = [6700, 7400, 8100, 8800];
+const crossfade = (a, b, t, at, dur = 240) => { const p = easeOutCubic(progress(t, at, dur)); opacityAt($(a), 1 - p); opacityAt($(b), p); };
+const lead = (id, t, start) => { const el = $(id); el.style.visibility = t >= start ? "visible" : "hidden"; W.leaderAt(el, easeOutCubic(progress(t, start, 450))); };
+const out = (id, t, at) => { $(id).style.opacity = 1 - progress(t, at, 180); };
+
+window.DEMO = defineDemo({ width: W_, height: H_, end: 9800,
   draw(t) {
-    const swap = easeInCubic(progress(t, 6400, 240)) ;
-    const s = progress(t, 6400, 240);
-    opacityAt($("bad"), 1 - s); opacityAt($("good"), s);
-    M.forEach(([a, b], i) => { const el = $("m" + (i + 1)); fade(el, t, a, 240, b); el.style.transform = "none"; });
-    ["v1", "v2", "v3", "v4"].forEach((id, i) => fade($(id), t, M[i][0]));
-    fade($("ft"), t, 7600);
+    fade($("dev"), t, 200, 300);
+    const sw = easeOutCubic(progress(t, SWAP, 240)), on = progress(t, 200, 240);
+    opacityAt($("chB"), Math.min(on, 1 - sw)); opacityAt($("chA"), Math.min(on, sw));
+    for (let i = 0; i < 4; i++) {
+      // 고치기 전: 점선 → 핀 → 지시선 → 판정
+      fade($("fl" + i), t, F[i], 240, SWAP - 200);
+      fade($("p" + i), t, F[i] + 300, 200);
+      lead("ld" + i, t, F[i] + 500); out("ld" + i, t, SWAP - 200);
+      fade($("nb" + i), t, F[i] + 950); fade($("vb" + i), t, F[i] + 950);
+      // 고친 후: 지시선 → 판정 + PASS
+      lead("la" + i, t, A[i]); fade($("na" + i), t, A[i] + 450); fade($("va" + i), t, A[i] + 450);
+      opacityAt($("ps" + i), progress(t, A[i] + 700, 240));
+    }
+    // 같은 기기에서 화면 교체
+    ["st", "t", "b"].forEach((k) => crossfade(k + "B", k + "A", t, SWAP));
+    opacityAt($("ckOn"), 1 - sw); opacityAt($("ckOff"), sw);
+    fade($("hr"), t, SWAP);
   } });
 </script></body></html>
