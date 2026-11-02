@@ -7,6 +7,7 @@
 ```
 skills/<id>/SKILL.md          필수 — 에이전트가 발동 시 읽는 본문
 skills/<id>/references/*.md   선택 — 긴 표·점검표·출처
+skills/<id>/scripts/*.mjs      선택 — 의존성 없는 Node 도구(테스트는 tests/)
 ```
 
 - `<id>`는 `ux-`로 시작하는 소문자 kebab-case이고, 폴더 이름과 frontmatter `name`이 같아야 합니다.

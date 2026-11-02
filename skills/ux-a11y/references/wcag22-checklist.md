@@ -25,7 +25,7 @@
 | 인식 | 1.3.1 Info and Relationships | A    | 제목·목록·표·폼 라벨이 마크업으로 연결                                                                                                           |
 | 인식 | 1.3.4 Orientation            | AA   | 화면 방향을 고정하지 않는다                                                                                                                      |
 | 인식 | 1.4.1 Use of Color           | A    | 색만으로 오류·상태를 알리지 않는다                                                                                                               |
-| 인식 | 1.4.3 Contrast (Minimum)     | AA   | 글자 4.5:1, 큰 글자(18pt 또는 14pt 굵게) 3:1                                                                                                     |
+| 인식 | 1.4.3 Contrast (Minimum)     | AA   | 글자 4.5:1, 큰 글자(18pt 또는 14pt 굵게) 3:1 · 비활성 컨트롤·장식 글자·로고는 예외                                                               |
 | 인식 | 1.4.4 Resize Text            | AA   | 200% 확대에서 내용·기능 손실 없음                                                                                                                |
 | 인식 | 1.4.10 Reflow                | AA   | 320 CSS px 폭에서 가로 스크롤 없이 읽힌다                                                                                                        |
 | 인식 | 1.4.11 Non-text Contrast     | AA   | 입력 칸 테두리·아이콘·포커스 표시 3:1                                                                                                            |

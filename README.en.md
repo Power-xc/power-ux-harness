@@ -248,7 +248,7 @@ Given a domain, links and a planning doc, it opens every source and tags it with
 </picture>
 
 - **When** — "Prepare for an accessibility certification", "Can a screen-reader user finish checkout?", "Are our touch targets big enough?"
-- **What it does** — checks keyboard and focus, accessible names and roles, contrast, target size, time limits, forms and authentication, and labels each result as automated, manual, code-inferred or not checked.
+- **What it does** — checks keyboard and focus, accessible names and roles, contrast, target size, time limits, forms and authentication, and labels each result as automated, manual, code-inferred or not checked. Text over images, gradients or translucent layers is measured from screenshot pixels with a bundled script.
 - **Alias** — `@ux a11y`
 
 ### ux-dark-patterns
