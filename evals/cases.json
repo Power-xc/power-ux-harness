@@ -180,6 +180,13 @@
       "why": "가격 심리 장치(미끼 요금제)의 기만 경계를 묻는다"
     },
     {
+      "id": "dark-5",
+      "prompt": "피드 중간에 광고 카드가 일반 글이랑 똑같이 생겼는데 라벨이 없어. 이거 뒷광고로 걸려?",
+      "expectSkill": "ux-dark-patterns",
+      "shouldNotFire": "ux-review",
+      "why": "광고와 콘텐츠의 구분 표시(기만) 여부를 묻는다"
+    },
+    {
       "id": "metrics-1",
       "prompt": "@ux metrics 새 검색 기능",
       "expectSkill": "ux-metrics",

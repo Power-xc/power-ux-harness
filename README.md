@@ -386,7 +386,7 @@ acceptance: 삭제 직후 되돌리기 한 번으로 노트가 같은 자리에 
 | 온보딩 개편이 성공했는지 볼 지표랑 가드레일 정해 줘                                   | `ux-metrics`       |
 | AI 에이전트가 메일을 대신 보내기 전에 어떤 확인 화면이 필요한지 봐 줘                 | `ux-ai`            |
 
-요청과 기대 스킬 51쌍은 [`evals/cases.json`](evals/cases.json)에 있습니다. 옆 스킬과 헷갈리기 쉬운 요청은 `shouldNotFire`로 묶어 경계를 고정해 둡니다.
+요청과 기대 스킬 52쌍은 [`evals/cases.json`](evals/cases.json)에 있습니다. 옆 스킬과 헷갈리기 쉬운 요청은 `shouldNotFire`로 묶어 경계를 고정해 둡니다.
 
 ## 설치
 
@@ -408,7 +408,7 @@ npx github:Power-xc/power-ux-harness --tool both        # .agents/skills와 .cla
 npx github:Power-xc/power-ux-harness --list             # 스킬 목록
 ```
 
-다시 실행해도 같은 파일은 건너뛰고, 직접 고친 파일은 `--force` 없이 덮어쓰지 않습니다. `--dry-run`으로 할 일만 먼저 볼 수 있습니다.
+다시 실행해도 같은 파일은 건너뜁니다. 같은 이름인데 내용이 다른 스킬(직접 고친 것 포함)이 있으면 그 스킬 폴더를 통째로 건너뛰고 충돌로 알리며, `--force`일 때만 덮어씁니다. `--dry-run`으로 할 일만 먼저 볼 수 있습니다.
 
 ### 직접 복사
 
@@ -427,6 +427,8 @@ npx github:Power-xc/power-ux-harness --list             # 스킬 목록
 | `PASS` · `FAIL` · `BLOCKED` | 검토형 스킬의 판정, BLOCKED는 환경 · 권한 때문에 확인 못 함 |
 | `N/A` · `NOT_CHECKED`       | 적용되지 않음 · 적용되지만 확인하지 못함                    |
 | `P1` · `P2` · `P3`          | 목표 완수 불가 · 손실 · 기만 / 흐름 멈춤 · 왕복 / 마찰      |
+
+여러 스킬의 보고서를 합칠 때 `ux-a11y`의 `automated` · `manual`은 `observed`로, `ux-benchmark`의 `가정`은 `hypothesis`로 읽습니다.
 
 ## 기준
 

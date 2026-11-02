@@ -307,7 +307,7 @@ Given a domain, links and a planning doc, it opens every source and tags it with
 | Set metrics and guardrails to tell whether the onboarding revamp worked                           | `ux-metrics`       |
 | What confirmation should an AI agent show before sending an email for me?                         | `ux-ai`            |
 
-All 51 request–skill pairs live in [`evals/cases.json`](evals/cases.json). Requests that are easy to confuse with a neighboring skill carry `shouldNotFire`, which pins the boundary.
+All 52 request–skill pairs live in [`evals/cases.json`](evals/cases.json). Requests that are easy to confuse with a neighboring skill carry `shouldNotFire`, which pins the boundary.
 
 ## Install
 
@@ -329,7 +329,7 @@ npx github:Power-xc/power-ux-harness --tool both        # .agents/skills and .cl
 npx github:Power-xc/power-ux-harness --list             # list the skills
 ```
 
-Re-running skips identical files and never overwrites a file you edited unless you pass `--force`. `--dry-run` prints the plan first.
+Re-running skips identical files. If a skill with the same name but different content exists (including one you edited), its whole folder is skipped and reported as a conflict; only `--force` overwrites it. `--dry-run` prints the plan first.
 
 ### Copy by hand
 
@@ -348,6 +348,8 @@ Every skill uses these words in the same sense. That is how `ux-spec` turns a `u
 | `PASS` · `FAIL` · `BLOCKED` | Verdicts of review skills; BLOCKED means environment or access stopped a required check |
 | `N/A` · `NOT_CHECKED`       | Does not apply · applies but was not checked                                            |
 | `P1` · `P2` · `P3`          | Task impossible, loss, deception / flow stops, round trips / friction                   |
+
+When merging reports from several skills, read `ux-a11y`'s `automated` · `manual` as `observed`, and `ux-benchmark`'s `가정` (assumption) as `hypothesis`.
 
 ## Standards
 
