@@ -1,59 +1,106 @@
 <!doctype html>
 <html lang="ko"><head><meta charset="utf-8">
-<link rel="stylesheet" href="shared.css"><script src="timeline.js"></script>
+<link rel="stylesheet" href="shared.css"><link rel="stylesheet" href="wire.css"><script src="timeline.js"></script><script src="wire.js"></script>
 <style>
-  .ck { position: absolute; left: 520px; width: 320px; height: 28px; }
-  .ck .box { position: absolute; left: 0; top: 4px; width: 18px; height: 18px; border: 1.5px solid var(--muted); border-radius: 4px; }
-  .ck .mk { position: absolute; left: 0; top: 4px; }
-  .ck .tx { position: absolute; left: 28px; top: 0; white-space: nowrap; }
-  .ck .ev { position: absolute; left: 160px; top: 3px; white-space: nowrap; font-size: 13px; color: var(--muted); }
-  .note { position: absolute; font-size: 13px; color: var(--muted); white-space: nowrap; }
+  .ov { position: absolute; left: 0; top: 0; }
+  .sum { height: 40px; display: flex; align-items: center; justify-content: space-between; }
+  .sum .a { font: 400 15px/20px var(--ui); }
+  .sum .b { font: 400 12px/16px var(--ui); color: var(--muted); }
+  .sum .p { font: 600 16px/24px var(--ui); }
+  .bxw { position: relative; }
+  .bxw .ring { position: absolute; left: 0; top: 0; width: 100%; height: 100%; border: 1px solid var(--p1); border-radius: 8px; }
+  .msg { position: relative; height: 48px; margin-top: 8px; }
+  .msg .t { font: 400 12px/16px var(--ui); }
+  .msg .before { color: var(--muted); }
+  .msg .after { display: flex; gap: 8px; width: 100%; }
+  .msg .after .wi { color: var(--p1); }
+  .btns { position: absolute; left: 16px; right: 16px; bottom: 32px; display: flex; gap: 8px; }
+  .btns .w-btn > span { grid-area: 1 / 1; }
+  .w-vrow .chip { margin-left: 4px; }
+  .w-vrow .pt { color: var(--muted); font-size: 13px; }
+  .w-vrow .chips { display: flex; gap: 8px; align-items: center; }
+  .w-vrow .chips .chip { margin: 0; }
 </style></head>
 <body><div id="stage">
-  <div class="abs muted small" style="left:40px;top:34px">카드 번호</div>
-  <div class="field abs mono" style="left:40px;top:60px;width:400px;height:40px;padding:0 14px;line-height:38px;border-color:var(--p1)">1234 5678 9012 345</div>
-  <div id="oldErr" class="abs small p1c" style="left:40px;top:110px"><span class="sw"><span class="o"><span>오류가 발생했습니다</span><i class="strike" id="stOld"></i></span></span></div>
-  <div id="newErr" class="abs small" style="left:40px;top:110px;width:400px;display:flex;gap:6px;align-items:flex-start">
-    <span style="padding-top:2px"></span><span id="newTxt" style="line-height:20px"></span></div>
-
-  <div id="ck0" class="ck" style="top:52px"><i class="box"></i><span class="mk" id="m0"></span><span class="tx">무엇이 틀렸는지</span><span class="ev" id="e0">카드 번호</span></div>
-  <div id="ck1" class="ck" style="top:92px"><i class="box"></i><span class="mk" id="m1"></span><span class="tx">왜 틀렸는지</span><span class="ev" id="e1">15자리만</span></div>
-  <div id="ck2" class="ck" style="top:132px"><i class="box"></i><span class="mk" id="m2"></span><span class="tx">어떻게 고치는지</span><span class="ev" id="e2">마지막 자리 확인</span></div>
-
-  <div id="bt1" class="abs" style="left:40px;top:216px"><span class="btn" style="width:96px"><span class="sw"><span class="o" id="ob1"><span>취소</span><i class="strike" id="s1"></i></span><span id="nb1">닫기</span></span></span></div>
-  <div id="bt2" class="abs" style="left:260px;top:216px"><span class="btn primary" style="width:120px"><span class="sw"><span class="o" id="ob2"><span>확인</span><i class="strike" id="s2"></i></span><span id="nb2">결제하기</span></span></span></div>
-  <div id="n1" class="note" style="left:40px;top:260px">작업 취소로 오해하지 않게</div>
-  <div id="n2" class="note" style="left:260px;top:260px">다음 행동을 버튼이 말해요</div>
-  <div id="chips" class="abs" style="left:40px;top:330px;display:flex;gap:8px"><span class="chip accent">해요체</span><span class="chip accent">고치는 방법</span><span class="chip accent">동사형 버튼</span></div>
+  <div id="ba" class="w-ba" style="left:40px;top:16px"><span id="chB" class="chip before">고치기 전</span><span id="chA" class="chip after">고친 후</span></div>
 </div>
 <script>
-const X = svg('<path d="M6 6l12 12M18 6L6 18"/>', 'style="color:var(--p1)"');
-const OK = svg('<path d="M5 12.5l4.5 4.5L19 7.5"/>', 'style="color:var(--ok)"');
-const WARN = svg('<path d="M12 4l9 16H3z"/><path d="M12 10v4M12 17v.01"/>', 'style="width:16px;height:16px;display:block"');
-$("newErr").firstElementChild.innerHTML = WARN;
-const NEW = "카드 번호 16자리 중 15자리만 입력됐어요. 마지막 자리를 확인해 주세요";
-window.DEMO = defineDemo({ width: 880, height: 400, end: 7900,
+const DX = 40, DY = 56, DEV_H = 384, W_ = 880, H_ = 464;
+const MSG_B = "오류가 발생했습니다 (E-402)";
+const MSG_A = "카드 번호 16자리 중 15자리만 입력했어요. 마지막 자리를 확인해 주세요";
+const btn = (b, a, kind, style, id) => W.button(`<span class="b">${b}</span><span class="a">${a}</span>`, { kind, id, style });
+const inner = W.statusBar() + W.appBar("결제") + `<div class="w-body">
+  <div style="height:16px"></div>
+  <div class="sum"><div><div class="a">월 구독</div><div class="b">매월 30일 결제</div></div><div class="p">9,900원</div></div>
+  <div style="height:16px"></div><div class="w-div"></div><div style="height:16px"></div>
+  <div class="w-field" id="f-card"><div class="lb">카드 번호</div>
+    <div class="bxw"><div class="bx">1234 5678 9012 345</div><div class="ring" id="ring"></div></div>
+    <div class="msg"><div class="ov t before" id="mb"><span id="mbt">${MSG_B}</span></div><div class="ov t after" id="ma">${W.icon("warning", 16)}<span>${MSG_A}</span></div></div>
+  </div></div>
+  <div class="btns" id="btns">${btn("취소", "닫기", "", "width:96px;flex:none", "b-l")}${btn("확인", "결제하기", "primary", "flex:1", "b-r")}</div>`;
+const stage = $("stage");
+stage.insertAdjacentHTML("beforeend", W.device(inner, { id: "dev", x: DX, y: DY, h: DEV_H }));
+
+// 실측: 핀·지시선·P1 점선은 기기 안 부품의 모서리에서 계산한다.
+const R = { field: W.rect($("f-card")), msgB: W.rect($("mbt")), btns: W.rect($("btns")) };
+const NUM_X = 376, GUT = [352, 364];
+const Y = { b0: 64, b1: 104, b2: 168, a0: 232, a1: 272, a2: 312 }; // 판정 행 위치
+const flagMsg = { left: R.field.left, top: R.msgB.top, width: R.field.width, height: R.msgB.height }; // 문구 줄 전체
+const c1 = W.pinCenter(R.field), c2 = W.pinCenter(R.btns);
+const up2 = c2.y - 18; // 고치기 전의 ②는 P1 칩을 피해 위로 돌아 나온다
+const num = (id, n, top) => `<div id="${id}" class="num" style="left:${NUM_X}px;top:${top + 2}px">${n}</div>`;
+const vrow = (id, top, l, v, h = 24) => `<div id="${id}" class="w-vrow" style="top:${top}px;height:${h}px"><span class="l">${l}</span><span class="v">${v}</span></div>`;
+const P1 = `<span class="chip p1">P1</span>`;
+const part = (l, v) => `<span class="pt">${l}</span> ${v}`;
+const paths = [
+  ["ld0", [[R.field.left, c1.y], [GUT[0], c1.y], [GUT[0], Y.b0 + 12], [NUM_X, Y.b0 + 12]]],
+  ["ld1", [[c2.x, c2.y - 10], [c2.x, up2], [GUT[1], up2], [GUT[1], Y.b1 + 12], [NUM_X, Y.b1 + 12]]],
+  ["ld2", [[R.field.left, c1.y], [GUT[0], c1.y], [GUT[0], Y.a0 + 12], [NUM_X, Y.a0 + 12]]],
+  ["ld3", [[R.btns.left, c2.y], [GUT[1], c2.y], [GUT[1], Y.a1 + 12], [NUM_X, Y.a1 + 12]]],
+];
+stage.insertAdjacentHTML("beforeend",
+  W.flag(flagMsg, { id: "flagM" }) + W.flag(R.btns, { id: "flagB" }) + W.leaders(W_, H_, paths) +
+  W.pin(1, R.field, "p0") + W.pin(2, R.btns, "p1") +
+  num("n0", 1, Y.b0) + num("n1", 2, Y.b1) + num("n2", 1, Y.a0) + num("n3", 2, Y.a1) +
+  vrow("v0", Y.b0, "문제", `무엇이 · 왜 · 어떻게가 빠졌어요 ${P1}`) +
+  vrow("v1", Y.b1, "버튼", `「취소」는 작업 취소로 읽히고 「확인」은 다음 행동을 말하지 않아요 ${P1}`, 48) +
+  vrow("v2", Y.b2, "근거", "ux-writing 점검 G1 고치는 방법 없는 오류 · G2 「확인」 버튼") +
+  `<div id="hr" class="hr" style="left:${NUM_X}px;width:${840 - NUM_X}px;top:208px"></div>` +
+  vrow("v3", Y.a0, "수정", `${part("무엇", "카드 번호")} · ${part("왜", "15자리만")} · ${part("어떻게", "마지막 자리 확인")}`) +
+  vrow("v4", Y.a1, "버튼 규칙", "작업 취소로 오해하지 않게 · 다음 행동을 버튼이 말해요") +
+  vrow("v5", Y.a2, "통과 조건", `<span class="chips"><span class="chip accent">해요체</span><span class="chip accent">고치는 방법</span><span class="chip accent">동사형 버튼</span><span id="pass" class="chip ok">PASS</span></span>`));
+
+// 타임라인(ms): 고치기 전 → 핀·지시선·판정 → SWAP에서 같은 기기 안 문구 교체 → 고친 후 판정
+const SWAP = 5000;
+const crossfade = (a, b, t, at, dur = 240) => { const p = easeOutCubic(progress(t, at, dur)); opacityAt(a, 1 - p); opacityAt(b, p); };
+const draw = (id, t, start) => { const el = $(id); el.style.visibility = t >= start ? "visible" : "hidden"; W.leaderAt(el, easeOutCubic(progress(t, start, 450))); };
+const out = (el, t, at) => { el.style.opacity = 1 - progress(t, at, 180); };
+
+window.DEMO = defineDemo({ width: W_, height: H_, end: 8400,
   draw(t) {
-    fade($("oldErr"), t, 300, 240, 2800);
-    strike($("stOld"), t, 2600);
-    // 새 문구: 2.8–4.8 타이핑 (캐럿은 입력 중에만)
-    const nTxt = $("newTxt"); typeInto(nTxt, NEW, t, 2800, NEW.length / 2, true, 0);
-    opacityAt($("newErr"), t >= 2800 ? 1 : 0);
-    for (let i = 0; i < 3; i++) {
-      fade($("ck" + i), t, 800 + i * 120);
-      const x = progress(t, 1600 + i * 300, 240), ok = progress(t, 5000 + i * 300, 180);
-      $("m" + i).innerHTML = ok > 0 ? OK : X;
-      $("m" + i).style.opacity = ok > 0 ? ok : x;
-      $("e" + i).style.opacity = easeOutCubic(ok);
-    }
-    // 버튼 문구 교체: 취소선 → 새 문구
-    [[1, 6000, 6400, 6500], [2, 6600, 7000, 7100]].forEach(([k, st, sw, nt]) => {
-      fade($("bt" + k), t, 0);
-      strike($("s" + k), t, st);
-      const o = progress(t, sw, 180);
-      $("ob" + k).style.opacity = 1 - o; $("nb" + k).style.opacity = o;
-      fade($("n" + k), t, nt);
-    });
-    fade($("chips"), t, 7400);
+    fade($("dev"), t, 200, 300);
+    // 전후 칩
+    const sw = easeOutCubic(progress(t, SWAP, 240));
+    opacityAt($("chB"), Math.min(progress(t, 200, 240), 1 - sw)); opacityAt($("chA"), Math.min(progress(t, 200, 240), sw));
+    // 고치기 전: 문구 P1 → 핀 ① → 지시선 → 문제 / 버튼 P1 → 핀 ② → 지시선 → 버튼 / 근거
+    fade($("flagM"), t, 1200, 240, 4600);
+    fade($("p0"), t, 1500, 200);
+    draw("ld0", t, 1700); out($("ld0"), t, 4600); fade($("n0"), t, 2150); fade($("v0"), t, 2150);
+    fade($("flagB"), t, 2600, 240, 4600);
+    fade($("p1"), t, 2900, 200);
+    draw("ld1", t, 3100); out($("ld1"), t, 4600); fade($("n1"), t, 3550); fade($("v1"), t, 3550);
+    fade($("v2"), t, 3900);
+    // 같은 기기에서 문구·입력칸·버튼을 교체
+    crossfade($("mb"), $("ma"), t, SWAP);
+    opacityAt($("ring"), sw);
+    const bs = easeOutCubic(progress(t, SWAP + 400, 240));
+    document.querySelectorAll(".w-btn .b").forEach((e) => opacityAt(e, 1 - bs));
+    document.querySelectorAll(".w-btn .a").forEach((e) => opacityAt(e, bs));
+    // 고친 후: 수정 → 버튼 규칙 → 통과 조건
+    fade($("hr"), t, SWAP);
+    draw("ld2", t, 5500); fade($("n2"), t, 5950); fade($("v3"), t, 5950);
+    draw("ld3", t, 6600); fade($("n3"), t, 7050); fade($("v4"), t, 7050);
+    fade($("v5"), t, 7500);
+    opacityAt($("pass"), progress(t, 7900, 240));
   } });
 </script></body></html>

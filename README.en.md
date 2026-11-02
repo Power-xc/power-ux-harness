@@ -112,7 +112,7 @@ Given a domain, links and a planning doc, it opens every source and tags it with
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/writing-dark.gif">
-  <img src="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/writing-light.gif" width="800" alt="A generic card-number error becomes a sentence that says what is wrong, why and how to fix it, and Cancel and OK buttons become Close and Pay">
+  <img src="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/writing-light.gif" width="800" alt="On a payment screen a card-number error with no cause and Cancel and OK buttons are flagged P1, then the same screen shows a sentence that says what is wrong, why and how to fix it with Close and Pay buttons, and passes">
 </picture>
 
 - **When** — "Polish these error messages", "Every button says OK, what should each say?", "Review our English UI copy"

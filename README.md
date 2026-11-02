@@ -156,7 +156,7 @@
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/writing-dark.gif">
-  <img src="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/writing-light.gif" width="800" alt="카드 번호 오류 문구가 무엇이 틀렸는지·왜·어떻게 고치는지를 담은 문장으로 바뀌고, 취소·확인 버튼이 닫기·결제하기로 바뀌는 모습">
+  <img src="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/writing-light.gif" width="800" alt="결제 화면에서 원인 없는 카드 번호 오류 문구와 취소·확인 버튼에 P1을 표시하고, 같은 화면이 무엇이 틀렸는지·왜·어떻게 고치는지를 담은 문장과 닫기·결제하기 버튼으로 바뀌어 통과하는 모습">
 </picture>
 
 - **이럴 때** — 「오류 문구 다듬어 줘」, 「버튼 이름이 전부 '확인'인데 뭐라고 바꿀지」, 「영어 UI 문구 검토」
