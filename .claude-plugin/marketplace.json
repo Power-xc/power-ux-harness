@@ -1,19 +1,21 @@
 {
-  "name": "ux-design-harness",
-  "owner": { "name": "Power-xc" },
-  "description": "이 저장소 자체가 유일한 플러그인이다. /plugin marketplace add Power-xc/ux-design-harness 후 /plugin install ux-design-harness@ux-design-harness 로 설치한다.",
+  "name": "power-ux-harness",
+  "owner": {
+    "name": "Power-xc"
+  },
+  "description": "이 저장소 자체가 유일한 플러그인이다. /plugin marketplace add Power-xc/power-ux-harness 후 /plugin install power-ux-harness@power-ux-harness 로 설치한다.",
   "plugins": [
     {
-      "name": "ux-design-harness",
+      "name": "power-ux-harness",
       "source": "./",
-      "displayName": "UX Design Harness",
-      "description": "AI 코딩 에이전트가 리서치부터 흐름·화면 설계서·문구·리뷰·접근성·기만 패턴 점검·지표까지 시니어 프로덕트 디자이너의 절차로 일하게 하는 UX 스킬 하네스",
+      "displayName": "Power UX Harness",
+      "description": "AI 코딩 에이전트가 자료 조사와 합성 페르소나 시뮬레이션부터 리서치·흐름·화면 설계서·문구·리뷰·접근성·기만 패턴·지표·AI 화면까지 시니어 프로덕트 디자이너의 절차로 일하게 하는 UX 스킬 하네스",
       "version": "1.0.0",
       "category": "design",
-      "tags": ["ux", "design", "accessibility", "review"],
+      "tags": ["ux", "design", "research", "accessibility", "review"],
       "license": "MIT",
-      "homepage": "https://github.com/Power-xc/ux-design-harness",
-      "repository": "https://github.com/Power-xc/ux-design-harness"
+      "homepage": "https://github.com/Power-xc/power-ux-harness",
+      "repository": "https://github.com/Power-xc/power-ux-harness"
     }
   ]
 }

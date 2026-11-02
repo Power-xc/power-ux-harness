@@ -18,7 +18,7 @@ const TOOL_DIRS = { agents: ".agents/skills", claude: ".claude/skills" };
 const TOOL_CHOICES = ["agents", "claude", "both"];
 const FIRST_SENTENCE = /^.*?[.。](?=\s|$)/;
 
-const USAGE = `사용법: npx github:Power-xc/ux-design-harness [옵션]
+const USAGE = `사용법: npx github:Power-xc/power-ux-harness [옵션]
 
 옵션:
   --tool <agents|claude|both>  설치 위치 (기본 agents)
