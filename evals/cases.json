@@ -267,6 +267,53 @@
       "expectSkill": "ux-review",
       "shouldNotFire": "ux-benchmark",
       "why": "만든 화면 평가 — 다른 서비스 사례 조사가 목적이 아님"
+    },
+    {
+      "id": "benchmark-7",
+      "prompt": "경쟁 앱들은 환불 정책 화면을 어떻게 만들었는지 보고, 우리는 사용자 대부분이 부모님 세대라는 점을 감안해서 어떻게 해야 할지 알려 줘",
+      "expectSkill": "ux-benchmark",
+      "why": "자연어 — 다른 서비스 사례 조사와 사용자 맥락 반영"
+    },
+    {
+      "id": "benchmark-8",
+      "prompt": "사용자 인터뷰를 하기 전에, 비슷한 서비스들은 이 문제를 어떻게 풀었는지부터 직접 찾아보고 우리한테 맞는 후보를 정리해 줘",
+      "expectSkill": "ux-benchmark",
+      "shouldNotFire": "ux-research",
+      "why": "경계 양성 — 인터뷰 설계가 아니라 다른 서비스 사례 조사가 목적"
+    },
+    {
+      "id": "benchmark-9",
+      "prompt": "신규 가입자 8명을 인터뷰하려고 해. 모집 조건이랑 진행 대본 짜 줘",
+      "expectSkill": "ux-research",
+      "shouldNotFire": "ux-benchmark",
+      "why": "경계 음성 — 실제 사용자 인터뷰 설계"
+    },
+    {
+      "id": "benchmark-10",
+      "prompt": "이 온보딩 화면 캡처 보고 정보 구조랑 오류 복구 경로 문제를 찾아 줘. 다른 서비스 사례는 필요 없어",
+      "expectSkill": "ux-review",
+      "shouldNotFire": "ux-benchmark",
+      "why": "경계 음성 — 만든 화면의 문제 평가"
+    },
+    {
+      "id": "benchmark-11",
+      "prompt": "합성 페르소나 5명으로 송금 확인 화면 후보 두 개 중 어느 쪽이 덜 헷갈리는지 돌려 줘",
+      "expectSkill": "ux-simulate",
+      "shouldNotFire": "ux-benchmark",
+      "why": "경계 음성 — 정해진 후보안을 페르소나로 비교"
+    },
+    {
+      "id": "benchmark-12",
+      "prompt": "운전 중에도 쓰는 앱인데, 비슷한 상황의 서비스들은 알림이나 확인을 어떻게 다르게 줬는지 조사해서 우리 안을 제안해 줘",
+      "expectSkill": "ux-benchmark",
+      "why": "자연어 — 사용 상황이 같은 서비스 조사와 맥락별 제안"
+    },
+    {
+      "id": "benchmark-13",
+      "prompt": "실패, 취소, 중복 같은 예외를 우리 사용자 유형별로 어떻게 나눠 다뤄야 할지 비슷한 서비스들을 보면서 정리해 줘",
+      "expectSkill": "ux-benchmark",
+      "shouldNotFire": "ux-flow",
+      "why": "경계 양성 — 유형별 예외의 근거를 다른 서비스 사례에서 찾는 일, 흐름도 작성이 아님"
     }
   ]
 }
