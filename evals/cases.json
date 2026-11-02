@@ -26,6 +26,13 @@
       "why": "컨트롤 패턴의 쓰임 판정"
     },
     {
+      "id": "review-5",
+      "prompt": "요금제 세 개짜리 가격표인데 사람들이 뭘 골라야 할지 헷갈려 해. 비교표 구성이랑 추천 표시 좀 봐 줘",
+      "expectSkill": "ux-review",
+      "shouldNotFire": "ux-dark-patterns",
+      "why": "고르는 화면의 비교·추천 구성을 묻는다 — 장치가 기만인지 묻지 않음"
+    },
+    {
       "id": "research-1",
       "prompt": "@ux interview 30대 맞벌이 부부의 장보기 습관",
       "expectSkill": "ux-research",
@@ -164,6 +171,13 @@
       "expectSkill": "ux-dark-patterns",
       "shouldNotFire": "ux-review",
       "why": "기만 패턴·규제 판단"
+    },
+    {
+      "id": "dark-4",
+      "prompt": "가운데 요금제가 잘 팔리게 비싼 프리미엄을 하나 더 끼워 넣으려는데, 이거 미끼라서 다크패턴에 걸려?",
+      "expectSkill": "ux-dark-patterns",
+      "shouldNotFire": "ux-review",
+      "why": "가격 심리 장치(미끼 요금제)의 기만 경계를 묻는다"
     },
     {
       "id": "metrics-1",
