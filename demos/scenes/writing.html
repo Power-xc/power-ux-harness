@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<link rel="stylesheet" href="shared.css"><script src="timeline.js"></script>
+<style>
+  .ck { position: absolute; left: 520px; width: 320px; height: 28px; }
+  .ck .box { position: absolute; left: 0; top: 4px; width: 18px; height: 18px; border: 1.5px solid var(--muted); border-radius: 4px; }
+  .ck .mk { position: absolute; left: 0; top: 4px; }
+  .ck .tx { position: absolute; left: 28px; top: 0; white-space: nowrap; }
+  .ck .ev { position: absolute; left: 160px; top: 3px; white-space: nowrap; font-size: 13px; color: var(--muted); }
+  .note { position: absolute; font-size: 13px; color: var(--muted); white-space: nowrap; }
+</style></head>
+<body><div id="stage">
+  <div class="abs muted small" style="left:40px;top:34px">카드 번호</div>
+  <div class="field abs mono" style="left:40px;top:60px;width:400px;height:40px;padding:0 14px;line-height:38px;border-color:var(--p1)">1234 5678 9012 345</div>
+  <div id="oldErr" class="abs small p1c" style="left:40px;top:110px"><span class="sw"><span class="o"><span>오류가 발생했습니다</span><i class="strike" id="stOld"></i></span></span></div>
+  <div id="newErr" class="abs small" style="left:40px;top:110px;width:400px;display:flex;gap:6px;align-items:flex-start">
+    <span style="padding-top:2px"></span><span id="newTxt" style="line-height:20px"></span></div>
+
+  <div id="ck0" class="ck" style="top:52px"><i class="box"></i><span class="mk" id="m0"></span><span class="tx">무엇이 틀렸는지</span><span class="ev" id="e0">카드 번호</span></div>
+  <div id="ck1" class="ck" style="top:92px"><i class="box"></i><span class="mk" id="m1"></span><span class="tx">왜 틀렸는지</span><span class="ev" id="e1">15자리만</span></div>
+  <div id="ck2" class="ck" style="top:132px"><i class="box"></i><span class="mk" id="m2"></span><span class="tx">어떻게 고치는지</span><span class="ev" id="e2">마지막 자리 확인</span></div>
+
+  <div id="bt1" class="abs" style="left:40px;top:216px"><span class="btn" style="width:96px"><span class="sw"><span class="o" id="ob1"><span>취소</span><i class="strike" id="s1"></i></span><span id="nb1">닫기</span></span></span></div>
+  <div id="bt2" class="abs" style="left:260px;top:216px"><span class="btn primary" style="width:120px"><span class="sw"><span class="o" id="ob2"><span>확인</span><i class="strike" id="s2"></i></span><span id="nb2">결제하기</span></span></span></div>
+  <div id="n1" class="note" style="left:40px;top:260px">작업 취소로 오해하지 않게</div>
+  <div id="n2" class="note" style="left:260px;top:260px">다음 행동을 버튼이 말해요</div>
+  <div id="chips" class="abs" style="left:40px;top:330px;display:flex;gap:8px"><span class="chip accent">해요체</span><span class="chip accent">고치는 방법</span><span class="chip accent">동사형 버튼</span></div>
+</div>
+<script>
+const X = svg('<path d="M6 6l12 12M18 6L6 18"/>', 'style="color:var(--p1)"');
+const OK = svg('<path d="M5 12.5l4.5 4.5L19 7.5"/>', 'style="color:var(--ok)"');
+const WARN = svg('<path d="M12 4l9 16H3z"/><path d="M12 10v4M12 17v.01"/>', 'style="width:16px;height:16px;display:block"');
+$("newErr").firstElementChild.innerHTML = WARN;
+const NEW = "카드 번호 16자리 중 15자리만 입력됐어요. 마지막 자리를 확인해 주세요";
+window.DEMO = defineDemo({ width: 880, height: 400, end: 7900,
+  draw(t) {
+    fade($("oldErr"), t, 300, 240, 2800);
+    strike($("stOld"), t, 2600);
+    // 새 문구: 2.8–4.8 타이핑 (캐럿은 입력 중에만)
+    const nTxt = $("newTxt"); typeInto(nTxt, NEW, t, 2800, NEW.length / 2, true, 0);
+    opacityAt($("newErr"), t >= 2800 ? 1 : 0);
+    for (let i = 0; i < 3; i++) {
+      fade($("ck" + i), t, 800 + i * 120);
+      const x = progress(t, 1600 + i * 300, 240), ok = progress(t, 5000 + i * 300, 180);
+      $("m" + i).innerHTML = ok > 0 ? OK : X;
+      $("m" + i).style.opacity = ok > 0 ? ok : x;
+      $("e" + i).style.opacity = easeOutCubic(ok);
+    }
+    // 버튼 문구 교체: 취소선 → 새 문구
+    [[1, 6000, 6400, 6500], [2, 6600, 7000, 7100]].forEach(([k, st, sw, nt]) => {
+      fade($("bt" + k), t, 0);
+      strike($("s" + k), t, st);
+      const o = progress(t, sw, 180);
+      $("ob" + k).style.opacity = 1 - o; $("nb" + k).style.opacity = o;
+      fade($("n" + k), t, nt);
+    });
+    fade($("chips"), t, 7400);
+  } });
+</script></body></html>

@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<link rel="stylesheet" href="shared.css"><script src="timeline.js"></script>
+<style>
+  .wf { position: absolute; background: var(--subtle); border-radius: 4px; }
+  .sr { position: absolute; left: 380px; width: 460px; display: flex; gap: 12px; }
+  .sr .n { position: relative; flex: none; width: 20px; height: 20px; margin-top: 2px; border: 1px solid var(--accent); border-radius: 50%; color: var(--accent); font: 600 12px/18px var(--ui); text-align: center; }
+  .sr .k { font-weight: 600; }
+  .mr { position: absolute; left: 380px; width: 460px; display: flex; gap: 12px; font-size: 13px; }
+  .mr .l { width: 56px; flex: none; color: var(--muted); }
+</style></head>
+<body><div id="stage">
+  <div id="head" class="abs" style="left:40px;top:20px;display:flex;gap:12px;align-items:baseline"><span class="mono" style="font-size:13px;font-weight:600">SCR-SUB-03</span><span style="font-weight:600">구독 해지 확인</span><span class="small muted">v1.2</span></div>
+  <div class="abs" style="left:40px;top:64px;width:300px;height:340px;border:1px solid var(--line);border-radius:12px;background:var(--bg)">
+    <div class="wf" style="left:16px;top:20px;width:150px;height:14px"></div>
+    <div class="wf" style="left:16px;top:50px;width:268px;height:10px"></div>
+    <div class="wf" style="left:16px;top:68px;width:200px;height:10px"></div>
+    <div class="wf" style="left:16px;top:110px;width:128px;height:36px;border-radius:8px"></div>
+    <div class="wf" style="left:156px;top:110px;width:128px;height:36px;border-radius:8px"></div>
+    <div style="position:absolute;left:16px;top:274px;width:268px;height:44px;border:1px dashed var(--muted);border-radius:8px"></div>
+    <div class="num" id="c1" style="left:-10px;top:42px">1</div>
+    <div class="num" id="c2" style="left:-10px;top:118px">2</div>
+    <div class="num" id="c3" style="left:274px;top:100px">3</div>
+    <div class="num" id="c4" style="left:274px;top:264px">4</div>
+  </div>
+  <div id="r1" class="sr" style="top:64px"><span class="n">1</span><div><span class="k">대화상자</span> · <span id="t1"></span></div></div>
+  <div id="r2" class="sr" style="top:124px"><span class="n">2</span><div><span class="k">버튼</span> · <span id="t2"></span></div></div>
+  <div id="r3" class="sr" style="top:184px"><span class="n">3</span><div><span class="k">로딩 버튼</span> · <span id="t3"></span></div></div>
+  <div id="r4" class="sr" style="top:244px"><span class="n">4</span><div><span class="k">스낵바</span> · <span id="t4"></span></div></div>
+  <div id="hr" class="hr" style="left:380px;width:460px;top:306px"></div>
+  <div id="m1" class="mr" style="top:318px"><span class="l">상태</span><span>기본 · 처리 중 · 오류 · 완료 · 끝(다시 구독)</span></div>
+  <div id="m2" class="mr" style="top:344px"><span class="l">접근성</span><span>열리면 제목으로 포커스 · Esc로 닫기 · 닫으면 해지 버튼으로 복귀</span></div>
+  <div id="m3" class="mr" style="top:388px"><span class="l">이벤트</span><span class="mono" style="font-size:12px">cancel_confirm_view · cancel_complete</span></div>
+</div>
+<script>
+const TXT = ["“구독을 해지할까요?” · 본문 “해지해도 11월 30일까지 쓸 수 있어요”", "“닫기” / “해지하기” — 같은 크기, 결과 동사", "처리 중 중복 제출 막기 · 실패하면 인라인 오류와 다시 시도", "“구독을 해지했어요” + “되돌리기” · 다음 결제일 전까지"];
+// 1행 접두어는 "대화상자 · 제목 …"
+TXT[0] = "제목 " + TXT[0];
+const S = [1000, 2200, 3400, 4600];
+window.DEMO = defineDemo({ width: 880, height: 420, end: 7900,
+  draw(t) {
+    fade($("head"), t, 300);
+    S.forEach((s, i) => {
+      fade($("c" + (i + 1)), t, s); fade($("r" + (i + 1)), t, s);
+      typeInto($("t" + (i + 1)), TXT[i], t, s, 30, false);
+    });
+    fade($("hr"), t, 5800);
+    fade($("m1"), t, 5800); fade($("m2"), t, 6600); fade($("m3"), t, 7400);
+  } });
+</script></body></html>

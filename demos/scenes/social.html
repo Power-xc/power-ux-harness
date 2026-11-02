@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<link rel="stylesheet" href="shared.css"><script src="timeline.js"></script><script src="brand.js"></script>
+<style>
+  .sc { display: inline-block; margin: 0 10px 12px 0; padding: 8px 16px; border: 1px solid var(--line); border-radius: 999px; font: 500 22px/1.2 var(--mono); color: var(--accent); }
+</style></head>
+<body><div id="stage">
+  <div id="brand" class="abs mono muted" style="left:72px;top:64px;font-size:24px"></div>
+  <div class="abs" style="left:72px;top:170px;font-size:58px;line-height:1.35;font-weight:700;letter-spacing:-0.02em">AI 에이전트가 시니어 디자이너의 절차로<br>UX를 설계하고 검토해요</div>
+  <div id="ids" class="abs" style="left:72px;top:432px;width:1136px"></div>
+</div>
+<script>
+$("brand").textContent = BRAND;
+$("ids").innerHTML = ["ux-simulate","ux-research","ux-flow","ux-spec","ux-writing","ux-review","ux-a11y","ux-dark-patterns","ux-metrics","ux-ai"].map((s) => `<span class="sc">${s}</span>`).join("");
+window.DEMO = defineDemo({ width: 1280, height: 640, end: 0, draw() {} });
+</script></body></html>

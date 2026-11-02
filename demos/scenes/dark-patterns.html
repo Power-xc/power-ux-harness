@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<link rel="stylesheet" href="shared.css"><script src="timeline.js"></script>
+<style>
+  .scr { position: absolute; inset: 0; padding: 16px; }
+  .cb { display: flex; align-items: center; gap: 8px; font-size: 13px; position: absolute; left: 16px; bottom: 16px; }
+  .cb i { width: 16px; height: 16px; border-radius: 4px; border: 1.5px solid var(--muted); display: grid; place-items: center; flex: none; }
+  .cb i.on { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+  .cb i svg { width: 12px; height: 12px; stroke-width: 2; }
+  .mk { position: absolute; border-radius: 6px; }
+  .vd { position: absolute; left: 400px; width: 440px; }
+  .vd .h { display: flex; align-items: center; justify-content: space-between; font-weight: 600; }
+  .vd .d { font-size: 13px; color: var(--muted); }
+</style></head>
+<body><div id="stage">
+  <div class="phone" style="left:40px;top:20px;padding:0">
+    <div id="bad" class="scr">
+      <div id="step" class="small muted" style="margin-top:2px">4 / 4</div>
+      <div id="ttl" style="position:absolute;left:16px;right:16px;top:44px"><div class="title">정말 떠나시겠어요?</div><div style="margin-top:8px">지금 해지하면 혜택을 모두 잃어요</div></div>
+      <div id="btn" class="btn primary" style="position:absolute;left:16px;right:16px;top:150px;height:48px;font-size:15px">혜택 계속 받기</div>
+      <div id="lnk" style="position:absolute;left:0;right:0;top:210px;text-align:center;font-size:11px;color:var(--muted);opacity:.75">그래도 해지할게요</div>
+      <div id="cbx" class="cb"><i class="on"></i><span>마케팅 정보 수신 동의(선택)</span></div>
+    </div>
+    <div id="good" class="scr">
+      <div class="small muted" style="margin-top:2px">2 / 2</div>
+      <div style="position:absolute;left:16px;right:16px;top:44px"><div class="title">구독을 해지할까요?</div><div style="margin-top:8px">해지해도 11월 30일까지 쓸 수 있어요</div></div>
+      <div style="position:absolute;left:16px;right:16px;top:150px;display:flex;gap:8px">
+        <span class="btn" style="flex:1;height:44px;font-size:15px">닫기</span><span class="btn primary" style="flex:1;height:44px;font-size:15px">해지하기</span></div>
+      <div class="cb"><i></i><span>마케팅 정보 수신 동의(선택)</span></div>
+    </div>
+    <div id="m1" class="mk" style="left:11px;top:143px;width:238px;height:92px;border:1px dashed var(--p1)"></div>
+    <div id="m2" class="mk" style="left:11px;top:287px;width:238px;height:32px;border:1px dashed var(--p1)"></div>
+    <div id="m3" class="mk" style="left:11px;top:13px;width:52px;height:26px;border:1px dashed var(--p1)"></div>
+    <div id="m4" class="mk" style="left:11px;top:39px;width:238px;height:84px;border:1px dashed var(--p2)"></div>
+  </div>
+  <div id="v1" class="vd" style="top:30px"><div class="h"><span>잘못된 계층 구조</span><span class="chip p1">P1</span></div><div class="d">수락만 크게, 거절은 흐린 글자</div></div>
+  <div id="v2" class="vd" style="top:100px"><div class="h"><span>특정 옵션의 사전 선택</span><span class="chip p1">P1</span></div><div class="d">선택 동의가 미리 체크돼 있어요</div></div>
+  <div id="v3" class="vd" style="top:170px"><div class="h"><span>취소·탈퇴 등의 방해</span><span class="chip p1">P1</span></div><div class="d">가입 1단계 · 해지 4단계</div></div>
+  <div id="v4" class="vd" style="top:240px"><div class="h"><span>죄책감을 주는 문구</span><span class="chip p2">P2</span></div><div class="d">“떠나시겠어요?” · “모두 잃어요”</div></div>
+  <div id="ft" class="vd small muted" style="top:332px">개정 전자상거래법(2025-02-14 시행)의 기만 유형과 대조 · 위반 여부 판단은 법무 확인</div>
+</div>
+<script>
+$("cbx").firstElementChild.innerHTML = svg('<path d="M5 12.5l4.5 4.5L19 7.5"/>');
+// 표시 창: [등장, 퇴장]
+const M = [[1000, 2400], [2400, 3800], [3800, 5200], [5200, 6400]];
+window.DEMO = defineDemo({ width: 880, height: 400, end: 8000,
+  draw(t) {
+    const swap = easeInCubic(progress(t, 6400, 240)) ;
+    const s = progress(t, 6400, 240);
+    opacityAt($("bad"), 1 - s); opacityAt($("good"), s);
+    M.forEach(([a, b], i) => { const el = $("m" + (i + 1)); fade(el, t, a, 240, b); el.style.transform = "none"; });
+    ["v1", "v2", "v3", "v4"].forEach((id, i) => fade($(id), t, M[i][0]));
+    fade($("ft"), t, 7600);
+  } });
+</script></body></html>

@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<link rel="stylesheet" href="shared.css"><script src="timeline.js"></script>
+<style>
+  .in { position: absolute; left: 32px; width: 230px; font-size: 13px; line-height: 1.45; }
+  .in .l { color: var(--muted); }
+  .ck { position: absolute; left: 32px; width: 230px; display: flex; gap: 8px; font-size: 13px; line-height: 1.45; }
+  .ck svg { width: 16px; height: 16px; margin-top: 2px; color: var(--ok); }
+  .ph { position: absolute; left: 286px; width: 250px; display: flex; align-items: center; gap: 8px; font-size: 13px; }
+  .ph .c { width: 28px; height: 28px; border: 1px solid var(--fg); border-radius: 50%; display: grid; place-items: center; font: 600 11px var(--mono); flex: none; }
+  .ph .t { flex: 1; line-height: 1.3; }
+  .ph .chip { height: 20px; padding: 0 7px; font-size: 11px; }
+  .chip.dash { color: var(--muted); border-style: dashed; border-color: var(--muted); }
+  .gc { position: absolute; font-size: 12px; display: flex; align-items: center; gap: 5px; white-space: nowrap; }
+  .gc i { width: 7px; height: 7px; border-radius: 50%; flex: none; }
+  .gh { position: absolute; font-size: 12px; font-weight: 600; line-height: 1.3; }
+  .gr { position: absolute; font: 600 11px var(--mono); color: var(--muted); }
+</style></head>
+<body><div id="stage">
+  <div class="abs mono muted" style="left:32px;top:20px;font-size:12px">ux-simulate</div>
+  <div id="i1" class="in" style="top:52px"><span class="l">도메인</span><br>구독형 독서 앱</div>
+  <div id="i2" class="in" style="top:98px"><span class="l">링크</span><br>4개 — 우리 앱 · 경쟁 앱 2 · 앱 리뷰</div>
+  <div id="i3" class="in" style="top:144px"><span class="l">기획서</span><br>해지 흐름 개선 v0.3</div>
+  <div id="ch" class="abs small muted" style="left:32px;top:204px">조사</div>
+  <div id="k1" class="ck" style="top:228px"></div><div id="k2" class="ck" style="top:252px"></div>
+  <div id="k3" class="ck" style="top:276px"></div><div id="k4" class="ck" style="top:300px"></div>
+  <div id="g" class="abs" style="left:560px;top:20px"></div>
+  <div id="rep" class="abs small muted" style="left:286px;top:374px">같은 시뮬레이션 2회 · 두 모델 교차 · 판정 일치 11/12</div>
+  <div id="rec" class="abs" style="left:286px;top:344px;display:none"></div>
+</div>
+<script>
+const CHK = svg('<path d="M5 12.5l4.5 4.5L19 7.5"/>');
+const CK = [["출처 12건 열람"], ["규제 2건 — 취소·탈퇴 방해 · 반복 간섭"], ["경쟁 흐름 3개 분해"], ["앱 리뷰 200건 분류 — 해지 어려움 38건"]];
+CK.forEach((c, i) => { $("k" + (i + 1)).innerHTML = CHK + `<span>${c[0]}</span>`; });
+const P = [["P1", "출퇴근 독서 · 30대", "리뷰 54건"], ["P2", "글자 확대 사용 · 60대", "접근성 기준"], ["P3", "요금에 민감한 학생", "리뷰 41건"], ["P4", "해지를 고민 중", "가정"]];
+const PY = 56, PP = 62;
+P.forEach((p, i) => {
+  const d = document.createElement("div"); d.className = "ph"; d.id = "p" + i; d.style.top = (PY + i * PP) + "px";
+  d.innerHTML = `<span class="c">${p[0]}</span><span class="t">${p[1]}</span><span class="chip ${i === 3 ? "dash" : "gray"}">${p[2]}</span>`;
+  $("stage").appendChild(d);
+});
+const ph = document.createElement("div"); ph.id = "phd"; ph.className = "abs small muted"; ph.style.cssText = "left:286px;top:20px"; ph.textContent = "합성 페르소나";
+$("stage").appendChild(ph);
+// 격자: 오른쪽 (x 560~848)
+const COLS = ["A안 한 화면 해지", "B안 단계형 + 남은 기간 안내", "C안 상담 연결"];
+const CELLS = [[["ok", "막힘 0"], ["p2", "글자 작음"], ["ok", "막힘 0"], ["p2", "남은 기간 모름"]],
+  [["ok", "막힘 0"], ["ok", "막힘 0"], ["ok", "막힘 0"], ["ok", "남은 기간 확인"]],
+  [["p1", "포기"], ["p2", "대기"], ["p1", "포기"], ["p2", "통화 부담"]]];
+const GX = 586, CW = 104, GY = 62, GP = 62;
+const gel = [];
+COLS.forEach((c, j) => { const h = document.createElement("div"); h.className = "gh"; h.style.cssText = `left:${GX + j * CW}px;top:20px;width:${CW - 8}px`; h.textContent = c; $("stage").appendChild(h); gel.push([h, 4700]); });
+P.forEach((p, i) => { const r = document.createElement("div"); r.className = "gr"; r.style.cssText = `left:550px;top:${GY + i * GP + 4}px`; r.textContent = p[0]; $("stage").appendChild(r); gel.push([r, 4700]); });
+let n = 0;
+CELLS.forEach((col, j) => col.forEach(([k, txt], i) => {
+  const c = document.createElement("div"); c.className = "gc";
+  c.style.cssText = `left:${GX + j * CW}px;top:${GY + i * GP + 4}px`;
+  c.innerHTML = `<i style="background:var(--${k === "ok" ? "ok" : k})"></i><span>${txt}</span>`;
+  $("stage").appendChild(c); gel.push([c, 4900 + (i * 3 + j) * 250]);
+}));
+$("rec").style.display = "flex"; $("rec").style.alignItems = "center"; $("rec").style.gap = "10px";
+$("rec").innerHTML = `<span class="chip accent">추천 B안</span><span>단계형 해지 + 남은 기간 안내 — 막힘 최소 · 기만 소지 0</span>`;
+$("rec").style.top = "396px"; $("rep").style.top = "372px";
+const note = document.createElement("div"); note.id = "nt"; note.className = "abs small muted"; note.style.cssText = "left:286px;top:424px;"; note.textContent = "합성 결과는 가설이에요 → 실제 사용자 5명으로 확인 (ux-research)"; $("stage").appendChild(note);
+window.DEMO = defineDemo({ width: 880, height: 460, end: 9700,
+  draw(t) {
+    [["i1", 300], ["i2", 700], ["i3", 1100]].forEach(([id, s]) => fade($(id), t, s));
+    fade($("ch"), t, 1800);
+    ["k1", "k2", "k3", "k4"].forEach((id, i) => fade($(id), t, 1900 + i * 300));
+    fade($("phd"), t, 3300);
+    P.forEach((p, i) => fade($("p" + i), t, 3300 + i * 330));
+    gel.forEach(([el, s]) => fade(el, t, s));
+    fade($("rep"), t, 8200); fade($("rec"), t, 8800); fade($("nt"), t, 9400);
+  } });
+</script></body></html>

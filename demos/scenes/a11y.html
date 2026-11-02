@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<link rel="stylesheet" href="shared.css"><script src="timeline.js"></script>
+<style>
+  #app { position: absolute; left: 40px; top: 20px; width: 300px; height: 360px; border: 1px solid var(--line); border-radius: 18px; overflow: hidden; background: var(--bg); }
+  .ib { position: absolute; top: 18px; width: 20px; height: 20px; border: 1px solid var(--line); border-radius: 4px; display: grid; place-items: center; }
+  .ib svg { width: 14px; height: 14px; }
+  .circ { position: absolute; width: 24px; height: 24px; margin: -12px 0 0 -12px; border-radius: 50%; border: 1px dashed var(--muted); }
+  #bar { position: absolute; left: 0; right: 0; bottom: 0; height: 64px; background: var(--bg); border-top: 1px solid var(--line); }
+  .rj { position: absolute; left: 400px; width: 440px; }
+  .rj .h { display: flex; align-items: center; justify-content: space-between; font-weight: 600; }
+  .rj .d { font-size: 13px; color: var(--muted); }
+</style></head>
+<body><div id="stage">
+  <div id="app">
+    <div class="ib" id="ib0" style="left:16px"></div><div class="ib" id="ib1" style="left:38px"></div><div class="ib" id="ib2" style="left:60px"></div>
+    <div id="circs"></div>
+    <svg id="lens" class="abs" style="left:0;top:0;width:300px;height:360px;fill:none" viewBox="0 0 300 360"></svg>
+    <div id="help" class="abs" style="left:16px;top:70px;color:var(--lowc)">도움말</div>
+    <div id="hbox" class="abs" style="left:12px;top:68px;width:54px;height:28px;border:1px solid var(--accent);border-radius:4px"></div>
+    <div id="sw" class="abs" style="left:76px;top:73px;display:flex;gap:4px"><i style="width:18px;height:18px;background:var(--lowc);border:1px solid var(--line)"></i><i style="width:18px;height:18px;background:var(--bg);border:1px solid var(--line)"></i></div>
+    <div class="field abs" style="left:16px;top:118px;width:268px;height:40px"></div>
+    <div class="abs accent" style="left:16px;top:322px;text-decoration:underline;font-size:13px">약관 보기</div>
+    <div id="bar"><span class="btn primary" style="position:absolute;right:16px;top:12px;width:92px;height:40px">다음</span></div>
+    <div id="hid" class="abs" style="left:12px;top:316px;width:68px;height:28px;border:1px dashed var(--p1);border-radius:4px"></div>
+    <div id="hidt" class="abs small p1c" style="left:16px;top:262px;white-space:nowrap">포커스가 막대 뒤에 있어요</div>
+    <div id="ring" class="abs" style="border:2px solid var(--accent);border-radius:6px"></div>
+  </div>
+  <div id="j1" class="rj" style="top:36px"><div class="h"><span>2.5.8 대상 크기(최소)</span><span class="chip p1">FAIL</span></div><div class="d">20×20px · 24px 원이 서로 겹쳐요</div></div>
+  <div id="j2" class="rj" style="top:108px"><div class="h"><span>1.4.3 명도 대비</span><span class="chip p1">FAIL</span></div><div class="d">2.6:1 · 기준 4.5:1</div></div>
+  <div id="j3" class="rj" style="top:180px"><div class="h"><span>2.4.11 포커스 가려짐(최소)</span><span class="chip p1">FAIL</span></div></div>
+  <div id="sum" class="rj" style="top:262px"><div class="hr" style="left:0;right:0;top:-12px"></div><div style="font-weight:600">AA 기준 FAIL 3건 · 자동 검사 2 · 직접 확인 1</div><div class="small muted" style="margin-top:4px">고칠 것: 터치 영역 24px 이상 · 대비 4.5:1 · 고정 막대 높이만큼 스크롤 여백</div></div>
+</div>
+<script>
+const G = (d) => svg(d, 'style="width:14px;height:14px"');
+$("ib0").innerHTML = G('<path d="M15 5l-7 7 7 7"/>');
+$("ib1").innerHTML = G('<path d="M12 15V4M8 8l4-4 4 4M5 12v7h14v-7"/>');
+$("ib2").innerHTML = G('<path d="M5 12h.01M12 12h.01M19 12h.01"/>');
+// 아이콘 중심(앱 좌표): 20px 버튼, 간격 2px → 중심 거리 22px (24px 원이 겹침)
+const C = [[26, 28], [48, 28], [70, 28]];
+$("circs").innerHTML = C.map(([x, y]) => `<i class="circ" style="left:${x}px;top:${y}px"></i>`).join("");
+const circs = [...$("circs").children];
+// 겹침(렌즈): 두 원의 교집합을 clipPath로 칠한다
+$("lens").innerHTML = `<defs><clipPath id="cp"><circle cx="48" cy="28" r="12"/></clipPath><clipPath id="cp2"><circle cx="70" cy="28" r="12"/></clipPath></defs>
+  <g id="lg" opacity="0"><g clip-path="url(#cp)"><circle cx="26" cy="28" r="12" fill="var(--p1)"/><circle cx="70" cy="28" r="12" fill="var(--p1)"/></g><g clip-path="url(#cp2)"><circle cx="48" cy="28" r="12" fill="var(--p1)"/></g></g>`;
+const RING = [[16, 18, 20, 20], [38, 18, 20, 20], [60, 18, 20, 20], [16, 118, 268, 40]];
+const PAD = 3;
+window.DEMO = defineDemo({ width: 880, height: 400, end: 8100,
+  draw(t) {
+    const cp = progress(t, 400, 240);
+    circs.forEach((c) => { c.style.opacity = cp; c.style.borderColor = t >= 1200 ? "var(--p1)" : "var(--muted)"; });
+    $("lg").setAttribute("opacity", progress(t, 1200, 240));
+    fade($("j1"), t, 1600);
+    // 대비 검사
+    const cp2 = progress(t, 3000, 240);
+    opacityAt($("hbox"), cp2); opacityAt($("sw"), cp2);
+    fade($("j2"), t, 3600);
+    // 포커스 고리: 0.4초씩 이동
+    const kf = [{ t: 5000, i: 0 }, { t: 5400, i: 1 }, { t: 5800, i: 2 }, { t: 6200, i: 3 }];
+    const idx = Math.max(0, kf.filter((k) => t >= k.t).length - 1);
+    const prev = RING[Math.max(0, idx - 1)], cur = RING[idx];
+    const m = idx === 0 ? 1 : easeOutCubic(progress(t, kf[idx].t, 160));
+    const r = cur.map((v, k) => prev[k] + (v - prev[k]) * m);
+    const ring = $("ring");
+    ring.style.left = (r[0] - PAD - 2) + "px"; ring.style.top = (r[1] - PAD - 2) + "px";
+    ring.style.width = (r[2] + 2 * PAD + 4) + "px"; ring.style.height = (r[3] + 2 * PAD + 4) + "px";
+    opacityAt(ring, t >= 5000 && t < 6600 ? progress(t, 5000, 160) : t >= 6600 ? 1 - progress(t, 6600, 180) : 0);
+    // 가려진 대상
+    opacityAt($("hid"), progress(t, 6600, 240)); fade($("hidt"), t, 6600);
+    fade($("j3"), t, 6800);
+    fade($("sum"), t, 7600);
+  } });
+</script></body></html>

@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<link rel="stylesheet" href="shared.css"><script src="timeline.js"></script>
+<style>
+  .c { position: absolute; white-space: nowrap; }
+  .c0 { left: 40px; font-weight: 600; } .c1 { left: 170px; } .c2 { left: 380px; } .c3 { left: 560px; }
+  .hd { font-size: 13px; color: var(--muted); }
+</style></head>
+<body><div id="stage">
+  <div id="ttl" class="abs" style="left:40px;top:22px;display:flex;gap:12px;align-items:baseline"><span class="title">독서 노트 공유하기</span><span class="small muted">HEART × 목표–신호–지표</span></div>
+  <div id="hdr"><span class="c c0 hd" style="top:70px;font-weight:400">범주</span><span class="c c1 hd" style="top:70px">목표</span><span class="c c2 hd" style="top:70px">신호</span><span class="c c3 hd" style="top:70px">지표</span></div>
+  <div class="hr" style="left:40px;right:40px;top:98px"></div>
+  <div id="gh" class="hr" style="left:40px;right:40px;top:318px"></div>
+  <div id="note" class="abs small muted" style="left:40px;top:386px">지표는 사용자당 비율로 · 원수는 쓰지 않아요</div>
+</div>
+<script>
+const ROWS = [
+  ["Happiness", "공유가 쉽다고 느껴요", "공유 직후 만족도 응답", "5점 중 4점 이상 응답 비율"],
+  ["Engagement", "이번 목표가 아니에요", "—", "제외 — 공유 빈도는 성공 기준이 아님", true],
+  ["Adoption", "새 기능을 써 봐요", "첫 공유", "7일 안에 첫 공유한 활성 사용자 비율"],
+  ["Retention", "계속 공유해요", "두 번째 공유", "첫 공유 뒤 30일 안 재공유 비율"],
+  ["Task success", "막힘 없이 공유해요", "공유 취소 · 오류", "공유 시작 대비 완료율"],
+  ["__G__", "노트 삭제가 늘지 않아요", "공유 뒤 노트 삭제", "사용자당 삭제율 변화"],
+];
+const Y0 = 112, PITCH = 40, STARTS = [600, 1400, 2200, 3000, 3800, 5400];
+const cells = ROWS.map((r, i) => r.slice(0, 4).map((txt, k) => {
+  const c = document.createElement("span"); c.className = `c c${k}`; c.style.top = (Y0 + i * PITCH + (i === 5 ? 18 : 0)) + "px";
+  if (r[4]) c.style.color = "var(--muted)";
+  $("stage").appendChild(c); return c;
+}));
+window.DEMO = defineDemo({ width: 880, height: 420, end: 6600,
+  draw(t) {
+    fade($("ttl"), t, 300); fade($("hdr"), t, 300);
+    ROWS.forEach((r, i) => r.slice(0, 4).forEach((txt, k) => {
+      const c = cells[i][k], s = STARTS[i] + k * 150;
+      if (txt === "__G__") { c.innerHTML = `<span class="chip p2">가드레일</span>`; fade(c, t, s); return; }
+      typeInto(c, txt, t, s, 48, false); c.style.opacity = t >= s ? 1 : 0;
+      c.style.transform = "none";
+    }));
+    fade($("gh"), t, 5400); fade($("note"), t, 6200);
+  } });
+</script></body></html>

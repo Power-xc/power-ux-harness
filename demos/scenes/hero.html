@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<link rel="stylesheet" href="shared.css">
+<script src="timeline.js"></script><script src="brand.js"></script>
+<style>
+  .row { position: absolute; left: 32px; right: 32px; height: 40px; display: flex; align-items: center; gap: 10px; }
+  .dot { width: 12px; height: 12px; border: 1.5px solid var(--muted); border-radius: 50%; flex: none; position: relative; }
+  .dot i { position: absolute; inset: -1.5px; border-radius: 50%; background: var(--ok); border: 1.5px solid var(--ok); }
+  .step { width: 64px; flex: none; color: var(--muted); font-size: 13px; white-space: nowrap; }
+  .sid { width: 130px; flex: none; font: 13px var(--mono); color: var(--accent); white-space: nowrap; }
+  .res { flex: 1; white-space: nowrap; }
+  .chipbox { width: 52px; flex: none; display: flex; justify-content: flex-end; }
+</style></head>
+<body><div id="stage">
+  <div id="brand" class="abs mono muted" style="left:32px;top:18px;font-size:12px"></div>
+  <div id="prompt" class="abs mono" style="left:32px;top:52px;font-size:15px"></div>
+  <div id="intro" class="abs muted small" style="left:32px;top:96px">단계 9개를 순서대로 실행해요</div>
+  <div id="sumhr" class="hr" style="left:32px;right:32px;top:520px"></div>
+  <div id="sum" class="abs" style="left:32px;right:32px;top:528px;height:28px;display:flex;align-items:center;justify-content:space-between"><span>먼저 고칠 2건 · 출시 판정 FAIL → 고친 뒤 다시 점검</span><span class="chip p1">FAIL</span></div>
+</div>
+<script>
+const ROWS = [
+  ["탐색", "ux-simulate", "자료 12건 조사 · 합성 페르소나 4명 · 후보안 3개 시뮬레이션 → B안 추천", "가설", "accent"],
+  ["확인", "ux-research", "실제 사용자 5명 인터뷰 · 시뮬레이션 가설 3개 중 2개 확인", "완료", "ok"],
+  ["정의", "ux-flow", "해지 흐름 화면 5개 · 상태 7개 · 정할 것 2건", "완료", "ok"],
+  ["설계", "ux-spec", "화면마다 패턴 이름·상태·문구를 적은 설계서 3장", "완료", "ok"],
+  ["문구", "ux-writing", "“해지해도 11월 30일까지 쓸 수 있어요”", "완료", "ok"],
+  ["검토", "ux-review", "해지 완료를 토스트로만 알려요 → 완료 화면과 다시 구독 경로", "P2", "p2"],
+  ["접근성", "ux-a11y", "해지 버튼 20×20px → 24×24px 이상 (WCAG 2.5.8)", "FAIL", "p1"],
+  ["기만 패턴", "ux-dark-patterns", "해지가 가입보다 3단계 깊어요 → 취소·탈퇴 방해 소지", "P1", "p1"],
+  ["측정", "ux-metrics", "해지 완료율 · 해지 뒤 7일 안 문의 수(가드레일)", "완료", "ok"],
+];
+const T0 = 2800, GAP = 800, Y0 = 130, PITCH = 42;
+const rowEls = ROWS.map((r, i) => {
+  const el = document.createElement("div");
+  el.className = "row"; el.style.top = (Y0 + i * PITCH) + "px";
+  el.innerHTML = `<span class="dot"><i></i></span><span class="step">${r[0]}</span><span class="sid">${r[1]}</span><span class="res">${r[2]}</span><span class="chipbox"><span class="chip ${r[4]}">${r[3]}</span></span>`;
+  $("stage").insertBefore(el, $("sumhr"));
+  return el;
+});
+const SUM_T = T0 + GAP * 8 + 600;
+window.DEMO = defineDemo({ width: 880, height: 560, end: SUM_T + 700,
+  draw(t) {
+    $("brand").textContent = BRAND;
+    typeInto($("prompt"), "› 구독 해지 화면을 설계하고 출시 전 점검까지 해 줘", t, 300, 28.5, true, 2300);
+    fade($("intro"), t, 2300);
+    rowEls.forEach((el, i) => {
+      const s = T0 + GAP * i;
+      fade(el, t, s);
+      el.querySelector(".dot i").style.opacity = progress(t, s + 450, 160);
+    });
+    fade($("sumhr"), t, SUM_T); fade($("sum"), t, SUM_T);
+  } });
+</script></body></html>

@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<link rel="stylesheet" href="shared.css"><script src="timeline.js"></script>
+<style>
+  .nd { position: absolute; top: 120px; width: 132px; height: 48px; border: 1px solid var(--fg); border-radius: 10px; display: grid; place-items: center; white-space: nowrap; }
+  .nd.opt { border-style: dashed; }
+  .st { position: absolute; top: 184px; width: 132px; display: flex; justify-content: center; gap: 6px; }
+  svg#ar { position: absolute; left: 0; top: 0; width: 880px; height: 380px; fill: none; stroke: var(--fg); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+</style></head>
+<body><div id="stage">
+  <svg id="ar" viewBox="0 0 880 380"></svg>
+  <div id="back" class="abs small muted" style="left:0;width:880px;top:20px;text-align:center">되돌리기</div>
+  <div id="sum" class="abs" style="left:40px;right:40px;top:300px">화면 5개 · 상태 7개 · 정해야 할 것 2건 — <span class="muted">환불 정책, 해지 이유 필수 여부</span></div>
+</div>
+<script>
+const NAMES = ["설정", "구독 관리", "해지 이유(선택)", "해지 확인", "해지 완료"];
+const W = 132, GAP = 35, X0 = 40, Y = 144;
+const STATES = [[], ["로딩", "오류"], ["건너뛰기"], ["처리 중", "오류"], ["끝", "다시 구독"]];
+const nodes = NAMES.map((n, i) => {
+  const d = document.createElement("div");
+  d.className = "nd" + (i === 2 ? " opt" : ""); d.textContent = n; d.style.left = (X0 + i * (W + GAP)) + "px";
+  $("stage").appendChild(d); return d;
+});
+const sts = STATES.map((s, i) => {
+  const d = document.createElement("div"); d.className = "st"; d.style.left = (X0 + i * (W + GAP)) + "px";
+  d.innerHTML = s.map((c) => `<span class="chip gray">${c}</span>`).join(""); $("stage").appendChild(d); return d;
+});
+const NS = "http://www.w3.org/2000/svg";
+function mk(d, dash) { const p = document.createElementNS(NS, "path"); p.setAttribute("d", d); p.setAttribute("pathLength", "1"); $("ar").appendChild(p); return p; }
+const arrows = [0, 1, 2, 3].map((i) => {
+  const x1 = X0 + i * (W + GAP) + W + 2, x2 = X0 + (i + 1) * (W + GAP) - 2;
+  return mk(`M${x1} ${Y} L${x2} ${Y} M${x2 - 6} ${Y - 4} L${x2} ${Y} L${x2 - 6} ${Y + 4}`);
+});
+// 되돌리기: 해지 완료 위 → 구독 관리 위로 돌아가는 점선 곡선
+const xa = X0 + 4 * (W + GAP) + W / 2, xb = X0 + (W + GAP) + W / 2;
+const ret = mk(`M${xa} 118 C${xa} 50 ${xb} 50 ${xb} 116 M${xb - 4} 109 L${xb} 117 L${xb + 4} 109`);
+ret.style.strokeDasharray = "0.02 0.02"; ret.setAttribute("stroke-dasharray", "none");
+window.DEMO = defineDemo({ width: 880, height: 380, end: 7300,
+  draw(t) {
+    nodes.forEach((n, i) => fade(n, t, 300 + 600 * i));
+    arrows.forEach((a, i) => {
+      const p = progress(t, 300 + 600 * i + 240, 300);
+      a.style.strokeDasharray = "1 1"; a.style.strokeDashoffset = 1 - p; a.style.opacity = p > 0 ? 1 : 0;
+    });
+    sts.forEach((s, i) => { if (i > 0) fade(s, t, 4000 + (i - 1) * 500); });
+    const rp = progress(t, 6000, 600);
+    ret.style.strokeDasharray = "0.025 0.02"; ret.style.strokeDashoffset = 1 - rp; ret.style.opacity = rp > 0 ? 1 : 0;
+    ret.style.strokeDasharray = rp < 1 ? "1 1" : "0.025 0.02";
+    fade($("back"), t, 6200);
+    fade($("sum"), t, 6800);
+  } });
+</script></body></html>

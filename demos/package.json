@@ -1,0 +1,12 @@
+{
+  "name": "power-ux-harness-demos",
+  "private": true,
+  "type": "module",
+  "description": "README용 데모 GIF 렌더러 (결정적 타임라인 장면 → PNG 프레임 → GIF)",
+  "scripts": {
+    "render": "node render.mjs"
+  },
+  "devDependencies": {
+    "puppeteer-core": "^24.0.0"
+  }
+}

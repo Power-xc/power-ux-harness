@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<link rel="stylesheet" href="shared.css"><script src="timeline.js"></script>
+<style>
+  .li { position: relative; height: 44px; overflow: hidden; border-top: 1px solid var(--line); }
+  .li .in { height: 44px; display: flex; align-items: center; justify-content: space-between; font-size: 13px; white-space: nowrap; }
+  .li .del { width: 40px; text-align: center; color: var(--muted); font-size: 12px; }
+  .bar { position: absolute; left: 16px; right: 16px; bottom: 16px; height: 36px; border-radius: 8px; background: var(--subtle); display: flex; align-items: center; justify-content: space-between; padding: 0 12px; font-size: 13px; }
+  .pl { position: absolute; left: 340px; width: 80px; font-size: 13px; color: var(--muted); }
+  .pv { position: absolute; left: 440px; width: 400px; }
+</style></head>
+<body><div id="stage">
+  <div class="phone" style="left:40px;top:20px">
+    <div class="title" style="height:27px;margin-bottom:12px">독서 노트</div>
+    <div id="list" style="border-bottom:1px solid var(--line)">
+      <div class="li" id="r1"><div class="in"><span>데미안 — 3장 메모</span><span class="del">삭제</span></div></div>
+      <div class="li" id="r2"><div class="in"><span>어린 왕자 — 인상 깊은 문장</span><span class="del">삭제</span></div></div>
+      <div class="li" id="r3"><div class="in"><span>코스모스 — 질문 목록</span><span class="del">삭제</span></div></div>
+    </div>
+    <div class="bar" id="toast"><span>삭제했어요</span></div>
+    <div class="bar" id="snack"><span>노트를 삭제했어요</span><span class="accent" style="font-weight:600">되돌리기</span></div>
+  </div>
+  <div class="pointer" id="ptr"></div><div class="ripple" id="rip"></div>
+
+  <div id="a1" class="pl" style="top:44px">현재 패턴</div><div id="a2" class="pv" style="top:40px">토스트 · 방해 수준 1</div>
+  <div id="a3" class="pv" style="top:76px">되돌릴 수 없는 삭제를 사라지는 알림으로만 알려요</div>
+  <div id="a4" class="abs" style="left:340px;top:106px"><span class="chip p2">P2</span></div>
+  <div id="a5" class="pv" style="top:108px">휴리스틱 3 · 사용자 통제와 자유</div>
+  <div id="b0" class="hr" style="left:340px;width:500px;top:164px"></div>
+  <div id="b1" class="pl" style="top:184px">수정</div><div id="b2" class="pv" style="top:180px">스낵바 + 되돌리기 · 휴지통 30일</div>
+  <div id="b3" class="pl" style="top:220px">문구</div><div id="b4" class="pv" style="top:216px">“노트를 삭제했어요” <span class="accent">[되돌리기]</span></div>
+  <div id="c1" class="pl" style="top:288px;font-family:var(--mono);font-size:12px">acceptance</div>
+  <div id="c2" class="pv" style="top:284px;width:500px">삭제 뒤 되돌리기 한 번으로 복구돼요 &nbsp;<span class="chip ok">PASS</span></div>
+</div>
+<script>
+const ROW = 44, DEL = { x: 57 + 226 - 20, y: 76 + ROW + 22 + 1 }, UNDO = { x: 57 + 226 - 30, y: 20 + 360 - 16 - 18 };
+const PRESS = [1000, 4600, 6200];
+const REST = { x: 190, y: 300 };
+const kf = [{ t: 0, ...REST }, { t: 500, ...REST }, { t: 1000, ...DEL }, { t: 1400, ...DEL }, { t: 1900, ...REST },
+  { t: 4100, ...REST }, { t: 4600, ...DEL }, { t: 4900, ...DEL }, { t: 5400, ...REST }, { t: 5700, ...REST }, { t: 6200, ...UNDO }, { t: 7000, ...UNDO }, { t: 7400, ...REST }];
+window.DEMO = defineDemo({ width: 880, height: 400, end: 7400,
+  draw(t) {
+    // 2행 접힘: 1.0 접힘 → 4.0 초기화 → 4.6 접힘 → 6.6 펼침
+    let h = ROW;
+    if (t >= 6600) h = ROW * easeOutCubic(progress(t, 6600, 240));
+    else if (t >= 4600) h = ROW * (1 - easeOutCubic(progress(t, 4600, 240)));
+    else if (t >= 1000 && t < 4000) h = ROW * (1 - easeOutCubic(progress(t, 1000, 240)));
+    const r2 = $("r2"); r2.style.height = h + "px"; r2.style.opacity = h / ROW; r2.style.borderTopWidth = h < 1 ? 0 : 1;
+    fade($("toast"), t, 1300, 240, 3300);
+    fade($("snack"), t, 5200, 240, 6600);
+    // 포인터·누름 표시
+    const p = path(t, kf); const ptr = $("ptr");
+    ptr.style.left = p.x + "px"; ptr.style.top = p.y + "px";
+    ptr.style.opacity = 0.85 * progress(t, 300, 200);
+    const rp = PRESS.map((s) => progress(t, s, 320)).find((v) => v > 0 && v < 1);
+    const rip = $("rip"); const ps = PRESS.findLast((s) => t >= s);
+    if (rp !== undefined) { const pos = ps === 6200 ? UNDO : DEL; rip.style.left = pos.x + "px"; rip.style.top = pos.y + "px";
+      rip.style.opacity = 1 - rp; rip.style.transform = `scale(${1 + 2.2 * easeOutCubic(rp)})`; } else rip.style.opacity = 0;
+    // 오른쪽 판정
+    [["a1", 1500], ["a2", 1500], ["a3", 2100], ["a4", 2700], ["a5", 2700], ["b0", 4000], ["b1", 4000], ["b2", 4000], ["b3", 4100], ["b4", 4100], ["c1", 7000], ["c2", 7000]]
+      .forEach(([id, s]) => fade($(id), t, s));
+  } });
+</script></body></html>

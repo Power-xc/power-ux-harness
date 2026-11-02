@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<link rel="stylesheet" href="shared.css"><script src="timeline.js"></script>
+<style>
+  .fx { position: absolute; left: 480px; width: 360px; }
+  .fx .q { white-space: nowrap; }
+  .fx .why { margin-top: 4px; display: flex; align-items: center; gap: 8px; }
+  .fx .nw { margin-top: 8px; display: flex; gap: 10px; align-items: flex-start; }
+  .fx .nw .tx { flex: 1; }
+</style></head>
+<body><div id="stage">
+  <div id="qh" class="abs" style="left:40px;top:22px;display:flex;gap:12px;align-items:baseline"><span class="small muted">질문</span><span class="title">사람들은 왜 독서 노트를 그만 쓸까?</span></div>
+  <div class="abs" style="left:76px;top:84px;width:340px;height:240px;border-left:1px solid var(--line);border-bottom:1px solid var(--line)"></div>
+  <div class="hr" style="left:246px;top:84px;width:1px;height:240px"></div><div class="hr" style="left:76px;top:204px;width:340px"></div>
+  <div class="abs small muted" style="left:40px;top:84px;height:240px;writing-mode:vertical-rl;text-align:center;line-height:30px">얼마나 ↔ 왜</div>
+  <div class="abs small muted" style="left:76px;top:332px;width:340px;text-align:center">말한 것 ↔ 한 일</div>
+  <div id="cell" class="abs" style="left:258px;top:216px;width:146px">맥락 인터뷰 + 사용성 테스트 5명</div>
+  <div id="dot" class="abs" style="width:10px;height:10px;margin:-5px 0 0 -5px;border-radius:50%;background:var(--accent)"></div>
+
+  <div id="fx1" class="fx" style="top:92px">
+    <div id="q1" class="q">노트 기능이 유용하다고 생각하세요?<i class="strike" id="s1" style="top:55%"></i></div>
+    <div id="w1" class="why"><span class="chip p2">유도 질문</span><span class="small muted">예/아니요로 끝나요</span></div>
+    <div class="nw"><span id="p1" class="chip ok">PASS</span><div class="tx" id="n1"></div></div>
+  </div>
+  <div id="fx2" class="fx" style="top:236px">
+    <div id="q2" class="q">‘공유’ 버튼을 눌러 보세요<i class="strike" id="s2" style="top:55%"></i></div>
+    <div id="w2" class="why"><span class="chip p2">화면 라벨 노출</span><span class="small muted">어디를 누를지 알려 줘요</span></div>
+    <div class="nw"><span id="p2" class="chip ok">PASS</span><div class="tx" id="n2"></div></div>
+  </div>
+</div>
+<script>
+document.querySelectorAll(".q").forEach((q) => { q.style.position = "relative"; q.style.display = "inline-block"; });
+const N1 = "마지막으로 노트를 쓴 때를 처음부터 이야기해 주세요", N2 = "어제 읽은 책의 메모를 친구에게 보내 주세요";
+const dotKf = [{ t: 0, x: 161, y: 144 }, { t: 1200, x: 161, y: 144 }, { t: 2000, x: 331, y: 300 }];
+window.DEMO = defineDemo({ width: 880, height: 400, end: 8700,
+  draw(t) {
+    fade($("qh"), t, 300);
+    const d = path(t, dotKf); $("dot").style.left = (76 + d.x - 76 + 0) + "px"; $("dot").style.top = d.y + "px";
+    $("dot").style.left = d.x + "px";
+    fade($("cell"), t, 2200);
+    fade($("q1"), t, 3000); fade($("w1"), t, 3800); strike($("s1"), t, 4200);
+    $("q1").style.color = t >= 4200 ? "var(--muted)" : "var(--fg)";
+    typeInto($("n1"), N1, t, 4400, N1.length / 1.4, false); opacityAt($("n1"), t >= 4400 ? 1 : 0);
+    fade($("p1"), t, 5800);
+    fade($("q2"), t, 6400); fade($("w2"), t, 6800); strike($("s2"), t, 7000);
+    $("q2").style.color = t >= 7000 ? "var(--muted)" : "var(--fg)";
+    typeInto($("n2"), N2, t, 7200, N2.length / 1.2, false); opacityAt($("n2"), t >= 7200 ? 1 : 0);
+    fade($("p2"), t, 8400);
+  } });
+</script></body></html>
