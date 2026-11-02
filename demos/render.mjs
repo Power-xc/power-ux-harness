@@ -28,7 +28,7 @@ for (let i = 0; i < args.length; i++) {
 opt.fps = Number(opt.fps); opt.scale = Number(opt.scale); opt.colors = Number(opt.colors);
 if (!["light", "dark", "both"].includes(opt.theme)) throw new Error("--theme은 light|dark|both");
 if (!existsSync(CHROME)) throw new Error(`Chrome을 찾을 수 없어요: ${CHROME} (CHROME_PATH로 지정)`);
-const targets = scenes.length ? scenes : [...ALL, "social"];
+const targets = scenes.length ? scenes : ALL; // social-preview.png는 render-reel.mjs가 만든다
 const themes = opt.theme === "both" ? ["light", "dark"] : [opt.theme];
 mkdirSync(OUT, { recursive: true });
 
@@ -48,15 +48,6 @@ const rows = [];
 const browser = await puppeteer.launch({ executablePath: CHROME, headless: true, timeout: 120000 });
 try {
   for (const scene of targets) {
-    if (scene === "social") {
-      const { page } = await open(browser, "social", "light", 1);
-      await page.evaluate(() => DEMO.render(0));
-      await page.screenshot({ path: path.join(OUT, "social-preview.png") });
-      await page.close();
-      const f = path.join(OUT, "social-preview.png");
-      rows.push({ scene, theme: "light", frames: 1, px: "1280x640", mb: statSync(f).size / 1048576 });
-      continue;
-    }
     for (const theme of themes) {
       const { page, width, height } = await open(browser, scene, theme, opt.scale);
       const dir = path.join(FRAMES, `${scene}-${theme}`);
@@ -95,7 +86,7 @@ if (rows.length) {
   console.log("| --- | --- | ---: | --- | ---: | --- |");
   for (const r of rows) {
     const budget = r.scene === "hero" ? 2.5 : 1.5;
-    const ok = r.scene === "social" ? "-" : r.mb <= budget ? "OK" : `초과(>${budget})`;
+    const ok = r.mb <= budget ? "OK" : `초과(>${budget})`;
     console.log(`| ${r.scene} | ${r.theme} | ${r.frames} | ${r.px} | ${r.mb.toFixed(2)} | ${ok} |`);
   }
 }

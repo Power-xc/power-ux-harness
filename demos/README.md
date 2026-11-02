@@ -17,9 +17,8 @@ README에 들어가는 데모 GIF를 만드는 결정적 렌더러와 장면 모
 | `metrics` | 880×420 | 약 9.5초 | HEART × 목표–신호–지표 표 (`ux-metrics`) |
 | `research` | 880×400 | 약 11초 | 연구 방법 고르기와 질문 고치기 (`ux-research`) |
 | `ai` | 880×420 | 약 10초 | 출처·중지·피드백이 있는 대화 화면 (`ux-ai`) |
-| `social` | 1280×640 | 정지 | GitHub 소셜 미리보기 PNG (라이트만) |
 
-결과는 `assets/demos/<scene>-light.gif`, `<scene>-dark.gif`, `social-preview.png`에 써요.
+결과는 `assets/demos/<scene>-light.gif`, `<scene>-dark.gif`에 써요.
 
 ## 렌더
 
@@ -40,3 +39,12 @@ Chrome 경로는 `CHROME_PATH`, ffmpeg 경로는 `FFMPEG_PATH`(기본 `/opt/home
 - 테마는 `?theme=light|dark`로 정하고 색은 `scenes/shared.css`의 변수만 써요.
 - 마지막 상태를 2.4초 유지한 뒤 0.3초 동안 처음 상태로 교차 페이드해 반복 이음새를 맞춰요.
 - 프로젝트 이름은 `scenes/brand.js` 한 곳에서 바꿔요.
+
+## 홍보 미디어 (릴스·표지·링크 공유 표지)
+
+```sh
+node demos/render-reel.mjs              # 전부 (약 6분)
+node demos/render-reel.mjs --only covers   # reel | covers | social
+```
+
+위 장면을 다크 테마로 높은 배율(CSS 변환, 매 프레임 벡터로 다시 렌더)로 키워 1080×1920 30fps 릴스(`media/power-ux-harness-reel.mp4`, 34.5초, 소리 없음, 끝 0.3초는 첫 프레임으로 교차 페이드)를 만들고, 릴스 표지 2안(`media/power-ux-harness-reel-cover-a.jpg`, `-b.jpg`)과 링크 공유 표지(`assets/demos/social-preview.png`, 1280×640 라이트)를 함께 만들어요. 구간·자막 타이밍은 `render-reel.mjs` 위쪽 `SEGMENTS`·`CAPTIONS`에 있고, `media/`는 `.gitignore`예요. 인스타 캡션은 `media/reel-caption.txt`예요.
