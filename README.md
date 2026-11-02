@@ -130,7 +130,7 @@
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/flow-dark.gif">
-  <img src="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/flow-light.gif" width="800" alt="회원가입에서 주문 완료까지 화면 5개가 이어지고, 화면마다 오류·로딩·빈 목록·처리 중·실패·끝 상태가 붙고, 결제 실패 때 장바구니로 돌아가는 점선 예외 경로가 그려지는 모습">
+  <img src="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/flow-light.gif" width="800" alt="회원가입에서 주문 완료까지 화면 5개가 썸네일과 화살표로 이어지고, 화면마다 오류·로딩·빈 목록·빈 장바구니·처리 중·실패·끝 상태 칩이 붙고, 결제 실패와 연결 끊김이 점선 화살표로 다른 수단 시트와 장바구니 저장 화면에 이어지며, 끝 줄에 정해야 할 것 2건이 남는 모습">
 </picture>
 
 - **이럴 때** — 「회원가입부터 첫 주문까지 화면 목록이랑 예외 경로」, 「마이페이지 메뉴 구조 잡아 줘」

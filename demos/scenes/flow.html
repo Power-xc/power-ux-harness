@@ -1,52 +1,288 @@
 <!doctype html>
-<html lang="ko"><head><meta charset="utf-8">
-<link rel="stylesheet" href="shared.css"><script src="timeline.js"></script>
-<style>
-  .nd { position: absolute; top: 120px; width: 132px; height: 48px; border: 1px solid var(--fg); border-radius: 10px; display: grid; place-items: center; white-space: nowrap; }
-  .nd.opt { border-style: dashed; }
-  .st { position: absolute; top: 184px; width: 132px; display: flex; justify-content: center; gap: 6px; }
-  svg#ar { position: absolute; left: 0; top: 0; width: 880px; height: 380px; fill: none; stroke: var(--fg); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
-</style></head>
-<body><div id="stage">
-  <svg id="ar" viewBox="0 0 880 380"></svg>
-  <div id="back" class="abs small muted" style="left:0;width:880px;top:20px;text-align:center">예외 — 결제 실패 → 다른 수단 · 연결 끊김 → 장바구니 저장 + 다시 시도</div>
-  <div id="sum" class="abs" style="left:40px;right:40px;top:300px">화면 5개 · 상태 7개 · 정해야 할 것 2건 — <span class="muted">비회원 주문 허용, 재고 부족 시 처리</span></div>
-</div>
-<script>
-const NAMES = ["회원가입", "상품 목록", "장바구니", "결제", "주문 완료"];
-const W = 132, GAP = 35, X0 = 40, Y = 144;
-const STATES = [["오류"], ["로딩", "빈 목록"], ["빈 장바구니"], ["처리 중", "실패"], ["끝"]];
-const nodes = NAMES.map((n, i) => {
-  const d = document.createElement("div");
-  d.className = "nd" + ""; d.textContent = n; d.style.left = (X0 + i * (W + GAP)) + "px";
-  $("stage").appendChild(d); return d;
-});
-const sts = STATES.map((s, i) => {
-  const d = document.createElement("div"); d.className = "st"; d.style.left = (X0 + i * (W + GAP)) + "px";
-  d.innerHTML = s.map((c) => `<span class="chip gray">${c}</span>`).join(""); $("stage").appendChild(d); return d;
-});
-const NS = "http://www.w3.org/2000/svg";
-function mk(d, dash) { const p = document.createElementNS(NS, "path"); p.setAttribute("d", d); p.setAttribute("pathLength", "1"); $("ar").appendChild(p); return p; }
-const arrows = [0, 1, 2, 3].map((i) => {
-  const x1 = X0 + i * (W + GAP) + W + 2, x2 = X0 + (i + 1) * (W + GAP) - 2;
-  return mk(`M${x1} ${Y} L${x2} ${Y} M${x2 - 6} ${Y - 4} L${x2} ${Y} L${x2 - 6} ${Y + 4}`);
-});
-// 예외 경로: 결제 위 → 장바구니 위로 돌아가는 점선 곡선
-const xa = X0 + 3 * (W + GAP) + W / 2, xb = X0 + 2 * (W + GAP) + W / 2;
-const ret = mk(`M${xa} 118 C${xa} 70 ${xb} 70 ${xb} 116 M${xb - 4} 109 L${xb} 117 L${xb + 4} 109`);
-ret.style.strokeDasharray = "0.02 0.02"; ret.setAttribute("stroke-dasharray", "none");
-window.DEMO = defineDemo({ width: 880, height: 380, end: 7300,
-  draw(t) {
-    nodes.forEach((n, i) => fade(n, t, 300 + 600 * i));
-    arrows.forEach((a, i) => {
-      const p = progress(t, 300 + 600 * i + 240, 300);
-      a.style.strokeDasharray = "1 1"; a.style.strokeDashoffset = 1 - p; a.style.opacity = p > 0 ? 1 : 0;
-    });
-    sts.forEach((s, i) => { fade(s, t, 3600 + i * 450); });
-    const rp = progress(t, 6000, 600);
-    ret.style.strokeDasharray = "0.025 0.02"; ret.style.strokeDashoffset = 1 - rp; ret.style.opacity = rp > 0 ? 1 : 0;
-    ret.style.strokeDasharray = rp < 1 ? "1 1" : "0.025 0.02";
-    fade($("back"), t, 6200);
-    fade($("sum"), t, 6800);
-  } });
-</script></body></html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="shared.css" />
+    <link rel="stylesheet" href="wire.css" />
+    <script src="timeline.js"></script>
+    <script src="wire.js"></script>
+    <style>
+      .st {
+        position: absolute;
+        width: 160px;
+        display: flex;
+        justify-content: center;
+        gap: 4px;
+      }
+      .lbl {
+        position: absolute;
+        font-size: 13px;
+        line-height: 24px;
+        color: var(--muted);
+      }
+      .sumr {
+        position: absolute;
+        left: 40px;
+        width: 800px;
+        display: flex;
+        gap: 8px;
+        align-items: baseline;
+        font-size: 13px;
+        line-height: 24px;
+      }
+      .sumr .l {
+        flex: none;
+        width: 88px;
+        color: var(--muted);
+      }
+      .sumr .v {
+        flex: none;
+        font-size: 15px;
+      }
+      .sumr .ids {
+        font: 400 12px/24px var(--mono);
+        color: var(--muted);
+        margin-left: 8px;
+      }
+      .pay {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        height: 44px;
+      }
+      .tot {
+        display: flex;
+        justify-content: space-between;
+        height: 24px;
+        align-items: center;
+        font-size: 13px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div
+        id="head"
+        class="abs"
+        style="
+          left: 40px;
+          top: 16px;
+          display: flex;
+          gap: 12px;
+          align-items: baseline;
+          line-height: 24px;
+        "
+      >
+        <span class="mono" style="font-size: 13px; font-weight: 600"
+          >FLW-ORD-01</span
+        ><span style="font-weight: 600">주문 흐름</span
+        ><span class="small muted">v0.4</span>
+      </div>
+    </div>
+    <script>
+      const W_ = 880,
+        H_ = 624;
+      const X0 = 40,
+        PITCH = 164,
+        TS = 0.4,
+        TW = 120,
+        TH = 192,
+        TY = 56,
+        DEV_H = 480;
+      const ES = 0.3,
+        EH = 400,
+        EY = 360;
+      const NAMES = [
+        ["회원가입", "SCR-ORD-01"],
+        ["상품 목록", "SCR-ORD-02"],
+        ["장바구니", "SCR-ORD-03"],
+        ["결제", "SCR-ORD-04"],
+        ["주문 완료", "SCR-ORD-05"],
+      ];
+      // 7 상태: 화면마다 [이름, 오류색 여부]
+      const STATES = [
+        [["오류", 1]],
+        [["로딩"], ["빈 목록"]],
+        [["빈 장바구니"]],
+        [["처리 중"], ["실패", 1]],
+        [["끝"]],
+      ];
+
+      const row = (title, sub, action) => W.listRow({ title, sub, action });
+      const pay = (label, on) =>
+        `<div class="pay"><span class="w-radio${on ? " on" : ""}"></span><span>${label}</span></div>`;
+      const tot = (l, v, b) =>
+        `<div class="tot"${b ? ' style="font-size:15px;font-weight:600"' : ""}><span>${l}</span><span>${v}</span></div>`;
+
+      const SCREENS = [
+        // 회원가입
+        W.statusBar() +
+          W.appBar("회원가입") +
+          `<div class="w-body">
+    ${W.field({ label: "이메일", value: "haneul@example.com", help: "로그인에 쓰는 주소예요" })}<div style="height:8px"></div>
+    ${W.field({ label: "비밀번호", value: "••••••••", help: "8자 이상", count: "8/20" })}<div style="height:16px"></div>
+    <div style="display:flex;align-items:center;gap:12px;height:44px"><span class="w-check on">${W.icon("check", 14)}</span><span>이용약관에 동의해요</span></div>
+    <div style="height:16px"></div>${W.button("가입하기", { kind: "primary" })}</div>`,
+        // 상품 목록
+        W.statusBar() +
+          W.appBar("장보기", { back: false, actions: ["search"] }) +
+          `<div class="w-list">${row("제주 감귤 1kg", "6,900원", "chevron")}${row("국산 두부 한 모", "2,500원", "chevron")}${row("우유 900ml", "2,800원", "chevron")}${row("대파 한 단", "3,200원", "chevron")}${row("달걀 10구", "4,900원", "chevron")}</div>
+    <div class="w-body" style="padding-top:16px">${W.button("장바구니 보기 (2)", { kind: "primary" })}</div>`,
+        // 장바구니
+        W.statusBar() +
+          W.appBar("장바구니") +
+          `<div class="w-list">${row("제주 감귤 1kg", "6,900원 · 1개", "close")}${row("우유 900ml", "2,800원 · 2개", "close")}</div>
+    <div class="w-body" style="padding-top:16px">${tot("상품 금액", "12,500원")}${tot("배송비", "2,500원")}<div class="w-div" style="margin:8px 0"></div>${tot("합계", "15,000원", 1)}
+    <div style="height:16px"></div>${W.button("주문하기", { kind: "primary" })}</div>`,
+        // 결제
+        W.statusBar() +
+          W.appBar("결제") +
+          `<div class="w-body">
+    ${W.field({ label: "배송지", value: "서울 마포구 월드컵로 12", help: "공동현관 비밀번호는 다음 칸에 적어요" })}
+    <div style="height:8px;"></div><div class="small muted" style="font-size:12px;line-height:16px">결제 수단</div>
+    ${pay("신용·체크카드", 1)}${pay("계좌 이체")}${pay("간편 결제")}
+    <div style="height:16px"></div>${W.button("15,000원 결제하기", { kind: "primary" })}</div>`,
+        // 주문 완료
+        W.statusBar() +
+          W.appBar("주문 완료", { back: false }) +
+          `<div class="w-body" style="text-align:center;padding-top:40px">
+    <div style="width:72px;height:72px;margin:0 auto 16px;border:1.5px solid var(--ok);border-radius:50%;display:grid;place-items:center;color:var(--ok)">${W.icon("check", 32)}</div>
+    <div style="font:600 16px/24px var(--ui)">주문이 완료됐어요</div><div style="font:400 13px/20px var(--ui);color:var(--muted);margin-bottom:24px">주문번호 2411-0382</div>
+    ${W.button("주문 내역 보기", { kind: "primary" })}<div style="height:8px"></div>${W.button("쇼핑 계속하기")}</div>`,
+      ];
+      // 예외 상태: 결제 수단 다시 고르기(시트), 연결이 끊긴 장바구니
+      const E1 =
+        W.statusBar() +
+        W.appBar("결제") +
+        `<div class="w-sheet" style="position:absolute;left:0;right:0;bottom:0;padding:0 16px 32px"><div class="grab"></div>
+    <div style="font:600 16px/24px var(--ui);margin-bottom:8px">다른 수단으로 결제</div>${pay("신용·체크카드")}${pay("계좌 이체", 1)}${pay("간편 결제")}
+    <div style="height:8px"></div>${W.button("15,000원 결제하기", { kind: "primary" })}</div>`;
+      const E2 =
+        W.statusBar() +
+        W.appBar("장바구니") +
+        `<div class="w-list">${row("제주 감귤 1kg", "6,900원 · 1개", "close")}${row("우유 900ml", "2,800원 · 2개", "close")}</div>
+  <div style="position:absolute;left:16px;right:16px;bottom:32px">${W.snackbar("연결이 끊겼어요", { action: "다시 시도" })}</div>`;
+
+      const stage = $("stage");
+      const tx = (i) => X0 + i * PITCH;
+      SCREENS.forEach((inner, i) =>
+        stage.insertAdjacentHTML(
+          "beforeend",
+          W.thumb(inner, {
+            id: "t" + i,
+            x: tx(i),
+            y: TY,
+            h: DEV_H,
+            scale: TS,
+            name: NAMES[i][0],
+            sub: `<span class="mono">${NAMES[i][1]}</span>`,
+          }),
+        ),
+      );
+      // 상태 칩: 썸네일 캡션 아래
+      const CHIP_Y = TY + TH + 4 + 32 + 4;
+      STATES.forEach((cs, i) =>
+        stage.insertAdjacentHTML(
+          "beforeend",
+          `<div class="st" id="s${i}" style="left:${tx(i) + TW / 2 - 80}px;top:${CHIP_Y}px">${cs.map(([n, bad], k) => `<span class="chip ${bad ? "p1" : "gray"}" id="c${i}${k}">${n}</span>`).join("")}</div>`,
+        ),
+      );
+
+      // 정상 경로 화살표: 썸네일 오른쪽 가장자리 → 다음 썸네일 왼쪽 가장자리, 화면 가운데 높이
+      const AY = TY + TH / 2,
+        GAPPAD = 6;
+      const main = [0, 1, 2, 3].map((i) =>
+        W.arrow(
+          [
+            [tx(i) + TW + GAPPAD, AY],
+            [tx(i + 1) - GAPPAD, AY],
+          ],
+          { id: "a" + i },
+        ),
+      );
+      stage.insertAdjacentHTML("beforeend", main.join(""));
+
+      // 예외 경로: 실패 칩 → 다른 수단, 처리 중 칩 → 연결 끊김(장바구니 저장)
+      const fail = W.rect($("c31")),
+        proc = W.rect($("c30"));
+      const cx = (r) => (r.left + r.right) / 2;
+      const e1x = cx(fail) - (300 * ES) / 2,
+        e2x = tx(2) + TW / 2 - (300 * ES) / 2;
+      const laneY = fail.bottom + 16;
+      stage.insertAdjacentHTML(
+        "beforeend",
+        `<div id="elb" class="lbl" style="left:40px;top:${EY}px">예외 경로 2개</div>` +
+          W.thumb(E1, {
+            id: "e0",
+            x: e1x,
+            y: EY,
+            h: EH,
+            scale: ES,
+            name: "다른 수단",
+            sub: "결제 수단 다시 고르기",
+          }) +
+          W.thumb(E2, {
+            id: "e1",
+            x: e2x,
+            y: EY,
+            h: EH,
+            scale: ES,
+            name: "연결 끊김",
+            sub: "장바구니 저장 + 다시 시도",
+          }) +
+          W.arrow(
+            [
+              [cx(fail), fail.bottom + 4],
+              [cx(fail), EY - 6],
+            ],
+            { dash: true, id: "x0" },
+          ) +
+          W.arrow(
+            [
+              [cx(proc), proc.bottom + 4],
+              [cx(proc), laneY],
+              [e2x + (300 * ES) / 2, laneY],
+              [e2x + (300 * ES) / 2, EY - 6],
+            ],
+            { dash: true, id: "x1" },
+          ),
+      );
+
+      const SY = 528;
+      stage.insertAdjacentHTML(
+        "beforeend",
+        `<div id="hr" class="hr" style="left:40px;width:800px;top:${SY}px"></div>
+   <div id="r0" class="sumr" style="top:${SY + 12}px"><span class="l">개수</span><span class="v">화면 5개 · 상태 7개 · 예외 경로 2개</span></div>
+   <div id="r1" class="sumr" style="top:${SY + 40}px"><span class="l">정해야 할 것</span><span class="v">비회원 주문 허용 <span class="muted">— 허용 · 회원만</span></span><span class="ids">SCR-ORD-01 · 04</span></div>
+   <div id="r2" class="sumr" style="top:${SY + 64}px"><span class="l"></span><span class="v">재고 부족 시 처리 <span class="muted">— 담을 때 막기 · 결제 때 알리기</span></span><span class="ids">SCR-ORD-02 · 03</span></div>`,
+      );
+
+      const TT = [300, 1000, 1700, 2400, 3100],
+        CHIP_T = 3900,
+        CHIP_STEP = 400;
+      const X0_T = 6100;
+      window.DEMO = defineDemo({
+        width: W_,
+        height: H_,
+        end: 9700,
+        draw(t) {
+          fade($("head"), t, 200);
+          TT.forEach((s, i) => fade($("t" + i), t, s));
+          for (let i = 0; i < 4; i++)
+            W.arrowAt($("a" + i), easeOutCubic(progress(t, TT[i] + 350, 300)));
+          for (let i = 0; i < 5; i++)
+            fade($("s" + i), t, CHIP_T + i * CHIP_STEP);
+          fade($("elb"), t, X0_T);
+          W.arrowAt($("x0"), easeOutCubic(progress(t, X0_T, 400)));
+          fade($("e0"), t, X0_T + 450);
+          W.arrowAt($("x1"), easeOutCubic(progress(t, X0_T + 1100, 700)));
+          fade($("e1"), t, X0_T + 1850);
+          fade($("hr"), t, 8400);
+          fade($("r0"), t, 8400);
+          fade($("r1"), t, 8800);
+          fade($("r2"), t, 9100);
+        },
+      });
+    </script>
+  </body>
+</html>

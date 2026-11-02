@@ -86,7 +86,7 @@ Given a domain, links and a planning doc, it opens every source and tags it with
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/flow-dark.gif">
-  <img src="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/flow-light.gif" width="800" alt="Five screens from sign-up to order complete are connected, each gains its error, loading, empty-list, processing, failed and end states, and a dashed exception path returns from checkout to the cart">
+  <img src="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/flow-light.gif" width="800" alt="Five screen thumbnails from sign-up to order complete are joined by arrows, each gains state chips for error, loading, empty list, empty cart, processing, failed and end, dashed arrows carry a payment failure and a lost connection to a pick-another-method sheet and a saved cart, and two open decisions stay on the last line">
 </picture>
 
 - **When** — "Screens and edge cases from sign-up to first order", "Structure the My Page menu"
