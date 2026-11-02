@@ -117,7 +117,7 @@
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/research-dark.gif">
-  <img src="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/research-light.gif" width="800" alt="왜 독서 노트를 그만 쓰는지라는 질문을 말한 것과 한 일, 왜와 얼마나의 두 축에 놓아 맥락 인터뷰와 사용성 테스트 5명을 고르고, 유도 질문과 화면 라벨을 드러내는 과제를 고쳐 쓰는 모습">
+  <img src="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/research-light.gif" width="800" alt="왜 독서 노트를 그만 쓰는지라는 질문과 결정으로 시작하는 리서치 계획서에서, 말한 것과 한 일, 왜와 얼마나의 2×2 방법 지도 중 맥락 인터뷰와 사용성 테스트 5명 칸만 강조되고, 인터뷰 가이드와 작은 기기 화면 위 과제 카드에서 유도 질문과 화면 라벨을 드러내는 과제가 취소선으로 지워지고 고친 문장에 PASS가 붙는 모습">
 </picture>
 
 - **이럴 때** — 「왜 온보딩 중간에 그만두는지 알고 싶어」, 「사용자 5명 불러 테스트할 과제랑 대본」, 「인터뷰 녹취 정리해서 다음에 뭘 고칠지」

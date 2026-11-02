@@ -1,50 +1,311 @@
 <!doctype html>
-<html lang="ko"><head><meta charset="utf-8">
-<link rel="stylesheet" href="shared.css"><script src="timeline.js"></script>
-<style>
-  .fx { position: absolute; left: 480px; width: 360px; }
-  .fx .q { white-space: nowrap; }
-  .fx .why { margin-top: 4px; display: flex; align-items: center; gap: 8px; }
-  .fx .nw { margin-top: 8px; display: flex; gap: 10px; align-items: flex-start; }
-  .fx .nw .tx { flex: 1; }
-</style></head>
-<body><div id="stage">
-  <div id="qh" class="abs" style="left:40px;top:22px;display:flex;gap:12px;align-items:baseline"><span class="small muted">질문</span><span class="title">사람들은 왜 독서 노트를 그만 쓸까?</span></div>
-  <div class="abs" style="left:76px;top:84px;width:340px;height:240px;border-left:1px solid var(--line);border-bottom:1px solid var(--line)"></div>
-  <div class="hr" style="left:246px;top:84px;width:1px;height:240px"></div><div class="hr" style="left:76px;top:204px;width:340px"></div>
-  <div class="abs small muted" style="left:40px;top:84px;height:240px;writing-mode:vertical-rl;text-align:center;line-height:30px">얼마나 ↔ 왜</div>
-  <div class="abs small muted" style="left:76px;top:332px;width:340px;text-align:center">말한 것 ↔ 한 일</div>
-  <div id="cell" class="abs" style="left:258px;top:216px;width:146px">맥락 인터뷰 + 사용성 테스트 5명</div>
-  <div id="dot" class="abs" style="width:10px;height:10px;margin:-5px 0 0 -5px;border-radius:50%;background:var(--accent)"></div>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="shared.css" />
+    <link rel="stylesheet" href="wire.css" />
+    <script src="timeline.js"></script>
+    <script src="wire.js"></script>
+    <style>
+      .lbl {
+        position: absolute;
+        font-size: 13px;
+        line-height: 16px;
+        color: var(--muted);
+      }
+      .o {
+        position: relative;
+        display: inline-block;
+      }
+      .cell {
+        position: absolute;
+        width: 148px;
+        height: 96px;
+        padding: 12px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--bg);
+      }
+      .cell .nm {
+        font: 600 15px/20px var(--ui);
+        color: var(--muted);
+      }
+      .cell .sp {
+        margin-top: 4px;
+        font: 400 12px/16px var(--ui);
+        color: var(--muted);
+      }
+      .cell.pick {
+        border-color: var(--accent);
+      }
+      .cell.pick .nm {
+        color: var(--accent);
+      }
+      .vr {
+        height: auto;
+        min-height: 24px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div
+        id="head"
+        class="abs"
+        style="
+          left: 40px;
+          top: 16px;
+          display: flex;
+          gap: 12px;
+          align-items: baseline;
+          line-height: 24px;
+        "
+      >
+        <span class="mono" style="font-size: 13px; font-weight: 600"
+          >RSH-NOTE-01</span
+        ><span style="font-weight: 600">독서 노트 리서치 계획</span
+        ><span class="small muted">v0.2</span>
+      </div>
+    </div>
+    <script>
+      const W_ = 880,
+        H_ = 552;
+      const stage = $("stage");
+      const vrow = (id, left, top, width, l, v) =>
+        `<div id="${id}" class="w-vrow vr" style="left:${left}px;top:${top}px;width:${width}px"><span class="l">${l}</span><span class="v">${v}</span></div>`;
+      const strikeText = (id, text) =>
+        `<span class="o" id="${id}">${text}<i class="strike" id="${id}s"></i></span>`;
 
-  <div id="fx1" class="fx" style="top:92px">
-    <div id="q1" class="q">노트 기능이 유용하다고 생각하세요?<i class="strike" id="s1" style="top:55%"></i></div>
-    <div id="w1" class="why"><span class="chip p2">유도 질문</span><span class="small muted">예/아니요로 끝나요</span></div>
-    <div class="nw"><span id="p1" class="chip ok">PASS</span><div class="tx" id="n1"></div></div>
-  </div>
-  <div id="fx2" class="fx" style="top:236px">
-    <div id="q2" class="q">‘공유’ 버튼을 눌러 보세요<i class="strike" id="s2" style="top:55%"></i></div>
-    <div id="w2" class="why"><span class="chip p2">화면 라벨 노출</span><span class="small muted">어디를 누를지 알려 줘요</span></div>
-    <div class="nw"><span id="p2" class="chip ok">PASS</span><div class="tx" id="n2"></div></div>
-  </div>
-</div>
-<script>
-document.querySelectorAll(".q").forEach((q) => { q.style.position = "relative"; q.style.display = "inline-block"; });
-const N1 = "마지막으로 노트를 쓴 때를 처음부터 이야기해 주세요", N2 = "어제 읽은 책의 메모를 친구에게 보내 주세요";
-const dotKf = [{ t: 0, x: 161, y: 144 }, { t: 1200, x: 161, y: 144 }, { t: 2000, x: 331, y: 300 }];
-window.DEMO = defineDemo({ width: 880, height: 400, end: 8700,
-  draw(t) {
-    fade($("qh"), t, 300);
-    const d = path(t, dotKf); $("dot").style.left = (76 + d.x - 76 + 0) + "px"; $("dot").style.top = d.y + "px";
-    $("dot").style.left = d.x + "px";
-    fade($("cell"), t, 2200);
-    fade($("q1"), t, 3000); fade($("w1"), t, 3800); strike($("s1"), t, 4200);
-    $("q1").style.color = t >= 4200 ? "var(--muted)" : "var(--fg)";
-    typeInto($("n1"), N1, t, 4400, N1.length / 1.4, false); opacityAt($("n1"), t >= 4400 ? 1 : 0);
-    fade($("p1"), t, 5800);
-    fade($("q2"), t, 6400); fade($("w2"), t, 6800); strike($("s2"), t, 7000);
-    $("q2").style.color = t >= 7000 ? "var(--muted)" : "var(--fg)";
-    typeInto($("n2"), N2, t, 7200, N2.length / 1.2, false); opacityAt($("n2"), t >= 7200 ? 1 : 0);
-    fade($("p2"), t, 8400);
-  } });
-</script></body></html>
+      // 질문과 결정
+      stage.insertAdjacentHTML(
+        "beforeend",
+        vrow(
+          "q0",
+          40,
+          48,
+          800,
+          "질문",
+          `<b style="font-weight:600;font-size:16px">사람들은 왜 독서 노트를 그만 쓸까?</b>`,
+        ) +
+          vrow("q1", 40, 80, 800, "결정", "노트 작성 흐름 중 어디부터 고칠지") +
+          `<div id="hr0" class="hr" style="left:40px;width:800px;top:120px"></div>`,
+      );
+
+      // 방법 지도: 말한 것 ↔ 한 일(가로) × 왜 ↔ 얼마나(세로). 고른 칸만 accent.
+      const MX = 88,
+        MY = 176,
+        CW = 148,
+        CH = 96,
+        GAP = 8;
+      const CELLS = [
+        {
+          n: "맥락 인터뷰",
+          s: "최근 경험을 처음부터 따라가요",
+          c: 0,
+          r: 0,
+          pick: 1,
+        },
+        {
+          n: "사용성 테스트 5명",
+          s: "과제를 하는 모습을 봐요",
+          c: 1,
+          r: 0,
+          pick: 1,
+        },
+        { n: "설문", s: "원인은 따로 확인해야 해요", c: 0, r: 1 },
+        { n: "로그 분석", s: "어디서 그만두는지만 알려 줘요", c: 1, r: 1 },
+      ];
+      const cx = (c) => MX + c * (CW + GAP),
+        cy = (r) => MY + r * (CH + GAP);
+      stage.insertAdjacentHTML(
+        "beforeend",
+        `<div id="mlb" class="lbl" style="left:40px;top:136px">방법 지도</div>` +
+          `<div id="mhd"><div class="lbl" style="left:${cx(0)}px;top:152px;width:${CW}px;text-align:center">말한 것</div><div class="lbl" style="left:${cx(1)}px;top:152px;width:${CW}px;text-align:center">한 일</div>
+     <div class="lbl" style="left:40px;top:${cy(0) + CH / 2 - 8}px;width:40px;text-align:right">왜</div><div class="lbl" style="left:40px;top:${cy(1) + CH / 2 - 8}px;width:40px;text-align:right">얼마나</div></div>` +
+          CELLS.map(
+            (
+              k,
+              i,
+            ) => `<div id="m${i}" class="cell" style="left:${cx(k.c)}px;top:${cy(k.r)}px"><div class="nm">${k.n}</div><div class="sp">${k.s}</div></div>
+    ${k.pick ? `<div id="mp${i}" class="cell pick" style="left:${cx(k.c)}px;top:${cy(k.r)}px"><div class="nm">${k.n}</div><div class="sp">${k.s}</div></div>` : ""}`,
+          ).join("") +
+          vrow(
+            "m_n",
+            40,
+            cy(1) + CH + 16,
+            800,
+            "인원",
+            "5명 — 반복 사용성 테스트 기준",
+          ) +
+          vrow(
+            "m_r",
+            40,
+            cy(1) + CH + 48,
+            360,
+            "모집",
+            "최근 3개월 안에 노트를 그만둔 사람",
+          ) +
+          vrow(
+            "m_c",
+            40,
+            cy(1) + CH + 80,
+            352,
+            "동의",
+            "녹화·개인정보 처리 안내를 먼저",
+          ),
+      );
+
+      // 인터뷰 가이드: 고치기 전(취소선 + 문제 칩) → 고친 후(PASS)
+      const GX = 424,
+        GW = 416;
+      stage.insertAdjacentHTML(
+        "beforeend",
+        `<div id="glb" class="lbl" style="left:${GX}px;top:136px">인터뷰 가이드</div>` +
+          vrow(
+            "a0",
+            GX,
+            168,
+            GW,
+            "고치기 전",
+            strikeText("a0t", "노트 기능이 유용하다고 생각하세요?"),
+          ) +
+          vrow(
+            "a1",
+            GX,
+            200,
+            GW,
+            "문제",
+            `<span class="chip p2">유도 질문</span> <span class="small muted" style="margin-left:4px">예/아니요로 끝나요</span>`,
+          ) +
+          vrow(
+            "a2",
+            GX,
+            232,
+            GW,
+            "고친 후",
+            `노트를 마지막으로 쓴 때를 이야기해 주세요 <span id="pa" class="chip ok" style="margin-left:4px">PASS</span>`,
+          ) +
+          `<div id="hr1" class="hr" style="left:${GX}px;width:${GW}px;top:272px"></div>`,
+      );
+
+      // 사용성 테스트 과제: 작은 기기 화면 위 과제 카드
+      const row = (title, sub) => W.listRow({ title, sub, action: "more" });
+      const TASK =
+        W.statusBar() +
+        W.appBar("독서 노트", { back: false, actions: ["search"] }) +
+        `<div class="w-list">${row("데미안", "3장 메모 · 2일 전")}${row("어린 왕자", "인상 깊은 문장 · 5일 전")}${row("코스모스", "질문 목록 · 1주 전")}</div>
+   <div style="position:absolute;left:16px;right:16px;bottom:24px;padding:16px;border:1px solid var(--line);border-radius:12px;background:var(--subtle)">
+     <div style="font:400 12px/16px var(--ui);color:var(--muted)">과제 2 / 3</div>
+     <div style="font:400 15px/24px var(--ui);margin:4px 0 8px">어제 읽은 책의 메모를 친구에게 보내 주세요</div>${W.button("과제를 마쳤어요", { h: "h44" })}</div>`;
+      const TX = GX,
+        TY = 312,
+        BX = 568,
+        BW = 272;
+      stage.insertAdjacentHTML(
+        "beforeend",
+        `<div id="tlb" class="lbl" style="left:${GX}px;top:284px">사용성 테스트 과제</div>` +
+          W.thumb(TASK, {
+            id: "tk",
+            x: TX,
+            y: TY,
+            h: 480,
+            scale: 0.4,
+            name: "과제 카드",
+            sub: "참가자에게 보여 줘요",
+          }) +
+          vrow(
+            "b0",
+            BX,
+            TY,
+            BW,
+            "고치기 전",
+            strikeText("b0t", "‘공유’ 버튼을 눌러 보세요"),
+          ) +
+          vrow(
+            "b1",
+            BX,
+            TY + 32,
+            BW,
+            "문제",
+            `<span class="chip p2">화면 라벨 노출</span>`,
+          ) +
+          vrow(
+            "b2",
+            BX,
+            TY + 64,
+            BW,
+            "고친 후",
+            `어제 읽은 책의 메모를 친구에게 보내 주세요 <span id="pb" class="chip ok" style="margin-left:4px">PASS</span>`,
+          ),
+      );
+    </script>
+    <script>
+      const T = {
+        head: 200,
+        q0: 400,
+        q1: 700,
+        hr0: 1000,
+        mlb: 1200,
+        mhd: 1400,
+        cells: [1700, 1950, 2200, 2450],
+        pick: 3200,
+        mn: 3800,
+        mr: 4100,
+        mc: 4350,
+        glb: 4800,
+        a0: 5100,
+        aS: 5500,
+        a1: 5800,
+        a2: 6300,
+        pa: 6800,
+        hr1: 7100,
+        tlb: 7200,
+        tk: 7300,
+        b0: 7600,
+        bS: 8000,
+        b1: 8300,
+        b2: 8800,
+        pb: 9300,
+      };
+      window.DEMO = defineDemo({
+        width: W_,
+        height: H_,
+        end: 9700,
+        draw(t) {
+          fade($("head"), t, T.head);
+          fade($("q0"), t, T.q0);
+          fade($("q1"), t, T.q1);
+          fade($("hr0"), t, T.hr0);
+          fade($("mlb"), t, T.mlb);
+          fade($("mhd"), t, T.mhd);
+          T.cells.forEach((s, i) => fade($("m" + i), t, s));
+          [0, 1].forEach((i) =>
+            opacityAt(
+              $("mp" + i),
+              t < T.pick ? 0 : easeOutCubic(progress(t, T.pick, 240)),
+            ),
+          );
+          fade($("m_n"), t, T.mn);
+          fade($("m_r"), t, T.mr);
+          fade($("m_c"), t, T.mc);
+          fade($("glb"), t, T.glb);
+          fade($("a0"), t, T.a0);
+          strike($("a0ts"), t, T.aS);
+          $("a0t").style.color = t >= T.aS ? "var(--muted)" : "var(--fg)";
+          fade($("a1"), t, T.a1);
+          fade($("a2"), t, T.a2);
+          opacityAt($("pa"), progress(t, T.pa, 240));
+          fade($("hr1"), t, T.hr1);
+          fade($("tlb"), t, T.tlb);
+          fade($("tk"), t, T.tk);
+          fade($("b0"), t, T.b0);
+          strike($("b0ts"), t, T.bS);
+          $("b0t").style.color = t >= T.bS ? "var(--muted)" : "var(--fg)";
+          fade($("b1"), t, T.b1);
+          fade($("b2"), t, T.b2);
+          opacityAt($("pb"), progress(t, T.pb, 240));
+        },
+      });
+    </script>
+  </body>
+</html>

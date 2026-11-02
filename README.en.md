@@ -73,7 +73,7 @@ Given a domain, links and a planning doc, it opens every source and tags it with
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/research-dark.gif">
-  <img src="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/research-light.gif" width="800" alt="The question of why people stop using reading notes is placed on say-versus-do and why-versus-how-much axes, contextual interviews plus five usability-test participants are chosen, and a leading question and a label-revealing task are rewritten">
+  <img src="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/research-light.gif" width="800" alt="A research plan opens with the question of why people stop using reading notes and the decision it serves; on its say-versus-do, why-versus-how-much 2×2 method map only contextual interviews and five usability-test participants are highlighted, and in the interview guide and a task card on a small device screen a leading question and a label-revealing task are struck through and the rewritten lines get PASS">
 </picture>
 
 - **When** — "Why do people drop out of onboarding?", "Tasks and a script for five participants next week", "Turn these eight interview transcripts into what we fix next"
