@@ -24,6 +24,184 @@
       "prompt": "설정 화면에 스위치를 썼는데 아래에 저장 버튼도 있어. 이렇게 써도 돼?",
       "expectSkill": "ux-review",
       "why": "컨트롤 패턴의 쓰임 판정"
+    },
+    {
+      "id": "research-1",
+      "prompt": "@ux interview 30대 맞벌이 부부의 장보기 습관",
+      "expectSkill": "ux-research",
+      "why": "명시 별칭"
+    },
+    {
+      "id": "research-2",
+      "prompt": "다음 주에 사용자 5명 불러서 새 예약 흐름을 테스트하려는데 과제랑 진행 대본 만들어 줘",
+      "expectSkill": "ux-research",
+      "why": "사용성 테스트 설계"
+    },
+    {
+      "id": "research-3",
+      "prompt": "인터뷰 녹취 8개를 정리해서 다음에 무엇을 고칠지 정해 줘",
+      "expectSkill": "ux-research",
+      "why": "결과 종합과 결정"
+    },
+    {
+      "id": "research-4",
+      "prompt": "사람들이 왜 온보딩 중간에 그만두는지 알고 싶어. 무엇부터 조사할지 계획 세워 줘",
+      "expectSkill": "ux-research",
+      "shouldNotFire": "ux-metrics",
+      "why": "이유를 묻는 질적 질문 — 지표 설계가 아님"
+    },
+    {
+      "id": "flow-1",
+      "prompt": "@ux flow 비밀번호 재설정",
+      "expectSkill": "ux-flow",
+      "why": "명시 별칭"
+    },
+    {
+      "id": "flow-2",
+      "prompt": "@ux ia 쇼핑몰 마이페이지 메뉴 구조",
+      "expectSkill": "ux-flow",
+      "why": "정보구조 별칭"
+    },
+    {
+      "id": "flow-3",
+      "prompt": "회원가입부터 첫 주문까지 필요한 화면 목록이랑 예외 경로 정리해 줘",
+      "expectSkill": "ux-flow",
+      "why": "여러 화면의 흐름과 화면 목록"
+    },
+    {
+      "id": "flow-4",
+      "prompt": "가입 흐름 전체에서 어떤 화면이 필요하고 실패하면 어디로 돌아가는지만 먼저 잡아 줘. 화면별 상세는 나중에",
+      "expectSkill": "ux-flow",
+      "shouldNotFire": "ux-spec",
+      "why": "화면 한 장의 상세가 아니라 흐름과 복구 경로"
+    },
+    {
+      "id": "spec-1",
+      "prompt": "@ux spec SCR-SUB-03",
+      "expectSkill": "ux-spec",
+      "why": "명시 별칭"
+    },
+    {
+      "id": "spec-2",
+      "prompt": "개발자한테 넘길 장바구니 화면설계서 써 줘",
+      "expectSkill": "ux-spec",
+      "why": "화면설계서 요청"
+    },
+    {
+      "id": "spec-3",
+      "prompt": "결제 수단 선택 화면 하나만 영역별 컴포넌트, 상태, 문구까지 설계서로 써 줘",
+      "expectSkill": "ux-spec",
+      "shouldNotFire": "ux-flow",
+      "why": "화면 한 장의 상세 설계"
+    },
+    {
+      "id": "spec-4",
+      "prompt": "리뷰에서 나온 수정안을 에이전트가 바로 구현할 수 있는 화면 명세로 옮겨 줘",
+      "expectSkill": "ux-spec",
+      "shouldNotFire": "ux-review",
+      "why": "평가가 아니라 명세로 옮기기"
+    },
+    {
+      "id": "write-1",
+      "prompt": "@ux write 결제 실패 오류 문구",
+      "expectSkill": "ux-writing",
+      "why": "명시 별칭"
+    },
+    {
+      "id": "write-2",
+      "prompt": "버튼 이름이 전부 '확인'인데 화면마다 뭐라고 바꿀지 정해 줘",
+      "expectSkill": "ux-writing",
+      "why": "버튼 문구 작성"
+    },
+    {
+      "id": "write-3",
+      "prompt": "오류 문구를 해요체로 다듬어 줘: '유효하지 않은 입력입니다'",
+      "expectSkill": "ux-writing",
+      "shouldNotFire": "ux-review",
+      "why": "문구만 고치는 요청"
+    },
+    {
+      "id": "write-4",
+      "prompt": "AI 답변 아래 붙는 '부정확할 수 있어요' 안내 문구만 자연스럽게 다듬어 줘",
+      "expectSkill": "ux-writing",
+      "shouldNotFire": "ux-ai",
+      "why": "AI 화면 설계가 아니라 문구만"
+    },
+    {
+      "id": "a11y-1",
+      "prompt": "@ux a11y 로그인 화면",
+      "expectSkill": "ux-a11y",
+      "why": "명시 별칭"
+    },
+    {
+      "id": "a11y-2",
+      "prompt": "웹 접근성 인증을 받으려는데 회원가입 폼에서 무엇이 걸리는지 봐 줘",
+      "expectSkill": "ux-a11y",
+      "why": "접근성 인증 준비"
+    },
+    {
+      "id": "a11y-3",
+      "prompt": "스크린 리더로 결제까지 갈 수 있는지, 명도 대비랑 포커스 순서를 점검해 줘",
+      "expectSkill": "ux-a11y",
+      "shouldNotFire": "ux-review",
+      "why": "접근성 기준 감사"
+    },
+    {
+      "id": "dark-1",
+      "prompt": "@ux dark 구독 해지 흐름",
+      "expectSkill": "ux-dark-patterns",
+      "why": "명시 별칭"
+    },
+    {
+      "id": "dark-2",
+      "prompt": "결제 화면에 부가 서비스가 기본으로 체크돼 있는데 법적으로 문제가 될까?",
+      "expectSkill": "ux-dark-patterns",
+      "why": "사전 선택 규제 판단"
+    },
+    {
+      "id": "dark-3",
+      "prompt": "해지 버튼을 마이페이지 맨 아래에 작게 뒀는데 이거 다크패턴이야?",
+      "expectSkill": "ux-dark-patterns",
+      "shouldNotFire": "ux-review",
+      "why": "기만 패턴·규제 판단"
+    },
+    {
+      "id": "metrics-1",
+      "prompt": "@ux metrics 새 검색 기능",
+      "expectSkill": "ux-metrics",
+      "why": "명시 별칭"
+    },
+    {
+      "id": "metrics-2",
+      "prompt": "@ux experiment 해지 확인 화면에 남은 이용 기간을 보여 주면 문의가 줄까",
+      "expectSkill": "ux-metrics",
+      "why": "실험 별칭"
+    },
+    {
+      "id": "metrics-3",
+      "prompt": "온보딩 개편이 성공했는지 볼 지표랑 가드레일 정해 줘",
+      "expectSkill": "ux-metrics",
+      "shouldNotFire": "ux-research",
+      "why": "수치 지표 설계"
+    },
+    {
+      "id": "ai-1",
+      "prompt": "@ux ai 문서 요약 기능",
+      "expectSkill": "ux-ai",
+      "why": "명시 별칭"
+    },
+    {
+      "id": "ai-2",
+      "prompt": "AI 챗봇 답변 화면에 출처랑 다시 생성 버튼을 어떻게 넣을지 설계해 줘",
+      "expectSkill": "ux-ai",
+      "why": "AI 결과 화면 패턴"
+    },
+    {
+      "id": "ai-3",
+      "prompt": "AI 에이전트가 메일을 대신 보내기 전에 어떤 확인 화면이 필요한지 봐 줘",
+      "expectSkill": "ux-ai",
+      "shouldNotFire": "ux-review",
+      "why": "AI 실행 승인"
     }
   ]
 }
