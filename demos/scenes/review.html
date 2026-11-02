@@ -1,63 +1,83 @@
 <!doctype html>
 <html lang="ko"><head><meta charset="utf-8">
-<link rel="stylesheet" href="shared.css"><script src="timeline.js"></script>
+<link rel="stylesheet" href="shared.css"><link rel="stylesheet" href="wire.css"><script src="timeline.js"></script><script src="wire.js"></script>
 <style>
-  .li { position: relative; height: 44px; overflow: hidden; border-top: 1px solid var(--line); }
-  .li .in { height: 44px; display: flex; align-items: center; justify-content: space-between; font-size: 13px; white-space: nowrap; }
-  .li .del { width: 40px; text-align: center; color: var(--muted); font-size: 12px; }
-  .bar { position: absolute; left: 16px; right: 16px; bottom: 16px; height: 36px; border-radius: 8px; background: var(--subtle); display: flex; align-items: center; justify-content: space-between; padding: 0 12px; font-size: 13px; }
-  .pl { position: absolute; left: 340px; width: 80px; font-size: 13px; color: var(--muted); }
-  .pv { position: absolute; left: 440px; width: 400px; }
+  .rw { overflow: hidden; }
 </style></head>
 <body><div id="stage">
-  <div class="phone" style="left:40px;top:20px">
-    <div class="title" style="height:27px;margin-bottom:12px">독서 노트</div>
-    <div id="list" style="border-bottom:1px solid var(--line)">
-      <div class="li" id="r1"><div class="in"><span>데미안 — 3장 메모</span><span class="del">삭제</span></div></div>
-      <div class="li" id="r2"><div class="in"><span>어린 왕자 — 인상 깊은 문장</span><span class="del">삭제</span></div></div>
-      <div class="li" id="r3"><div class="in"><span>코스모스 — 질문 목록</span><span class="del">삭제</span></div></div>
-    </div>
-    <div class="bar" id="toast"><span>삭제했어요</span></div>
-    <div class="bar" id="snack"><span>노트를 삭제했어요</span><span class="accent" style="font-weight:600">되돌리기</span></div>
-  </div>
-  <div class="pointer" id="ptr"></div><div class="ripple" id="rip"></div>
-
-  <div id="a1" class="pl" style="top:44px">현재 패턴</div><div id="a2" class="pv" style="top:40px">토스트 · 방해 수준 1</div>
-  <div id="a3" class="pv" style="top:76px">되돌릴 수 없는 삭제를 사라지는 알림으로만 알려요</div>
-  <div id="a4" class="abs" style="left:340px;top:106px"><span class="chip p1">P1</span></div>
-  <div id="a5" class="pv" style="top:108px">휴리스틱 3 · 사용자 통제와 자유</div>
-  <div id="b0" class="hr" style="left:340px;width:500px;top:164px"></div>
-  <div id="b1" class="pl" style="top:184px">수정</div><div id="b2" class="pv" style="top:180px">스낵바 + 되돌리기 · 휴지통 30일</div>
-  <div id="b3" class="pl" style="top:220px">문구</div><div id="b4" class="pv" style="top:216px">“노트를 삭제했어요” <span class="accent">[되돌리기]</span></div>
-  <div id="c1" class="pl" style="top:288px;font-family:var(--mono);font-size:12px">acceptance</div>
-  <div id="c2" class="pv" style="top:284px;width:500px">삭제 뒤 되돌리기 한 번으로 복구돼요 &nbsp;<span class="chip ok">PASS</span></div>
+  <div id="ba" class="w-ba" style="left:40px;top:16px"><span id="chB" class="chip before">고치기 전</span><span id="chA" class="chip after">고친 후</span></div>
 </div>
 <script>
-const ROW = 44, DEL = { x: 57 + 226 - 20, y: 76 + ROW + 22 + 1 }, UNDO = { x: 57 + 226 - 30, y: 20 + 360 - 16 - 18 };
-const PRESS = [1000, 4600, 6200];
-const REST = { x: 190, y: 300 };
-const kf = [{ t: 0, ...REST }, { t: 500, ...REST }, { t: 1000, ...DEL }, { t: 1400, ...DEL }, { t: 1900, ...REST },
-  { t: 4100, ...REST }, { t: 4600, ...DEL }, { t: 4900, ...DEL }, { t: 5400, ...REST }, { t: 5700, ...REST }, { t: 6200, ...UNDO }, { t: 7000, ...UNDO }, { t: 7400, ...REST }];
-window.DEMO = defineDemo({ width: 880, height: 400, end: 7400,
+const DX = 40, DY = 56, DEV_H = 360, W_ = 880, H_ = 440, ROW = 56;
+const NOTES = [["데미안", "3장 메모 · 2일 전"], ["어린 왕자", "인상 깊은 문장 · 5일 전"], ["코스모스", "질문 목록 · 1주 전"]];
+const inner = W.statusBar() + W.appBar("독서 노트", { back: false, actions: ["search"] }) +
+  `<div class="w-list">${NOTES.map(([title, sub], k) => `<div class="rw" id="rw${k}">${W.listRow({ title, sub, action: "trash", id: "r" + k })}</div>`).join("")}</div>` +
+  `<div id="toastw" style="position:absolute;left:0;top:292px;width:298px;display:flex;justify-content:center">${W.toast("삭제했어요", { id: "toast", style: "width:112px;padding:0;justify-content:center" })}</div>` +
+  `<div id="snackw" style="position:absolute;left:16px;top:288px;width:266px">${W.snackbar("노트를 삭제했어요", { action: "되돌리기" })}</div>`;
+const stage = $("stage");
+stage.insertAdjacentHTML("beforeend", W.device(inner, { id: "dev", x: DX, y: DY, h: DEV_H }));
+
+// 실측: P1 점선·핀·지시선·포인터 위치는 기기 안 부품에서 계산한다.
+const R = { toast: W.rect($("toast")), snack: W.rect($("snackw")), trash: W.rect($("r1").querySelector(".w-ib")), undo: W.rect($("snackw").querySelector(".act")) };
+const flagR = { left: R.toast.left - 6, top: R.toast.top - 6 }; // 점선 사각형 왼쪽 위
+const NUM_X = 376, GUT = [352, 364];
+const VY = [64, 240]; // 판정 블록 첫 줄 위치
+const c1 = { x: flagR.left - 10, y: flagR.top - 6 }, c2 = W.pinCenter(R.snack);
+const paths = [
+  ["ld0", [[c1.x, c1.y - 10], [c1.x, c1.y - 18], [GUT[0], c1.y - 18], [GUT[0], VY[0] + 12], [NUM_X, VY[0] + 12]]],
+  ["ld1", [[R.snack.left, c2.y], [GUT[1], c2.y], [GUT[1], VY[1] + 12], [NUM_X, VY[1] + 12]]],
+];
+const vrow = (id, top, l, v, h = 24) => `<div id="${id}" class="w-vrow" style="top:${top}px;height:${h}px"><span class="l">${l}</span><span class="v">${v}</span></div>`;
+const vnum = (id, n, top) => `<div id="${id}" class="num" style="left:${NUM_X}px;top:${top + 2}px">${n}</div>`;
+stage.insertAdjacentHTML("beforeend",
+  W.flag(R.toast, { id: "flag" }) + W.leaders(W_, H_, paths) +
+  `<div class="num" id="p0" style="left:${c1.x - 10}px;top:${c1.y - 10}px">1</div><div class="num" id="p1" style="left:${c2.x - 10}px;top:${c2.y - 10}px">2</div>` +
+  vnum("v0n", 1, VY[0]) + vnum("v1n", 2, VY[1]) +
+  vrow("a0", VY[0], "현재 패턴", `토스트 · 방해 수준 1 <span class="chip p1" style="margin-left:4px">P1</span>`) +
+  vrow("a1", VY[0] + 48, "문제", "되돌릴 수 없는 삭제를 사라지는 알림으로만 알려요") +
+  vrow("a2", VY[0] + 96, "근거", "휴리스틱 3 · 사용자 통제와 자유") +
+  `<div id="hr" class="hr" style="left:${NUM_X}px;width:${840 - NUM_X}px;top:216px"></div>` +
+  vrow("b0", VY[1], "수정", "스낵바 + 되돌리기 · 휴지통 30일") +
+  vrow("b1", VY[1] + 48, "문구", `“노트를 삭제했어요” <span class="accent">[되돌리기]</span>`) +
+  vrow("b2", VY[1] + 96, "통과 조건", `삭제 뒤 되돌리기 한 번으로 복구돼요 <span id="pass" class="chip ok" style="margin-left:6px">PASS</span>`) +
+  `<div class="w-pointer" id="ptr"></div><div class="w-ripple" id="rip"></div>`);
+
+const REST = { x: 250, y: 262 }, TR = { x: R.trash.left + R.trash.width / 2, y: R.trash.top + R.trash.height / 2 }, UN = { x: R.undo.left + R.undo.width / 2 + 24, y: R.undo.top + R.undo.height / 2 + 10 };
+const PRESS = [[1200, TR], [5000, TR], [7800, UN]];
+const kf = [{ t: 0, ...REST }, { t: 700, ...REST }, { t: 1100, ...TR }, { t: 1500, ...TR }, { t: 2000, ...REST }, { t: 4500, ...REST }, { t: 4900, ...TR }, { t: 5300, ...TR }, { t: 5800, ...REST },
+  { t: 7000, ...REST }, { t: 7600, ...UN }, { t: 8100, ...UN }, { t: 8500, ...REST }];
+const COLLAPSE = [[1200, 0], [4400, 1], [5000, 0], [7800, 1]]; // 어린 왕자 행: [시작 ms, 목표 높이 비율]
+const REVEAL = [["a0", 2950], ["a1", 3150], ["a2", 3350], ["v0n", 2950], ["hr", 4600], ["b0", 6350], ["b1", 6550], ["b2", 6750], ["v1n", 6350]];
+
+window.DEMO = defineDemo({ width: W_, height: H_, end: 9000,
   draw(t) {
-    // 2행 접힘: 1.0 접힘 → 4.0 초기화 → 4.6 접힘 → 6.6 펼침
-    let h = ROW;
-    if (t >= 6600) h = ROW * easeOutCubic(progress(t, 6600, 240));
-    else if (t >= 4600) h = ROW * (1 - easeOutCubic(progress(t, 4600, 240)));
-    else if (t >= 1000 && t < 4000) h = ROW * (1 - easeOutCubic(progress(t, 1000, 240)));
-    const r2 = $("r2"); r2.style.height = h + "px"; r2.style.opacity = h / ROW; r2.style.borderTopWidth = h < 1 ? 0 : 1;
-    fade($("toast"), t, 1300, 240, 3300);
-    fade($("snack"), t, 5200, 240, 6600);
-    // 포인터·누름 표시
-    const p = path(t, kf); const ptr = $("ptr");
+    fade($("dev"), t, 200, 300);
+    // 전후 칩: 4.4초에 고치기 전 → 고친 후
+    const sw = easeOutCubic(progress(t, 4400, 240));
+    opacityAt($("chB"), Math.min(progress(t, 200, 240), 1 - sw)); opacityAt($("chA"), Math.min(progress(t, 200, 240), sw));
+    // 어린 왕자 행: 삭제로 접히고, 4.4초 초기화와 되돌리기로 펼쳐진다.
+    let h = 1, prev = 1;
+    COLLAPSE.forEach(([s, to]) => { if (t >= s) { h = lerp(prev, to, easeOutCubic(progress(t, s, 240))); prev = to; } });
+    const rw = $("rw1"); rw.style.height = ROW * h + "px"; rw.style.opacity = h;
+    // 고치기 전: 토스트 2초 → P1 점선·칩 → 핀·지시선 → 판정
+    fade($("toast"), t, 1500, 240, 3500);
+    fade($("flag"), t, 1900, 240, 4300);
+    fade($("p0"), t, 2300, 200, 4300);
+    $("ld0").style.opacity = 1 - progress(t, 4300, 180);
+    W.leaderAt($("ld0"), easeOutCubic(progress(t, 2500, 450)));
+    // 고친 후: 같은 동작 → 스낵바 + 되돌리기 → 되돌리기로 복구
+    fade($("snackw"), t, 5300, 240, 7900);
+    fade($("p1"), t, 5700, 200, 8100);
+    $("ld1").style.opacity = 1 - progress(t, 8100, 180);
+    W.leaderAt($("ld1"), easeOutCubic(progress(t, 5900, 450)));
+    REVEAL.forEach(([id, s]) => fade($(id), t, s));
+    opacityAt($("pass"), progress(t, 8300, 240));
+    // 포인터
+    const p = path(t, kf), ptr = $("ptr");
     ptr.style.left = p.x + "px"; ptr.style.top = p.y + "px";
-    ptr.style.opacity = 0.85 * progress(t, 300, 200);
-    const rp = PRESS.map((s) => progress(t, s, 320)).find((v) => v > 0 && v < 1);
-    const rip = $("rip"); const ps = PRESS.findLast((s) => t >= s);
-    if (rp !== undefined) { const pos = ps === 6200 ? UNDO : DEL; rip.style.left = pos.x + "px"; rip.style.top = pos.y + "px";
-      rip.style.opacity = 1 - rp; rip.style.transform = `scale(${1 + 2.2 * easeOutCubic(rp)})`; } else rip.style.opacity = 0;
-    // 오른쪽 판정
-    [["a1", 1500], ["a2", 1500], ["a3", 2100], ["a4", 2700], ["a5", 2700], ["b0", 4000], ["b1", 4000], ["b2", 4000], ["b3", 4100], ["b4", 4100], ["c1", 7000], ["c2", 7000]]
-      .forEach(([id, s]) => fade($(id), t, s));
+    ptr.style.opacity = 0.95 * progress(t, 700, 200) * (1 - progress(t, 8500, 300));
+    const cur = PRESS.findLast(([s]) => t >= s), rip = $("rip");
+    const rp = cur ? progress(t, cur[0], 320) : 0;
+    if (rp > 0 && rp < 1) { rip.style.left = cur[1].x + "px"; rip.style.top = cur[1].y + "px"; rip.style.opacity = 1 - rp; rip.style.transform = `scale(${1 + 2.2 * easeOutCubic(rp)})`; } else rip.style.opacity = 0;
   } });
 </script></body></html>
