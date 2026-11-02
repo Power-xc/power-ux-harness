@@ -1,0 +1,21 @@
+{
+  "name": "ux-design-harness",
+  "version": "1.0.0",
+  "description": "AI 코딩 에이전트가 시니어 프로덕트 디자이너처럼 UX를 설계하고 검토하게 만드는 스킬 하네스",
+  "type": "module",
+  "private": true,
+  "license": "MIT",
+  "author": "Power-xc",
+  "homepage": "https://github.com/Power-xc/ux-design-harness",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Power-xc/ux-design-harness.git"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "validate": "node scripts/validate.mjs",
+    "test": "node scripts/validate.mjs && node --test \"tests/**/*.test.mjs\""
+  }
+}
