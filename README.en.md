@@ -260,8 +260,8 @@ Given a domain, links and a planning doc, it opens every source and tags it with
   <img src="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/dark-patterns-light.gif" width="800" alt="Four findings on a subscription-cancel screen (obstruction, a guilt-inducing decline line, false hierarchy and preselection) are numbered and marked P1 or P2, then the same screen shows two equal buttons, an unchecked optional consent and a neutral line, and each item passes">
 </picture>
 
-- **When** — "Is our cancel flow legal?", "An add-on is pre-checked at checkout", "Is this pop-up too frequent?"
-- **What it does** — counts the steps of the sign-up and cancel paths side by side, pairs each type with an honest alternative, adds EU DSA and US FTC checks for overseas users, and leaves the final legal call to counsel.
+- **When** — "Is our cancel flow legal?", "An add-on is pre-checked at checkout", "Is this pop-up too frequent?", "Can we add a pricier plan so the middle one sells?"
+- **What it does** — counts the steps of the sign-up and cancel paths side by side, pairs each type with an honest alternative, separates honest use from deception for pricing-table nudges (anchoring, the compromise effect, decoy plans, struck-through list prices), adds EU DSA and US FTC checks for overseas users, and leaves the final legal call to counsel.
 - **Alias** — `@ux dark`
 
 ### ux-metrics
@@ -307,7 +307,7 @@ Given a domain, links and a planning doc, it opens every source and tags it with
 | Set metrics and guardrails to tell whether the onboarding revamp worked                           | `ux-metrics`       |
 | What confirmation should an AI agent show before sending an email for me?                         | `ux-ai`            |
 
-All 49 request–skill pairs live in [`evals/cases.json`](evals/cases.json). Requests that are easy to confuse with a neighboring skill carry `shouldNotFire`, which pins the boundary.
+All 51 request–skill pairs live in [`evals/cases.json`](evals/cases.json). Requests that are easy to confuse with a neighboring skill carry `shouldNotFire`, which pins the boundary.
 
 ## Install
 
