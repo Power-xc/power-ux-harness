@@ -323,6 +323,35 @@
 
       const SK = [
         {
+          step: "맥락",
+          id: "ux-benchmark",
+          req: "60대 사용자가 늘었는데 비슷한 서비스는 송금 화면을 어떻게 바꿨는지 보고 제안해 줘",
+          head: "맥락별 안",
+          bt: "모두에게 같은 송금 확인 화면이에요",
+          at: "나이 대신 처음 계좌 · 큰돈일 때 이름을 크게 보이고 확인 질문을 물어요",
+          build() {
+            const lb = `<div class="mut" style="font-size:12px;margin-bottom:8px">받는 분</div>`;
+            return dev(
+              W.statusBar() +
+                W.appBar("송금 확인") +
+                `<div class="blk" style="top:88px">${lb}<div id="bnm" style="height:32px">${v2(`<div style="font:400 15px/32px var(--ui)">김하늘</div>`, `<div style="font:600 24px/32px var(--ui)">김하늘</div>`)}</div><div style="height:24px;margin-top:12px">${vb(`<span class="chip accent">처음 보내는 계좌</span>`)}</div></div>` +
+                `<div class="blk" style="top:200px"><div class="mut" style="font-size:12px">보낼 금액</div><div class="big">1,200,000원</div></div>` +
+                `<div class="blk" id="bqs" style="top:256px;height:80px">${vb(
+                  ["직접 아는 분이에요", "급하게 보내 달라는 요청이 아니에요"]
+                    .map(
+                      (t) =>
+                        `<div class="opt" style="height:40px"><span class="w-check on">${W.icon("check", 14)}</span><span style="font-size:13px">${t}</span></div>`,
+                    )
+                    .join(""),
+                )}</div>` +
+                `<div class="blk" style="top:400px">${W.button("보내기", { kind: "primary" })}</div>`,
+            );
+          },
+          post(pane) {
+            pane.insertAdjacentHTML("beforeend", ovl("va", W.flag(rc("bnm"), { pad: 4 }), 800));
+          },
+        },
+        {
           step: "탐색",
           id: "ux-simulate",
           req: "기획서랑 링크 줄 테니 어떤 UX가 맞을지 봐 줘",
