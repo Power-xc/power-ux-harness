@@ -2,7 +2,7 @@
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/hero-dark.gif">
-  <img src="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/hero-light.gif" width="800" alt="One request to design and check a subscription-cancel screen runs through nine steps, from ux-simulate to ux-metrics, leaving a result and a verdict at each step">
+  <img src="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/hero-light.gif" width="800" alt="Each request lights up the matching skill, and the ten skills take turns turning their own example from before the fix to after the fix">
 </picture>
 
 # power-ux-harness

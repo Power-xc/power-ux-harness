@@ -2,7 +2,7 @@
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/hero-dark.gif">
-  <img src="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/hero-light.gif" width="800" alt="구독 해지 화면을 설계하고 점검해 달라는 한 문장이 ux-simulate부터 ux-metrics까지 9단계를 차례로 지나며 단계마다 결과와 판정을 남기는 모습">
+  <img src="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/hero-light.gif" width="800" alt="요청 한 줄마다 맞는 스킬이 켜지고, 스킬 10개가 차례로 자기 예시를 고치기 전에서 고친 후로 바꾸는 모습">
 </picture>
 
 # power-ux-harness
