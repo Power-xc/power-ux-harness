@@ -109,11 +109,10 @@ Chrome 경로는 `CHROME_PATH`, ffmpeg 경로는 `FFMPEG_PATH`(기본 `/opt/home
 4. `draw(t)`는 `t`만으로 모든 상태를 정해요.
 5. `node render.mjs <scene> --at 1.5,4,7,9.5`로 라이트·다크 프레임을 눈으로 확인한 뒤 전체 렌더로 크기를 확인해요.
 
-## 홍보 미디어 (릴스·표지·링크 공유 표지)
+## 링크 공유 표지
 
 ```sh
-node demos/render-reel.mjs              # 전부 (약 6분)
-node demos/render-reel.mjs --only covers   # reel | covers | social
+node demos/render-social.mjs   # assets/demos/social-preview.png (1280×640, 라이트)
 ```
 
-위 장면을 다크 테마로 높은 배율(CSS 변환, 매 프레임 벡터로 다시 렌더)로 키워 1080×1920 30fps 릴스(`media/power-ux-harness-reel.mp4`, 34.5초, 소리 없음, 끝 0.3초는 첫 프레임으로 교차 페이드)를 만들고, 릴스 표지 2안(`media/power-ux-harness-reel-cover-a.jpg`, `-b.jpg`)과 링크 공유 표지(`assets/demos/social-preview.png`, 1280×640 라이트)를 함께 만들어요. 구간·자막 타이밍은 `render-reel.mjs` 위쪽 `SEGMENTS`·`CAPTIONS`에 있고, `media/`는 `.gitignore`예요. 인스타 캡션은 `media/reel-caption.txt`예요.
+`scenes/social.html`을 한 장 찍어요. 저장소 이름과 한 줄 설명, 「UX 스킬 10개」, 와이어프레임 셋(`ux-review` 전후, `ux-spec` 번호 핀, `ux-flow` 썸네일)을 평면으로 놓았어요. 움직임은 없어요.
