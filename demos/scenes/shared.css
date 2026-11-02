@@ -1,10 +1,12 @@
 :root[data-theme="light"] {
   --bg: #ffffff; --fg: #1f2328; --muted: #59636e; --line: #d0d7de; --subtle: #f6f8fa;
   --accent: #0969da; --p1: #cf222e; --p2: #9a6700; --ok: #1a7f37; --lowc: #9aa0a6;
+  --accent-inv: #79c0ff; /* 반전 면(--fg 채움) 위의 행동 글자 */
 }
 :root[data-theme="dark"] {
   --bg: #0d1117; --fg: #e6edf3; --muted: #9198a1; --line: #30363d; --subtle: #151b23;
   --accent: #4493f8; --p1: #f85149; --p2: #d29922; --ok: #3fb950; --lowc: #565e68;
+  --accent-inv: #0550ae;
 }
 :root {
   --ui: "Pretendard Variable", Pretendard, "Apple SD Gothic Neo", sans-serif;
