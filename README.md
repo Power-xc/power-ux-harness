@@ -55,7 +55,7 @@
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/simulate-dark.gif">
-  <img src="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/simulate-light.gif" width="800" alt="도메인·링크·기획서를 받아 출처 12건을 열람하고, 출처 칩이 달린 페르소나 4명이 회원가입 후보안 3개를 써 본 결과 표에서 B안을 추천하는 모습">
+  <img src="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/simulate-light.gif" width="800" alt="도메인·링크·기획서를 받아 출처 12건을 열람하고, 출처 칩이 달린 페르소나 4명이 한 화면·단계형·둘러보기 먼저 세 가지 회원가입 화면 썸네일을 써 본 결과 칸에서 B안을 가설로 추천하고 실제 사용자 5명 확인을 남기는 모습">
 </picture>
 
 도메인 · 링크 · 기획서를 주면 받은 자료를 모두 열어 출처 ID를 붙이고, 규제 · 비슷한 서비스의 흐름 · 앱 리뷰를 조사합니다. 구조화된 속성에서 뽑은 페르소나 3\~5명이 후보안 2\~3개를 인지적 워크스루로 한 단계씩 써 보고, 가장 덜 막히는 안을 근거 사슬과 함께 추천합니다.

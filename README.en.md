@@ -57,7 +57,7 @@ Following one feature from the first question to release looks like this. You ca
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/simulate-dark.gif">
-  <img src="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/simulate-light.gif" width="800" alt="Given a domain, links and a planning doc, the skill opens 12 sources, four personas with source chips try three sign-up designs, and the result table recommends option B">
+  <img src="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/simulate-light.gif" width="800" alt="Given a domain, links and a planning doc, the skill opens 12 sources, four personas with source chips try three sign-up screen thumbnails (one screen, step by step, browse first), and the result grid recommends option B as a hypothesis to confirm with five real users">
 </picture>
 
 Given a domain, links and a planning doc, it opens every source and tags it with an ID, then researches the rules that apply, how similar services structure the flow, and what app reviews complain about. Three to five personas built from structured attributes walk through two or three candidate designs step by step (a cognitive walkthrough), and the least obstructed candidate is recommended with its chain of evidence.
