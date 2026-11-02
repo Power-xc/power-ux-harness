@@ -2,27 +2,76 @@
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/hero-dark.gif">
-  <img src="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/hero-light.gif" width="800" alt="Each request lights up the matching skill, and the ten skills take turns turning the same wireframe screen from before the fix to after the fix: three candidate thumbnails, a task card on a reading-notes screen, order-flow thumbnails with a dashed exception path, a profile-edit screen with numbered pins, a card-number error message, a snackbar with Undo, icon buttons growing from 20 to 44 pixels, a subscription-cancel screen, numbered pins on a share sheet, and source chips with Regenerate">
+  <img src="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/hero-light.gif" width="800" alt="Each request lights up the matching skill, and the eleven skills take turns turning the same wireframe screen from before the fix to after the fix: a transfer screen that shows the payee's name large and adds two confirmations only for a large first-time transfer, three candidate thumbnails, a task card on a reading-notes screen, order-flow thumbnails with a dashed exception path, a profile-edit screen with numbered pins, a card-number error message, a snackbar with Undo, icon buttons growing from 20 to 44 pixels, a subscription-cancel screen, numbered pins on a share sheet, and source chips with Regenerate">
 </picture>
 
 # power-ux-harness
 
-**Ten skills that make an AI coding agent design and review UX the way a senior product designer works.**
+**The same feature has a different right answer in every product.<br>
+Eleven skills that make an AI coding agent read scale, audience, age and situation first, then design and review UX the way a senior product designer works.**
 
-Hand it a planning doc and a few links: it opens every source, then lets cited synthetic personas try your candidate designs first.<br>
-Flows, screen specs, UX copy, reviews, accessibility, deceptive-pattern checks and metrics follow with the same vocabulary and the same verdicts.
+It opens the sources on how similar services solved the same situation, pulls out why it worked there, and proposes a default plus variants for the exceptions that matter in your context.<br>
+Synthetic personas screen candidate designs first, and flows, screen specs, UX copy, reviews, accessibility, deceptive-pattern checks and metrics follow with the same vocabulary and the same verdicts.
 
 [![CI](https://github.com/Power-xc/power-ux-harness/actions/workflows/ci.yml/badge.svg)](https://github.com/Power-xc/power-ux-harness/actions/workflows/ci.yml)
-![skills](https://img.shields.io/badge/skills-10-111)
+![skills](https://img.shields.io/badge/skills-11-111)
 ![format](https://img.shields.io/badge/format-Agent%20Skills-111)
 [![MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
-**[Install](#install)** · [The ten skills](#the-ten-skills) · [Example requests](#example-requests) · [Shared vocabulary](#shared-vocabulary) · [Skill guide (KO)](https://power-ux-harness-guide.vercel.app) · [한국어](README.md)
+**[Install](#install)** · [Same problem, different answers](#same-problem-different-answers) · [The eleven skills](#the-eleven-skills) · [Example requests](#example-requests) · [Shared vocabulary](#shared-vocabulary) · [Skill guide (KO)](https://power-ux-harness-guide.vercel.app) · [한국어](README.md)
 
 </div>
 
+## Same problem, different answers
+
+**Email gives you seconds, a messenger gives you a day, a delayed bank transfer gives you three hours.** The same "take back what I sent" runs on undo windows thousands of times apart, because the time it takes to notice a mistake or a scam differs from service to service.
+
+Being in another app is not evidence. Why it worked there, and whether that reason exists in your product, is. These 17 come from the 33-case casebook that `ux-benchmark` starts from.
+
+**Age · ability**
+
+| Same problem                              | One answer                                                                                                                      | The other answer                                                                                           | What split them                                                                                     |
+| ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| Keep fall detection on?                   | Smartwatch — on automatically for users who entered an age of 55 or over                                                        | Under 55 — choose always-on yourself                                                                       | Age, and the risk of not being able to call for help after a fall                                   |
+| Holiday train tickets everyone rushes for | Train booking — people 65+, people with disabilities and others book four days earlier, with a 5-minute limit and phone booking | General booking — a 3-minute limit, routes split across days to spread the load                            | A speed race plus digital skill — queue order, time and a proxy channel matter more than the screen |
+| Naming the simple mode                    | Banking apps — launched it as "senior mode"                                                                                     | Only 27.4% of its users were 60+ — renamed it "easy mode"                                                  | An age label stigmatizes; wanting a simpler screen is not about age                                 |
+| Booking a neighborhood clinic             | Some clinics — bookings only through a paid app                                                                                 | Government — refusing other ways to register may count as refusing care, so clinics were told to keep both | Access to care is not optional; parents who can't use the app                                       |
+
+**Money · trust**
+
+| Same problem                                | One answer                                                                               | The other answer                                                                    | What split them                                                                          |
+| ------------------------------------------- | ---------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| Celebrating a finished action               | Work tool — an occasional celebration when a task is done, with a switch to turn it off  | Trading app — in 2021 removed the confetti that rained down after a first trade     | Is it fine to make people do this more? Where money is at stake, show the result plainly |
+| Paying the wrong account                    | UK — checks the name the payer typed against the account: match, close match or no match | Korea — shows the account holder's name and the amount for the person to check      | Fraud or a typo? 66.8% of Korea's mistaken transfers were mistyped account numbers       |
+| Self-control settings like a gambling block | Turning it on — instant                                                                  | Turning it off — only after the 2 days to 1 year chosen when it went on (a UK bank) | A decision made on impulse versus one made calmly                                        |
+| Paying a stranger for a used item           | Local meet-ups — escrow payment started as optional                                      | Items from far-off neighborhoods and e-vouchers — escrow only                       | Can the buyer check the item in person?                                                  |
+
+**Situation**
+
+| Same problem           | One answer                                                                                 | The other answer                                                                        | What split them                                                        |
+| ---------------------- | ------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| Location data          | Activity-tracking app — hides the first and last 200 m of a route map by default           | Night-walk safety app — sends live location to the guardians you picked on the way home | Is the viewer a stranger or someone you chose?                         |
+| Calling for help       | Phone crash detection — a 10-second alert and a 30-second countdown, then it calls for you | Night-walk safety app — the user presses a big button                                   | Can the user respond at all?                                           |
+| Messages while driving | Phone — fewer notifications, only urgent ones get through                                  | Car screen — reads messages aloud, takes a spoken reply and reads it back               | Eyes and hands are busy — reduce, or switch channels from eyes to ears |
+| A locked phone         | Normally — the lock hides everything                                                       | Emergency medical info only — opens from the lock screen without a passcode             | Not seeing it in an emergency costs more than exposing it              |
+
+**Scale · market**
+
+| Same problem                | One answer                                                                                | The other answer                                                                                                   | What split them                                                                       |
+| --------------------------- | ----------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------- |
+| Uninvited people barging in | Managed organization accounts — admins set the policy                                     | Free and education accounts — once schools came on board, waiting rooms and passwords were on by default (2020-04) | Users who can't find a setting to turn it on, and a class that grinds to a halt       |
+| How fast rumors spread      | Private messenger — forward to five chats at once, one chat for highly forwarded messages | Another social network — asks you to read an article you haven't opened before sharing, without blocking you       | Private chats whose content the service doesn't read, versus public posts             |
+| Public reaction counts      | Video platform — hid dislike counts from viewers, kept the button and the creator's count | Photo network — lets each person choose whether to hide like counts                                                | Pile-ons aimed at small channels, versus counts that help some people and hurt others |
+| Leaving a group chat        | Before — everyone was told when you left                                                  | A Korean messenger — leave quietly; about 2 million people turned it on within three weeks in its lab              | A group chat where leaving is itself a social signal                                  |
+| Kiosk accessibility         | Large stores — certified kiosks and voice-guidance devices                                | Under 50 m² and small businesses — staff assistance or a call bell instead                                         | Business size and capacity, and users who would rather order from a person            |
+
+Each case in the [casebook](skills/ux-benchmark/references/casebook.md) lists its sources, the date they were checked, the cost, and where the idea does not transfer. "What split them" mixes what the sources state with the casebook's reading of it; the casebook keeps the two apart. Policies change, so `ux-benchmark` reopens the sources before citing them. The casebook is written in Korean.
+
 ## At a glance
 
+- **Context first** — an 18-field context card covers scale, business model, audience, age, device, situation and the cost of a mistake, and the two or three fields that would flip the answer become the design criteria.
+- **Adapt, don't copy** — every comparable case records why it worked there and what it cost, then gets judged adopt, adapt or don't adopt against your context.
+- **Exceptions included** — failures, cancellations, mistakes, first and returning use, acting for someone else and suspected fraud are mapped per user segment, so you get a default plus per-exception variants.
 - **Start from a planning doc** — give it a domain, links and a doc; it opens every source into a citation table, and personas with cited attributes walk through the candidate designs.
 - **Hypotheses stay hypotheses** — synthetic results are labeled as such on the first line, reported as rankings and stability instead of percentages, and always end in a real-user validation plan.
 - **Fixes name the pattern** — not "improve feedback" but "snackbar + Undo, 'Note deleted'": pattern, state and copy.
@@ -50,7 +99,63 @@ Following one feature from the first question to release looks like this. You ca
 | Measure          | `ux-metrics`       | HEART metrics · guardrails · experiment plan                                |
 | AI screens       | `ux-ai`            | 18 human–AI interaction guidelines · AI screen patterns                     |
 
-## The ten skills
+## The eleven skills
+
+### ux-benchmark
+
+**Context card → comparable services → insights → a default plus context-specific variants.**
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/benchmark-dark.gif">
+  <img src="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/benchmark-light.gif" width="800" alt="For a money-transfer app whose users over 60 are growing, the context card picks digital skill, cost of a mistake and exposure to fraud as the deciding context; a domestic bank's delayed transfer, a foreign bank's payee-name check and an email undo are broken into why each worked and what it cost, and judged adapt, adopt and don't adopt; the result shows a default that displays the payee's name large next to a variant for first-time accounts and amounts of 1,000,000 won or more that adds two confirmations, an optional guardian alert and arrival 30 minutes later, plus an exception that stops the transfer when the name doesn't match">
+</picture>
+
+Given a description, a URL or a planning doc, it fills an 18-field context card — business, users, situation, risk — with evidence, and picks the two or three fields that would flip the answer if their values flipped. It chooses five to eight comparables across three rings — direct competitors, other industries that share the deciding context, and extreme cases where the risk is higher or users are more vulnerable — opens their official material, records why each worked and what it cost, and proposes a default plus variants for the exceptions that matter in your context.
+
+- **When** — "How do similar services handle this?", "Find what worked elsewhere and adapt it to us", "More of our users are in their 60s, how should this screen change?", `@ux benchmark`, `@ux context`
+- **Age becomes fields** — "users in their 60s" is rewritten as digital skill, eyesight, motor precision, cognitive load, a helper and exposure to fraud: fields you can design for. An age label stigmatizes, and the same need shows up at any age.
+- **Context distance** — each case is checked against your context and judged adopt, adapt or don't adopt, with a one-line reason. Every proposal carries at least one "don't copy this" and one "try this small first".
+- **Never** — "because the competitor does it", citing a source it did not open, copying screens or copy, or splitting people by age alone.
+
+<details>
+<summary>Example output — a large transfer to a first-time account</summary>
+
+```markdown
+Context card (excerpt)
+
+| Field                | Value                                               | Evidence            | Design impact                                  |
+| -------------------- | --------------------------------------------------- | ------------------- | ---------------------------------------------- |
+| B1 Stage · scale     | Growth stage · small support team                   | S1 company page     | No plan that relies on manual review           |
+| U2 Digital skill     | Widely spread · share of 60+ rising                 | S2 app analytics    | Split by risk signals, not by age              |
+| R1 Cost of a mistake | A large amount sent wrongly is hard to recover      | S3 recovery program | Confirm before sending · cancel before arrival |
+| R4 Exposure to fraud | Concentrated on first-time accounts · large amounts | assumption          | Validation plan #1                             |
+
+Deciding context: U2 digital skill · R1 cost of a mistake · R4 exposure to fraud
+
+| Comparable                       | Ring                         | Why it worked there                          | Cost                            | Context distance                                                   |
+| -------------------------------- | ---------------------------- | -------------------------------------------- | ------------------------------- | ------------------------------------------------------------------ |
+| Domestic bank — delayed transfer | Direct competitor            | Time to realize you were scammed             | Urgent transfers wait too       | Adapt — 30 minutes, only for first-time accounts and large amounts |
+| Foreign bank — payee-name check  | Direct competitor · abroad   | Says before sending whether the name matches | A mismatch needs one more check | Adopt — show the payee's name large                                |
+| Email — undo send                | Same context, other industry | Undoes a slip right after sending            | Nothing to do after 30 seconds  | Don't adopt — seconds are too short to notice a scam               |
+
+Proposal
+Default: show the payee's name large · stop when the name doesn't match
+Variant: first-time account · 1,000,000 won or more → two confirmations + optional guardian alert + arrives in 30 minutes, cancel until then
+Exception: name mismatch → "The payee's name doesn't match. You can't send until you check it again."
+Don't copy: extra checks triggered by age alone — it stigmatizes and misses the same risk in younger users
+Try small first: turn on the 30-minute arrival only for large first-time transfers and watch cancellations before arrival and support contacts
+
+Validation plan
+
+| Riskiest assumption                            | How to check                             | Result that flips it                        |
+| ---------------------------------------------- | ---------------------------------------- | ------------------------------------------- |
+| 30 minutes is enough to notice a scam          | Reasons for cancellations before arrival | Most reports come in after 30 minutes       |
+| Two confirmations don't block normal transfers | Usability test with 5 people + drop-off  | More people abandon normal transfers midway |
+
+Verdict: READY
+```
+
+</details>
 
 ### ux-simulate
 
@@ -189,6 +294,8 @@ Given a domain, links and a planning doc, it opens every source and tags it with
 
 | Ask                                                                                               | Fires              |
 | ------------------------------------------------------------------------------------------------- | ------------------ |
+| See how similar services guard large transfers to first-time accounts and adapt it to us          | `ux-benchmark`     |
+| More of our users are in their 60s; use cases that worked elsewhere to rethink this checkout      | `ux-benchmark`     |
 | Use the doc and market data to run personas and tell me which of two onboarding options is better | `ux-simulate`      |
 | I'm testing a new booking flow with five users next week, write the tasks and the script          | `ux-research`      |
 | List the screens and edge cases from sign-up to first order                                       | `ux-flow`          |
@@ -200,7 +307,7 @@ Given a domain, links and a planning doc, it opens every source and tags it with
 | Set metrics and guardrails to tell whether the onboarding revamp worked                           | `ux-metrics`       |
 | What confirmation should an AI agent show before sending an email for me?                         | `ux-ai`            |
 
-All 36 request–skill pairs live in [`evals/cases.json`](evals/cases.json). Requests that are easy to confuse with a neighboring skill carry `shouldNotFire`, which pins the boundary.
+All 49 request–skill pairs live in [`evals/cases.json`](evals/cases.json). Requests that are easy to confuse with a neighboring skill carry `shouldNotFire`, which pins the boundary.
 
 ## Install
 
@@ -216,7 +323,7 @@ All 36 request–skill pairs live in [`evals/cases.json`](evals/cases.json). Req
 Installs into `.agents/skills`, the project location several agents read. Requires Node.js 22 or later.
 
 ```sh
-npx github:Power-xc/power-ux-harness                    # all ten into this project
+npx github:Power-xc/power-ux-harness                    # all eleven into this project
 npx github:Power-xc/power-ux-harness --only ux-review,ux-a11y
 npx github:Power-xc/power-ux-harness --tool both        # .agents/skills and .claude/skills
 npx github:Power-xc/power-ux-harness --list             # list the skills
@@ -250,6 +357,7 @@ Verdicts rest on published standards; each skill's `references/` opens with its 
 - **Deceptive design** — the dark-pattern provisions of Korea's e-commerce consumer-protection act (in force 2025-02-14), the Korea Fair Trade Commission's guideline on online interfaces against dark patterns (2026-10-06), EU DSA Article 25, the US FTC staff report
 - **Research and metrics** — heuristic evaluation and severity, cognitive walkthroughs, HEART, SUS, controlled-experiment design
 - **Synthetic users** — the repeat, baseline, decoy and rank-only reporting rules come from studies of the positivity bias, reduced variance and option-order bias of synthetic responses
+- **Context and cases** — the context card builds on ISO 9241-11's view of usability within a context of use and adds business and risk fields; the eyesight, motor and cognition fields lean on WCAG 2.2 and Korea's digital divide survey. The 33 cases were checked against official help pages, press releases and regulators' documents, with the date each was opened
 
 ## Checks and contributing
 
