@@ -1,0 +1,29 @@
+{
+  "cases": [
+    {
+      "id": "review-1",
+      "prompt": "@ux review 결제 화면 — 이탈이 많은 이유 봐줘",
+      "expectSkill": "ux-review",
+      "why": "명시 별칭"
+    },
+    {
+      "id": "review-2",
+      "prompt": "온보딩 첫 화면에서 사용자가 헤매는 것 같은데 흐름 좀 봐줘",
+      "expectSkill": "ux-review",
+      "why": "흐름·마찰 판단"
+    },
+    {
+      "id": "review-3",
+      "prompt": "삭제하면 토스트만 떴다 사라지는데, 되돌리기를 줄지 확인 모달을 띄울지 정해줘",
+      "expectSkill": "ux-review",
+      "shouldNotFire": "ux-writing",
+      "why": "알림 패턴 선택은 방해 수준·복구 판단 — 문구를 쓰는 요청이 아님"
+    },
+    {
+      "id": "review-4",
+      "prompt": "설정 화면에 스위치를 썼는데 아래에 저장 버튼도 있어. 이렇게 써도 돼?",
+      "expectSkill": "ux-review",
+      "why": "컨트롤 패턴의 쓰임 판정"
+    }
+  ]
+}
