@@ -1,48 +1,119 @@
 <!doctype html>
 <html lang="ko"><head><meta charset="utf-8">
-<link rel="stylesheet" href="shared.css"><script src="timeline.js"></script>
+<link rel="stylesheet" href="shared.css"><link rel="stylesheet" href="wire.css"><script src="timeline.js"></script><script src="wire.js"></script>
 <style>
-  .wf { position: absolute; background: var(--subtle); border-radius: 4px; }
-  .sr { position: absolute; left: 380px; width: 460px; display: flex; gap: 12px; }
-  .sr .n { position: relative; flex: none; width: 20px; height: 20px; margin-top: 2px; border: 1px solid var(--accent); border-radius: 50%; color: var(--accent); font: 600 12px/18px var(--ui); text-align: center; }
-  .sr .k { font-weight: 600; }
-  .mr { position: absolute; left: 380px; width: 460px; display: flex; gap: 12px; font-size: 13px; }
+  .mr { position: absolute; left: 400px; width: 440px; display: flex; gap: 12px; font-size: 13px; line-height: 20px; }
   .mr .l { width: 56px; flex: none; color: var(--muted); }
+  .thumb { position: absolute; width: 90px; height: 163px; }
+  .thumb .w-device { border-width: 3px; transform: scale(0.3); transform-origin: 0 0; }
+  .thumb.on .w-device { border-color: var(--accent); }
+  .cap { position: absolute; width: 116px; text-align: center; font-size: 12px; line-height: 16px; color: var(--muted); }
+  .cap b { display: block; font-size: 13px; color: var(--fg); }
+  .cap.on b { color: var(--accent); }
 </style></head>
 <body><div id="stage">
-  <div id="head" class="abs" style="left:40px;top:20px;display:flex;gap:12px;align-items:baseline"><span class="mono" style="font-size:13px;font-weight:600">SCR-SET-02</span><span style="font-weight:600">프로필 편집</span><span class="small muted">v1.2</span></div>
-  <div class="abs" style="left:40px;top:64px;width:300px;height:340px;border:1px solid var(--line);border-radius:12px;background:var(--bg)">
-    <div class="wf" style="left:16px;top:20px;width:150px;height:14px"></div>
-    <div class="wf" style="left:16px;top:50px;width:268px;height:10px"></div>
-    <div class="wf" style="left:16px;top:68px;width:200px;height:10px"></div>
-    <div class="wf" style="left:16px;top:110px;width:128px;height:36px;border-radius:8px"></div>
-    <div class="wf" style="left:156px;top:110px;width:128px;height:36px;border-radius:8px"></div>
-    <div style="position:absolute;left:16px;top:274px;width:268px;height:44px;border:1px dashed var(--muted);border-radius:8px"></div>
-    <div class="num" id="c1" style="left:-10px;top:42px">1</div>
-    <div class="num" id="c2" style="left:-10px;top:118px">2</div>
-    <div class="num" id="c3" style="left:274px;top:100px">3</div>
-    <div class="num" id="c4" style="left:274px;top:264px">4</div>
-  </div>
-  <div id="r1" class="sr" style="top:64px"><span class="n">1</span><div><span class="k">입력칸</span> · <span id="t1"></span></div></div>
-  <div id="r2" class="sr" style="top:124px"><span class="n">2</span><div><span class="k">저장 버튼</span> · <span id="t2"></span></div></div>
-  <div id="r3" class="sr" style="top:184px"><span class="n">3</span><div><span class="k">취소 버튼</span> · <span id="t3"></span></div></div>
-  <div id="r4" class="sr" style="top:244px"><span class="n">4</span><div><span class="k">스낵바</span> · <span id="t4"></span></div></div>
-  <div id="hr" class="hr" style="left:380px;width:460px;top:306px"></div>
-  <div id="m1" class="mr" style="top:318px"><span class="l">상태</span><span>기본 · 저장 중 · 완료 · 실패(다시 시도)</span></div>
-  <div id="m2" class="mr" style="top:344px"><span class="l">접근성</span><span>저장 중 상태를 읽어 주고 · 실패하면 오류 문구로 포커스</span></div>
-  <div id="m3" class="mr" style="top:388px"><span class="l">이벤트</span><span class="mono" style="font-size:12px">profile_save_click · _success · _fail</span></div>
+  <div id="head" class="abs" style="left:40px;top:16px;display:flex;gap:12px;align-items:baseline;line-height:24px"><span class="mono" style="font-size:13px;font-weight:600">SCR-SET-02</span><span style="font-weight:600">프로필 편집</span><span class="small muted">v1.2</span></div>
 </div>
 <script>
-const TXT = ["라벨 “이름” · 최대 20자 · 비어 있으면 저장 버튼 비활성", "문구 “저장” · 높이 44px · 접근성 이름 “프로필 저장” · 저장 중에는 “저장 중…”으로 바꾸고 누르지 못하게", "문구 “취소” · 바뀐 내용이 있으면 버릴지 한 번 묻기", "완료 “프로필을 저장했어요” 3초 · 실패 “저장하지 못했어요” + “다시 시도”"];
-const S = [1000, 2200, 3400, 4600];
-window.DEMO = defineDemo({ width: 880, height: 420, end: 7900,
+const DX = 40, DY = 56, DEV_H = 544, W_ = 880, H_ = 624;
+const BIO = "책 읽고 그림 그리는 걸 좋아해요. 주말엔 동네 도서관에 가요.";
+const NOTES = [
+  ["입력칸", "라벨 “이름” · 최대 20자 · 비어 있으면 저장 버튼 비활성"],
+  ["저장 버튼", "문구 “저장” · 높이 44px · 접근성 이름 “프로필 저장” · 저장 중에는 “저장 중…”으로 바꾸고 누르지 못하게"],
+  ["취소 버튼", "문구 “취소” · 바뀐 내용이 있으면 버릴지 한 번 묻기"],
+  ["스낵바", "완료 “프로필을 저장했어요” 3초 · 실패 “저장하지 못했어요” + “다시 시도”"],
+];
+const STATES = [["base", "기본", "저장 활성"], ["saving", "저장 중", "버튼 비활성"], ["done", "완료", "스낵바 3초"], ["fail", "실패", "다시 시도"]];
+
+// 프로필 편집 화면: main이면 지시선 대상 id를 붙이고 스낵바 자리에 두 상태를 겹쳐 둔다.
+function screen(state, main) {
+  const id = (s) => (main ? s : "");
+  const saving = state === "saving";
+  const slot = main
+    ? `<div id="slot" style="position:relative"><div class="w-slot" id="s-ph">스낵바 자리</div><div id="s-ok" style="position:absolute;left:0;top:0;right:0;visibility:hidden">${W.snackbar("프로필을 저장했어요")}</div></div>`
+    : state === "done" ? W.snackbar("프로필을 저장했어요")
+    : state === "fail" ? W.snackbar("저장하지 못했어요", { action: "다시 시도" })
+    : '<div class="w-slot">스낵바 자리</div>';
+  return W.statusBar() + W.appBar("프로필 편집") + `<div class="w-body">
+    <div style="height:96px;padding-top:8px;display:flex;justify-content:center"><div ${id('id="avatar"')} style="position:relative;width:72px;height:72px;border:1px solid var(--line);border-radius:50%;display:grid;place-items:center;color:var(--muted)">${W.icon("user", 32)}<div style="position:absolute;right:-5px;bottom:-1px;width:28px;height:28px;display:grid;place-items:center;border:1px solid var(--line);border-radius:50%;background:var(--bg)">${W.icon("camera", 16)}</div></div></div>
+    ${W.field({ label: "이름", value: "김하늘", help: "다른 사람에게 보이는 이름이에요", count: "3/20", id: id("f-name") })}
+    <div style="height:16px"></div>
+    ${W.field({ label: "소개", value: BIO, help: "프로필에 보이는 짧은 소개예요", count: `${[...BIO].length}/100`, box: 56 })}
+    <div style="height:24px"></div>
+    <div style="display:flex;gap:24px">${W.button("취소", { h: "h44", id: id("b-cancel"), style: "width:72px" })}${W.button(saving ? "저장 중…" : "저장", { kind: saving ? "disabled" : "primary", h: "h44", id: id("b-save"), style: "flex:1" })}</div>
+    <div style="height:32px"></div>${slot}</div>`;
+}
+
+const stage = $("stage");
+stage.insertAdjacentHTML("beforeend", W.device(screen("base", true), { id: "dev", x: DX, y: DY, h: DEV_H }));
+
+// 실측: 핀·지시선·치수선은 기기 안 부품의 모서리에서 계산한다.
+const R = { name: W.rect($("f-name")), save: W.rect($("b-save")), cancel: W.rect($("b-cancel")), slot: W.rect($("slot")), av: W.rect($("avatar")) };
+const ROW0 = 56, ROW_STEP = 64, NUM_X = 400, GUT = [352, 364, 376, 388];
+const rowY = (k) => ROW0 + ROW_STEP * k + 11;
+const c = (r) => W.pinCenter(r);
+const lane3 = R.save.bottom + 6; // ③은 버튼 줄 아래 빈틈으로 돌아 나온다
+const paths = [
+  ["ld0", [[R.name.left, c(R.name).y], [GUT[0], c(R.name).y], [GUT[0], rowY(0)], [NUM_X, rowY(0)]]],
+  ["ld1", [[R.save.left, c(R.save).y], [GUT[1], c(R.save).y], [GUT[1], rowY(1)], [NUM_X, rowY(1)]]],
+  ["ld2", [[c(R.cancel).x, c(R.cancel).y + 10], [c(R.cancel).x, lane3], [GUT[2], lane3], [GUT[2], rowY(2)], [NUM_X, rowY(2)]]],
+  ["ld3", [[R.slot.left, c(R.slot).y], [GUT[3], c(R.slot).y], [GUT[3], rowY(3)], [NUM_X, rowY(3)]]],
+];
+const dimX = R.av.left - 24, avCx = (R.av.left + R.av.right) / 2;
+stage.insertAdjacentHTML("beforeend",
+  `<div id="dim">${W.ext({ axis: "h", at: R.av.top, from: dimX, to: avCx })}${W.ext({ axis: "h", at: R.av.bottom - 1, from: dimX, to: avCx })}${W.dim({ axis: "v", at: dimX, from: R.av.top, to: R.av.bottom - 1, label: "72" })}</div>` +
+  W.leaders(W_, H_, paths) +
+  W.pin(1, R.name, "p0") + W.pin(2, R.save, "p1") + W.pin(3, R.cancel, "p2") + W.pin(4, R.slot, "p3"));
+
+NOTES.forEach(([nm, sp], k) => stage.insertAdjacentHTML("beforeend",
+  `<div id="n${k}" class="w-note" style="left:${NUM_X}px;top:${ROW0 + ROW_STEP * k}px"><div class="num">${k + 1}</div><div class="nm">${nm}</div><div class="sp">${sp}</div></div>`));
+
+stage.insertAdjacentHTML("beforeend",
+  `<div id="hr1" class="hr" style="left:400px;width:440px;top:324px"></div>`);
+STATES.forEach(([st, nm, sub], k) => {
+  const left = 400 + k * 116;
+  stage.insertAdjacentHTML("beforeend",
+    `<div id="th${k}" class="abs"><div class="thumb" id="tb${k}" style="left:${left}px;top:336px"><div class="w-device" style="left:0;top:0;height:${DEV_H}px">${screen(st, false)}<div class="w-home"></div></div></div>` +
+    `<div class="cap" id="cp${k}" style="left:${left - 13}px;top:503px"><b>${nm}</b>${sub}</div></div>`);
+});
+stage.insertAdjacentHTML("beforeend",
+  `<div id="hr2" class="hr" style="left:400px;width:440px;top:547px"></div>
+   <div id="m2" class="mr" style="top:559px"><span class="l">접근성</span><span>저장 중 상태를 읽어 주고 · 실패하면 오류 문구로 포커스</span></div>
+   <div id="m3" class="mr" style="top:583px"><span class="l">이벤트</span><span class="mono" style="font-size:12px">profile_save_click · _success · _fail</span></div>
+   <div class="w-pointer" id="ptr"></div><div class="w-ripple" id="rip"></div>`);
+
+const PIN = [1000, 1200, 1400, 1600], LEAD = [2000, 2250, 2500, 2750], LEAD_DUR = 450, THUMB = [3900, 4300, 4700, 5100];
+const cx = (r) => (r.left + r.right) / 2, cy = (r) => (r.top + r.bottom) / 2;
+const SAVE = { x: R.save.right - 28, y: cy(R.save) }, REST = { x: 332, y: 470 };
+const PRESS = 8100, DONE = 9500;
+const kf = [{ t: 0, ...REST }, { t: 6900, ...REST }, { t: 7700, ...SAVE }, { t: 8700, ...SAVE }, { t: 9300, ...REST }];
+
+window.DEMO = defineDemo({ width: W_, height: H_, end: 11000,
   draw(t) {
-    fade($("head"), t, 300);
-    S.forEach((s, i) => {
-      fade($("c" + (i + 1)), t, s); fade($("r" + (i + 1)), t, s);
-      typeInto($("t" + (i + 1)), TXT[i], t, s, 30, false);
-    });
-    fade($("hr"), t, 5800);
-    fade($("m1"), t, 5800); fade($("m2"), t, 6600); fade($("m3"), t, 7400);
+    fade($("head"), t, 200);
+    fade($("dev"), t, 300, 300);
+    fade($("dim"), t, 700);
+    for (let k = 0; k < 4; k++) {
+      fade($("p" + k), t, PIN[k], 200);
+      W.leaderAt(document.getElementById("ld" + k), easeOutCubic(progress(t, LEAD[k], LEAD_DUR)));
+      fade($("n" + k), t, LEAD[k] + LEAD_DUR);
+      fade($("th" + k), t, THUMB[k]);
+    }
+    fade($("hr1"), t, 3700);
+    fade($("hr2"), t, 5800); fade($("m2"), t, 5800); fade($("m3"), t, 6200);
+    // 포인터가 저장을 누르면 버튼이 저장 중으로, 이어서 완료 스낵바로 바뀐다.
+    const saving = t >= PRESS && t < DONE;
+    const save = $("b-save");
+    save.className = "w-btn h44 " + (saving ? "disabled" : "primary");
+    if (save.textContent !== (saving ? "저장 중…" : "저장")) save.textContent = saving ? "저장 중…" : "저장";
+    const ok = fade($("s-ok"), t, DONE, 240);
+    $("s-ph").style.visibility = ok > 0 ? "hidden" : "visible";
+    const active = t < 6900 ? -1 : t < PRESS ? 0 : saving ? 1 : 2;
+    for (let k = 0; k < 4; k++) { $("tb" + k).classList.toggle("on", k === active); $("cp" + k).classList.toggle("on", k === active); }
+    const p = path(t, kf), ptr = $("ptr");
+    ptr.style.left = p.x + "px"; ptr.style.top = p.y + "px";
+    ptr.style.opacity = 0.95 * progress(t, 6900, 200) * (1 - progress(t, 9300, 300));
+    const rp = progress(t, PRESS, 320), rip = $("rip");
+    if (rp > 0 && rp < 1) { rip.style.left = SAVE.x + "px"; rip.style.top = SAVE.y + "px"; rip.style.opacity = 1 - rp; rip.style.transform = `scale(${1 + 2.2 * easeOutCubic(rp)})`; } else rip.style.opacity = 0;
   } });
 </script></body></html>
