@@ -128,3 +128,9 @@ test('validate-allow 표시가 있는 줄은 위생 검사에서 빠진다', () 
   const { code, out } = validate(makeRepo((f) => ({ ...f, 'notes.txt': line })));
   assert.equal(code, 0, out);
 });
+
+test('한 줄에 짝을 이룬 물결표는 취소선이 되므로 FAIL하고, \\~는 통과한다', () => {
+  assertFails((f) => ({ ...f, 'README.md': f['README.md'] + '페르소나 3~5명이 후보안 2~3개\n' }), /물결표 두 개/);
+  const { code, out } = validate(makeRepo((f) => ({ ...f, 'README.md': f['README.md'] + '페르소나 3\\~5명이 후보안 2\\~3개\n' })));
+  assert.equal(code, 0, out);
+});

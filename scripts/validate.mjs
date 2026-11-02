@@ -283,6 +283,21 @@ function checkLinks(ctx) {
   }
 }
 
+// GitHub은 한 줄(표는 한 칸) 안에서 짝을 이룬 물결표를 취소선으로 그린다. 범위는 \~로 쓴다.
+function checkTildes(ctx) {
+  for (const file of ctx.mdFiles) {
+    for (const { text, line } of linesOutsideFences(readText(file))) {
+      const plain = text.replace(/`[^`]*`/g, "");
+      const cells = plain.trim().startsWith("|") ? plain.split("|") : [plain];
+      if (cells.some((c) => (c.match(/(?<!\\)~/g) ?? []).length >= 2))
+        ctx.fail(
+          ctx.rel(file),
+          `${line}행: 물결표 두 개가 취소선으로 렌더링된다 — 범위는 \\~로 쓴다`,
+        );
+    }
+  }
+}
+
 function isNonEmptyString(v) {
   return typeof v === "string" && v.trim() !== "";
 }
@@ -439,6 +454,7 @@ function main() {
   checkSkillMd(ctx);
   checkSkillReferences(ctx);
   checkLinks(ctx);
+  checkTildes(ctx);
   checkEvals(ctx);
   checkReadmes(ctx);
   checkManifests(ctx);
