@@ -103,3 +103,14 @@
 .w-arrow .hd { opacity: 0; }
 .w-arrow.dash .ln { stroke-dasharray: 0 9999; stroke-dashoffset: 0; }
 .w-arrow .ln { stroke-linecap: butt; }
+
+/* 대화형 화면: 말풍선 · 답변 · 출처 칩 · 생성 중 표시 · 입력 바 */
+.w-bubble { display: inline-block; max-width: 220px; padding: 7px 16px; border: 1px solid var(--line); border-radius: 16px 16px 4px 16px; background: var(--subtle); font: 400 15px/24px var(--ui); }
+.w-answer { font: 400 15px/24px var(--ui); }
+.w-cite { display: inline-flex; align-items: center; height: 24px; padding: 0 8px; margin: 0 2px; border: 1px solid var(--accent); border-radius: 12px; color: var(--accent); font: 600 12px/1 var(--ui); vertical-align: middle; white-space: nowrap; }
+.w-working { height: 24px; display: flex; align-items: center; gap: 8px; font: 400 12px/16px var(--ui); color: var(--muted); }
+.w-working .ai { height: 20px; padding: 0 6px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 4px; color: var(--fg); font: 600 12px/1 var(--ui); }
+.w-working .dots { display: inline-flex; gap: 4px; }
+.w-working .dots i { width: 5px; height: 5px; border-radius: 50%; background: var(--muted); }
+.w-input { height: 44px; padding: 0 4px 0 16px; display: flex; align-items: center; justify-content: space-between; border: 1px solid var(--line); border-radius: 22px; color: var(--muted); font: 400 15px/24px var(--ui); }
+.w-input .go { width: 36px; height: 36px; display: grid; place-items: center; }

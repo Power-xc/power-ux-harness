@@ -59,9 +59,14 @@ Chrome 경로는 `CHROME_PATH`, ffmpeg 경로는 `FFMPEG_PATH`(기본 `/opt/home
 | 토스트 | `W.toast` | 40, 알약 | 반전 면. 폭은 `style`로 고정해요 |
 | 스낵바 자리 | `.w-slot` | 48 | 1px 점선, 아직 뜨지 않은 자리 |
 | 하단 시트 | `.w-sheet` | 위 반경 16 | 손잡이 32×4 |
-| 아이콘 | `W.icon(name, size)` | 24 격자, 1.5px 선 | `back` `chevron` `search` `more` `close` `check` `camera` `trash` `info` `warning` `user`. 새 아이콘은 `wire.js`의 `PATHS`에 더해요 |
+| 아이콘 | `W.icon(name, size)` | 24 격자, 1.5px 선 | `back` `chevron` `search` `more` `close` `check` `camera` `trash` `info` `warning` `user` `thumbUp` `thumbDown` `stop` `refresh` `send`. 새 아이콘은 `wire.js`의 `PATHS`에 더해요 |
 | 축소 썸네일 | `W.thumb(inner, {x, y, h, scale, name, sub, on})` | 폭 300×배율 | 기기를 `transform: scale`로 줄이고 테두리는 1px로 보이게 `1/배율`로 맞춰요. 캡션은 이름 13/600 + 부제 12 muted이고 읽혀야 해요. `on`이면 accent 테두리 |
 | 흐름 화살표 | `W.arrow(pts, {dash})` · `W.arrowAt(el, p)` | 1px `--muted` | `[[x,y],…]` 직각 꺾은선 + 열린 화살촉(7×4). `dash`는 예외 경로예요. `arrowAt`으로 0~1만큼 그려요(점선도 같은 간격으로 그려져요) |
+| 말풍선 | `W.bubble(text)` | 높이 40, 최대 폭 220 | 사용자 요청. `--subtle` 채움 + 1px 선, 오른쪽 아래만 반경 4 |
+| 답변 | `W.answer(html)` | 15/24 | 말풍선 없이 왼쪽 정렬. 글 사이에 출처 칩을 넣어요 |
+| 출처 칩 | `W.cite(label)` | 높이 24, 알약 | 1px accent 선 + accent 글자 12/600. 문장 안 링크라서 24예요 |
+| 생성 중 표시 | `W.working(text)` | 24 | `AI` 표시 + 진행 문구 12 muted + 점 셋. 점의 깜박임은 장면이 정해요 |
+| 입력 바 | `W.inputBar(placeholder)` | 높이 44, 알약 | 안내 문구 15 muted + 오른쪽 보내기 아이콘 |
 
 ### 주석층
 

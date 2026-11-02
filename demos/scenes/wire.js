@@ -12,6 +12,11 @@
     info: '<circle cx="12" cy="12" r="8.5"/><path d="M12 11v5M12 8h.01"/>',
     warning: '<path d="M12 4l9 15.5H3z"/><path d="M12 10v4.5M12 17h.01"/>',
     user: '<circle cx="12" cy="9" r="3.5"/><path d="M5 20c.8-3.8 3.6-6 7-6s6.2 2.2 7 6"/>',
+    thumbUp: '<path d="M7 10v11M15 5.9L14 10h5.8a2 2 0 0 1 1.9 2.6l-2.3 8a2 2 0 0 1-1.9 1.4H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.8a2 2 0 0 0 1.8-1.1L12 2a3.1 3.1 0 0 1 3 3.9z"/>',
+    thumbDown: '<path d="M17 14V3M9 18.1L10 14H4.2a2 2 0 0 1-1.9-2.6l2.3-8A2 2 0 0 1 6.5 2H20a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2.8a2 2 0 0 0-1.8 1.1L12 22a3.1 3.1 0 0 1-3-3.9z"/>',
+    stop: '<rect x="6.5" y="6.5" width="11" height="11" rx="2"/>',
+    refresh: '<path d="M19.5 12a7.5 7.5 0 0 0-13-5.1L4.5 9M4.5 4.5V9H9M4.5 12a7.5 7.5 0 0 0 13 5.1l2-2.1M19.5 19.5V15H15"/>',
+    send: '<path d="M20.5 3.5L10 14M20.5 3.5l-6.5 17-3.5-6.5L4 10.5z"/>',
   };
   const icon = (name, size = 24) => `<svg class="wi" width="${size}" height="${size}" viewBox="0 0 24 24" aria-hidden="true">${PATHS[name]}</svg>`;
 
@@ -120,4 +125,16 @@
   }
 
   window.W = { icon, statusBar, appBar, placeholder, listRow, field, button, snackbar, toast, device, rect, pinCenter, pin, leaders, leaderAt, flag, dim, ext, thumb, arrow, arrowAt };
+})();
+
+// 대화형 화면 부품: 말풍선 · 답변 · 출처 칩 · 생성 중 표시 · 입력 바
+(function () {
+  const idAttr = (id) => (id ? ` id="${id}"` : "");
+  const bubble = (text, { id = "" } = {}) => `<div class="w-bubble"${idAttr(id)}>${text}</div>`;
+  const answer = (html, { id = "" } = {}) => `<div class="w-answer"${idAttr(id)}>${html}</div>`;
+  const cite = (label, { id = "", style = "" } = {}) => `<span class="w-cite"${idAttr(id)}${style ? ` style="${style}"` : ""}>${label}</span>`;
+  const working = (text, { badge = "AI", dots = true, id = "" } = {}) =>
+    `<div class="w-working"${idAttr(id)}><span class="ai">${badge}</span><span class="tx">${text}</span>${dots ? '<span class="dots"><i></i><i></i><i></i></span>' : ""}</div>`;
+  const inputBar = (placeholder, { id = "" } = {}) => `<div class="w-input"${idAttr(id)}><span>${placeholder}</span><span class="go">${W.icon("send")}</span></div>`;
+  Object.assign(window.W, { bubble, answer, cite, working, inputBar });
 })();
