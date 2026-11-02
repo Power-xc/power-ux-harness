@@ -57,7 +57,7 @@ Following one feature from the first question to release looks like this. You ca
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/simulate-dark.gif">
-  <img src="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/simulate-light.gif" width="800" alt="Given a domain, links and a planning doc, the skill opens 12 sources, four personas with source chips try three candidate designs, and the result table recommends option B">
+  <img src="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/simulate-light.gif" width="800" alt="Given a domain, links and a planning doc, the skill opens 12 sources, four personas with source chips try three sign-up designs, and the result table recommends option B">
 </picture>
 
 Given a domain, links and a planning doc, it opens every source and tags it with an ID, then researches the rules that apply, how similar services structure the flow, and what app reviews complain about. Three to five personas built from structured attributes walk through two or three candidate designs step by step (a cognitive walkthrough), and the least obstructed candidate is recommended with its chain of evidence.
@@ -86,11 +86,11 @@ Given a domain, links and a planning doc, it opens every source and tags it with
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/flow-dark.gif">
-  <img src="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/flow-light.gif" width="800" alt="Five screens from settings to cancel complete are connected, each gains its loading, error, skip, processing, end and resubscribe states, and a dashed undo path returns to subscription management">
+  <img src="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/flow-light.gif" width="800" alt="Five screens from sign-up to order complete are connected, each gains its error, loading, empty-list, processing, failed and end states, and a dashed exception path returns from checkout to the cart">
 </picture>
 
 - **When** — "Screens and edge cases from sign-up to first order", "Structure the My Page menu"
-- **What it does** — draws the task flow in Mermaid, gives every screen an ID (`SCR-SUB-03`), records loading, empty, error, done and end states, and collects open policy questions separately.
+- **What it does** — draws the task flow in Mermaid, gives every screen an ID (`SCR-ORD-03`), records loading, empty, error, done and end states, and collects open policy questions separately.
 - **Aliases** — `@ux flow` · `@ux ia`
 
 ### ux-spec
@@ -99,7 +99,7 @@ Given a domain, links and a planning doc, it opens every source and tags it with
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/spec-dark.gif">
-  <img src="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/spec-light.gif" width="800" alt="Four regions of the SCR-SUB-03 cancel-confirmation screen get numbers, then the dialog, buttons, loading button and snackbar get their copy, states, accessibility notes and events">
+  <img src="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/spec-light.gif" width="800" alt="Four regions of the SCR-SET-02 profile-edit screen get numbers, then the input, save button, cancel button and snackbar get their copy, states, accessibility names and events">
 </picture>
 
 - **When** — "A spec developers can build from", "A screen spec an agent can implement directly"
@@ -167,7 +167,7 @@ Given a domain, links and a planning doc, it opens every source and tags it with
   <img src="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/metrics-light.gif" width="800" alt="Goals, signals and metrics fill in for the five HEART categories of a note-sharing feature, Engagement is excluded as off-goal, and a note-deletion guardrail is added">
 </picture>
 
-- **When** — "Define success metrics", "Will showing the remaining period on the cancel screen cut support tickets?", "Score our SUS survey"
+- **When** — "Define success metrics", "Will a step-by-step sign-up raise the completion rate?", "Score our SUS survey"
 - **What it does** — defines metrics per user (denominator, window, unit), adds guardrails, writes the decision rule before the experiment starts, and falls back to usability testing when traffic is too small, stating the limit.
 - **Aliases** — `@ux metrics` · `@ux experiment`
 

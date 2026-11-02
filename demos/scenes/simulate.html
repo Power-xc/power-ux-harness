@@ -18,9 +18,9 @@
 </style></head>
 <body><div id="stage">
   <div class="abs mono muted" style="left:32px;top:20px;font-size:12px">ux-simulate</div>
-  <div id="i1" class="in" style="top:52px"><span class="l">도메인</span><br>구독형 독서 앱</div>
+  <div id="i1" class="in" style="top:52px"><span class="l">도메인</span><br>동네 장보기 앱</div>
   <div id="i2" class="in" style="top:98px"><span class="l">링크</span><br>4개 — 우리 앱 · 경쟁 앱 2 · 앱 리뷰</div>
-  <div id="i3" class="in" style="top:144px"><span class="l">기획서</span><br>해지 흐름 개선 v0.3</div>
+  <div id="i3" class="in" style="top:144px"><span class="l">기획서</span><br>회원가입 흐름 개선 v0.3</div>
   <div id="ch" class="abs small muted" style="left:32px;top:204px">조사</div>
   <div id="k1" class="ck" style="top:228px"></div><div id="k2" class="ck" style="top:252px"></div>
   <div id="k3" class="ck" style="top:276px"></div><div id="k4" class="ck" style="top:300px"></div>
@@ -30,9 +30,9 @@
 </div>
 <script>
 const CHK = svg('<path d="M5 12.5l4.5 4.5L19 7.5"/>');
-const CK = [["출처 12건 열람"], ["규제 2건 — 취소·탈퇴 방해 · 반복 간섭"], ["경쟁 흐름 3개 분해"], ["앱 리뷰 200건 분류 — 해지 어려움 38건"]];
+const CK = [["출처 12건 열람"], ["규제 2건 — 개인정보 · 선택 동의"], ["경쟁 흐름 3개 분해"], ["앱 리뷰 200건 분류 — 가입 이탈 38건"]];
 CK.forEach((c, i) => { $("k" + (i + 1)).innerHTML = CHK + `<span>${c[0]}</span>`; });
-const P = [["P1", "출퇴근 독서 · 30대", "리뷰 54건"], ["P2", "글자 확대 사용 · 60대", "접근성 기준"], ["P3", "요금에 민감한 학생", "리뷰 41건"], ["P4", "해지를 고민 중", "가정"]];
+const P = [["P1", "퇴근길 장보기 · 30대", "리뷰 54건"], ["P2", "글자 확대 사용 · 60대", "접근성 기준"], ["P3", "가입 전에 둘러보려는 사람", "리뷰 41건"], ["P4", "개인정보 제공이 꺼려짐", "가정"]];
 const PY = 56, PP = 62;
 P.forEach((p, i) => {
   const d = document.createElement("div"); d.className = "ph"; d.id = "p" + i; d.style.top = (PY + i * PP) + "px";
@@ -42,10 +42,10 @@ P.forEach((p, i) => {
 const ph = document.createElement("div"); ph.id = "phd"; ph.className = "abs small muted"; ph.style.cssText = "left:286px;top:20px"; ph.textContent = "합성 페르소나";
 $("stage").appendChild(ph);
 // 격자: 오른쪽 (x 560~848)
-const COLS = ["A안 한 화면 해지", "B안 단계형 + 남은 기간 안내", "C안 상담 연결"];
-const CELLS = [[["ok", "막힘 0"], ["p2", "글자 작음"], ["ok", "막힘 0"], ["p2", "남은 기간 모름"]],
-  [["ok", "막힘 0"], ["ok", "막힘 0"], ["ok", "막힘 0"], ["ok", "남은 기간 확인"]],
-  [["p1", "포기"], ["p2", "대기"], ["p1", "포기"], ["p2", "통화 부담"]]];
+const COLS = ["A안 한 화면 가입", "B안 단계형 가입", "C안 둘러보기 먼저"];
+const CELLS = [[["ok", "막힘 0"], ["p2", "글자 작음"], ["p1", "포기"], ["p2", "입력칸 부담"]],
+  [["ok", "막힘 0"], ["ok", "막힘 0"], ["p2", "가입이 먼저"], ["ok", "한 번에 하나"]],
+  [["p2", "가입 시점 모름"], ["ok", "막힘 0"], ["ok", "막힘 0"], ["p2", "나중에 가입"]]];
 const GX = 586, CW = 104, GY = 62, GP = 62;
 const gel = [];
 COLS.forEach((c, j) => { const h = document.createElement("div"); h.className = "gh"; h.style.cssText = `left:${GX + j * CW}px;top:20px;width:${CW - 8}px`; h.textContent = c; $("stage").appendChild(h); gel.push([h, 4700]); });
@@ -58,7 +58,7 @@ CELLS.forEach((col, j) => col.forEach(([k, txt], i) => {
   $("stage").appendChild(c); gel.push([c, 4900 + (i * 3 + j) * 250]);
 }));
 $("rec").style.display = "flex"; $("rec").style.alignItems = "center"; $("rec").style.gap = "10px";
-$("rec").innerHTML = `<span class="chip accent">추천 B안</span><span>단계형 해지 + 남은 기간 안내 — 막힘 최소 · 기만 소지 0</span>`;
+$("rec").innerHTML = `<span class="chip accent">추천 B안</span><span>단계형 가입 + 선택 동의 분리 — 막힘 최소 · 기만 소지 0</span>`;
 $("rec").style.top = "396px"; $("rep").style.top = "372px";
 const note = document.createElement("div"); note.id = "nt"; note.className = "abs small muted"; note.style.cssText = "left:286px;top:424px;"; note.textContent = "합성 결과는 가설이에요 → 실제 사용자 5명으로 확인 (ux-research)"; $("stage").appendChild(note);
 window.DEMO = defineDemo({ width: 880, height: 460, end: 9700,
