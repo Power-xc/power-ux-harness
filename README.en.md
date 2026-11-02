@@ -164,7 +164,7 @@ Given a domain, links and a planning doc, it opens every source and tags it with
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/metrics-dark.gif">
-  <img src="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/metrics-light.gif" width="800" alt="Goals, signals and metrics fill in for the five HEART categories of a note-sharing feature, Engagement is excluded as off-goal, and a note-deletion guardrail is added">
+  <img src="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/metrics-light.gif" width="800" alt="Four numbered pins mark a note-sharing sheet screen, the goal–signal–metric table for the five HEART categories points at the same numbers and event names in its signal column, Engagement is excluded as off-goal, and a note-deletion guardrail is added">
 </picture>
 
 - **When** — "Define success metrics", "Will a step-by-step sign-up raise the completion rate?", "Score our SUS survey"

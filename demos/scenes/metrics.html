@@ -1,42 +1,246 @@
 <!doctype html>
-<html lang="ko"><head><meta charset="utf-8">
-<link rel="stylesheet" href="shared.css"><script src="timeline.js"></script>
-<style>
-  .c { position: absolute; white-space: nowrap; }
-  .c0 { left: 40px; font-weight: 600; } .c1 { left: 170px; } .c2 { left: 380px; } .c3 { left: 560px; }
-  .hd { font-size: 13px; color: var(--muted); }
-</style></head>
-<body><div id="stage">
-  <div id="ttl" class="abs" style="left:40px;top:22px;display:flex;gap:12px;align-items:baseline"><span class="title">독서 노트 공유하기</span><span class="small muted">HEART × 목표–신호–지표</span></div>
-  <div id="hdr"><span class="c c0 hd" style="top:70px;font-weight:400">범주</span><span class="c c1 hd" style="top:70px">목표</span><span class="c c2 hd" style="top:70px">신호</span><span class="c c3 hd" style="top:70px">지표</span></div>
-  <div class="hr" style="left:40px;right:40px;top:98px"></div>
-  <div id="gh" class="hr" style="left:40px;right:40px;top:318px"></div>
-  <div id="note" class="abs small muted" style="left:40px;top:386px">지표는 사용자당 비율로 · 원수는 쓰지 않아요</div>
-</div>
-<script>
-const ROWS = [
-  ["Happiness", "공유가 쉽다고 느껴요", "공유 직후 만족도 응답", "5점 중 4점 이상 응답 비율"],
-  ["Engagement", "이번 목표가 아니에요", "—", "제외 — 공유 빈도는 성공 기준이 아님", true],
-  ["Adoption", "새 기능을 써 봐요", "첫 공유", "7일 안에 첫 공유한 활성 사용자 비율"],
-  ["Retention", "계속 공유해요", "두 번째 공유", "첫 공유 뒤 30일 안 재공유 비율"],
-  ["Task success", "막힘 없이 공유해요", "공유 취소 · 오류", "공유 시작 대비 완료율"],
-  ["__G__", "노트 삭제가 늘지 않아요", "공유 뒤 노트 삭제", "사용자당 삭제율 변화"],
-];
-const Y0 = 112, PITCH = 40, STARTS = [600, 1400, 2200, 3000, 3800, 5400];
-const cells = ROWS.map((r, i) => r.slice(0, 4).map((txt, k) => {
-  const c = document.createElement("span"); c.className = `c c${k}`; c.style.top = (Y0 + i * PITCH + (i === 5 ? 18 : 0)) + "px";
-  if (r[4]) c.style.color = "var(--muted)";
-  $("stage").appendChild(c); return c;
-}));
-window.DEMO = defineDemo({ width: 880, height: 420, end: 6600,
-  draw(t) {
-    fade($("ttl"), t, 300); fade($("hdr"), t, 300);
-    ROWS.forEach((r, i) => r.slice(0, 4).forEach((txt, k) => {
-      const c = cells[i][k], s = STARTS[i] + k * 150;
-      if (txt === "__G__") { c.innerHTML = `<span class="chip p2">가드레일</span>`; fade(c, t, s); return; }
-      typeInto(c, txt, t, s, 48, false); c.style.opacity = t >= s ? 1 : 0;
-      c.style.transform = "none";
-    }));
-    fade($("gh"), t, 5400); fade($("note"), t, 6200);
-  } });
-</script></body></html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="shared.css" />
+    <link rel="stylesheet" href="wire.css" />
+    <script src="timeline.js"></script>
+    <script src="wire.js"></script>
+    <style>
+      .tr {
+        position: absolute;
+        left: 282px;
+        width: 558px;
+        display: grid;
+        grid-template-columns: 96px 120px 182px 160px;
+        font-size: 13px;
+        line-height: 20px;
+      }
+      .tr > div {
+        padding: 8px 8px 0 0;
+      }
+      .tr.hd > div {
+        color: var(--muted);
+      }
+      .tr .c0 {
+        font-weight: 600;
+      }
+      .tr.off > div {
+        color: var(--muted);
+      }
+      .ev {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font: 400 12px/20px var(--mono);
+      }
+      .pn {
+        flex: none;
+        display: grid;
+        place-items: center;
+        width: 20px;
+        height: 20px;
+        border: 1px solid var(--accent);
+        border-radius: 50%;
+        color: var(--accent);
+        font: 600 12px/18px var(--ui);
+        background: var(--bg);
+      }
+      .opt {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        height: 44px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div
+        id="head"
+        class="abs"
+        style="
+          left: 40px;
+          top: 16px;
+          display: flex;
+          gap: 12px;
+          align-items: baseline;
+          line-height: 24px;
+        "
+      >
+        <span class="mono" style="font-size: 13px; font-weight: 600"
+          >MET-SHR-01</span
+        ><span style="font-weight: 600">독서 노트 공유하기</span
+        ><span class="small muted">v0.2 · HEART × 목표–신호–지표</span>
+      </div>
+    </div>
+    <script>
+      const W_ = 880,
+        H_ = 528;
+      const TS = 0.7,
+        DEV_H = 520,
+        TX = 40,
+        TY = 64;
+
+      const opt = (label, on) =>
+        `<div class="opt"><span class="w-radio${on ? " on" : ""}"></span><span>${label}</span></div>`;
+      // 노트 상세 위에 열린 공유 시트. 신호가 나오는 지점에 id를 붙인다.
+      const screen =
+        W.statusBar() +
+        W.appBar("3장 메모", { actions: ["trash"] }).replace(
+          /(<span class="w-ib")>(?!.*<span class="w-ib")/s,
+          '$1 id="m-del">',
+        ) +
+        `<div class="w-body" style="padding-top:8px"><div style="font:400 12px/16px var(--ui);color:var(--muted)">데미안 · 2일 전</div>
+    <div style="font:400 15px/24px var(--ui);margin-top:8px">알은 세계다. 태어나려는 자는 하나의 세계를 깨뜨려야 한다.</div></div>
+  <div class="w-sheet" style="position:absolute;left:0;right:0;bottom:0;padding:0 16px 32px"><div class="grab"></div>
+    <div id="m-open" style="font:600 16px/24px var(--ui);margin-bottom:8px">노트 공유하기</div>${opt("링크로 공유", 1)}${opt("이미지로 저장")}${opt("텍스트 복사")}
+    <div style="height:8px"></div><div style="display:flex;gap:24px">${W.button("취소", { h: "h44", id: "m-cancel", style: "width:72px" })}${W.button("공유하기", { kind: "primary", h: "h44", id: "m-done", style: "flex:1" })}</div></div>`;
+
+      const stage = $("stage");
+      stage.insertAdjacentHTML(
+        "beforeend",
+        W.thumb(screen, {
+          id: "dev",
+          x: TX,
+          y: TY,
+          h: DEV_H,
+          scale: TS,
+          name: "공유 시트",
+          sub: "번호 = 신호가 나오는 지점",
+        }),
+      );
+      // 실측: 핀은 기기 안 부품의 모서리에서 계산한다.
+      // 삭제 아이콘은 상태바 바로 아래라, 핀을 아이콘 왼쪽 옆에 둔다(모서리 규칙 대신).
+const pinTarget = (id) => {
+        const r = W.rect(id === "m-del" ? $(id).querySelector("svg") : $(id));
+        return id === "m-del" ? { ...r, left: r.left - 4, top: r.top + 18 } : r;
+      };
+      const PINS = [
+        ["m-open", 1],
+        ["m-done", 2],
+        ["m-cancel", 3],
+        ["m-del", 4],
+      ];
+      stage.insertAdjacentHTML(
+        "beforeend",
+        PINS.map(([id, n]) => W.pin(n, pinTarget(id), "p" + n)).join(""),
+      );
+
+      const ev = (n, name) =>
+        `<div class="ev"><span class="pn">${n}</span><span>${name}</span></div>`;
+      const ROWS = [
+        {
+          h: 56,
+          off: 0,
+          c: [
+            "Happiness",
+            "공유가 쉽다고 느껴요",
+            "공유 직후 만족도 응답" + ev(2, "share_complete"),
+            "5점 중 4점 이상 응답 비율",
+          ],
+        },
+        {
+          h: 56,
+          off: 1,
+          c: [
+            "Engagement",
+            "이번 목표가 아니에요",
+            "—",
+            "제외 — 공유 빈도는 성공 기준이 아님",
+          ],
+        },
+        {
+          h: 56,
+          off: 0,
+          c: [
+            "Adoption",
+            "새 기능을 써 봐요",
+            "첫 공유" + ev(2, "share_complete"),
+            "7일 안에 첫 공유한 활성 사용자 비율",
+          ],
+        },
+        {
+          h: 56,
+          off: 0,
+          c: [
+            "Retention",
+            "계속 공유해요",
+            "두 번째 공유" + ev(2, "share_complete"),
+            "첫 공유 뒤 30일 안 재공유 비율",
+          ],
+        },
+        {
+          h: 96,
+          off: 0,
+          c: [
+            "Task success",
+            "막힘 없이 공유해요",
+            "공유 시작 · 완료 · 취소" +
+              ev(1, "share_sheet_open") +
+              ev(2, "share_complete") +
+              ev(3, "share_cancel"),
+            "공유 시작 대비 완료율",
+          ],
+        },
+        {
+          h: 56,
+          off: 0,
+          c: [
+            '<span class="chip p2">가드레일</span>',
+            "노트 삭제가 늘지 않아요",
+            "공유 뒤 노트 삭제" + ev(4, "note_delete"),
+            "사용자당 삭제율 변화",
+          ],
+        },
+      ];
+      const HY = TY,
+        HH = 24;
+      const tr = (cls, y, h, cells, id) =>
+        `<div id="${id}" class="tr ${cls}" style="top:${y}px;height:${h}px">${cells.map((c, k) => `<div class="c${k}">${c}</div>`).join("")}</div><div id="${id}l" class="hr" style="left:282px;width:558px;top:${y + h - 1}px"></div>`;
+      let y = HY;
+      stage.insertAdjacentHTML(
+        "beforeend",
+        tr("hd", y, HH + 8, ["범주", "목표", "신호", "지표"], "th").replace(
+          /padding[^;]*;/,
+          "",
+        ),
+      );
+      y += HH + 8;
+      const RT = [];
+      ROWS.forEach((r, i) => {
+        stage.insertAdjacentHTML(
+          "beforeend",
+          tr(r.off ? "off" : "", y, r.h, r.c, "r" + i),
+        );
+        RT.push(y);
+        y += r.h;
+      });
+      stage.insertAdjacentHTML(
+        "beforeend",
+        `<div id="note" class="abs small muted" style="left:282px;top:${y + 16}px;line-height:20px">지표는 사용자당 비율로 · 원수는 쓰지 않아요</div>`,
+      );
+
+      const PIN_T = [1000, 1200, 1400, 1600],
+        ROW_T = [2400, 3100, 3800, 4500, 5200, 6100],
+        NOTE_T = 7000;
+      window.DEMO = defineDemo({
+        width: W_,
+        height: H_,
+        end: 7400,
+        draw(t) {
+          fade($("head"), t, 200);
+          fade($("dev"), t, 300, 300);
+          PIN_T.forEach((s, i) => fade($("p" + (i + 1)), t, s, 200));
+          fade($("th"), t, 2000);
+          fade($("thl"), t, 2000);
+          ROW_T.forEach((s, i) => {
+            fade($("r" + i), t, s);
+            fade($("r" + i + "l"), t, s);
+          });
+          fade($("note"), t, NOTE_T);
+        },
+      });
+    </script>
+  </body>
+</html>

@@ -243,7 +243,7 @@ acceptance: 삭제 직후 되돌리기 한 번으로 노트가 같은 자리에 
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/metrics-dark.gif">
-  <img src="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/metrics-light.gif" width="800" alt="독서 노트 공유하기 기능의 HEART 다섯 범주마다 목표·신호·지표가 채워지고, 이번 목표가 아닌 Engagement는 제외되며, 노트 삭제율 가드레일이 붙는 모습">
+  <img src="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/metrics-light.gif" width="800" alt="독서 노트 공유 시트 화면에 번호 핀 4개를 달고, HEART 다섯 범주의 목표·신호·지표 표에서 신호 칸이 같은 번호와 이벤트 이름을 가리키며, 이번 목표가 아닌 Engagement는 제외되고 노트 삭제율 가드레일이 붙는 모습">
 </picture>
 
 - **이럴 때** — 「성공 지표 정해 줘」, 「단계형 가입으로 바꾸면 가입 완료율이 오를까」, 「SUS 점수 계산」
