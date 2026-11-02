@@ -60,6 +60,8 @@ Chrome 경로는 `CHROME_PATH`, ffmpeg 경로는 `FFMPEG_PATH`(기본 `/opt/home
 | 스낵바 자리 | `.w-slot` | 48 | 1px 점선, 아직 뜨지 않은 자리 |
 | 하단 시트 | `.w-sheet` | 위 반경 16 | 손잡이 32×4 |
 | 아이콘 | `W.icon(name, size)` | 24 격자, 1.5px 선 | `back` `chevron` `search` `more` `close` `check` `camera` `trash` `info` `warning` `user`. 새 아이콘은 `wire.js`의 `PATHS`에 더해요 |
+| 축소 썸네일 | `W.thumb(inner, {x, y, h, scale, name, sub, on})` | 폭 300×배율 | 기기를 `transform: scale`로 줄이고 테두리는 1px로 보이게 `1/배율`로 맞춰요. 캡션은 이름 13/600 + 부제 12 muted이고 읽혀야 해요. `on`이면 accent 테두리 |
+| 흐름 화살표 | `W.arrow(pts, {dash})` · `W.arrowAt(el, p)` | 1px `--muted` | `[[x,y],…]` 직각 꺾은선 + 열린 화살촉(7×4). `dash`는 예외 경로예요. `arrowAt`으로 0~1만큼 그려요(점선도 같은 간격으로 그려져요) |
 
 ### 주석층
 

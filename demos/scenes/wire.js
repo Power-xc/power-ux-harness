@@ -84,5 +84,40 @@
     ? `<i class="w-dim" style="left:${Math.min(from, to)}px;top:${at}px;width:${Math.abs(to - from)}px;height:1px"></i>`
     : `<i class="w-dim" style="left:${at}px;top:${Math.min(from, to)}px;width:1px;height:${Math.abs(to - from)}px"></i>`;
 
-  window.W = { icon, statusBar, appBar, placeholder, listRow, field, button, snackbar, toast, device, rect, pinCenter, pin, leaders, leaderAt, flag, dim, ext };
+  // 축소 썸네일: 기기 안 화면 HTML을 배율만큼 줄여 놓고 이름·부제 캡션을 아래에 붙인다.
+  const thumb = (inner, { x = 0, y = 0, h = 544, scale = 0.3, id = "", name = "", sub = "", on = false } = {}) => {
+    const w = 300 * scale, bw = +(1 / scale).toFixed(3);
+    return `<div class="w-thumb${on ? " on" : ""}"${id ? ` id="${id}"` : ""} style="left:${x}px;top:${y}px;width:${w}px">` +
+      `<div class="scr" style="width:${w}px;height:${h * scale}px"><div class="w-device" style="left:0;top:0;height:${h}px;border-width:${bw}px;transform:scale(${scale})">${inner}<div class="w-home"></div></div></div>` +
+      (name || sub ? `<div class="cap"><b>${name}</b>${sub}</div>` : "") + `</div>`;
+  };
+
+  // 흐름 화살표: [[x,y],...] 직각 꺾은선 끝에 열린 화살촉. 자기 bbox만 덮는 svg라 fade로 따로 다룰 수 있다.
+  const HEAD_LEN = 7, HEAD_HALF = 4, DASH = 4, ARROW_PAD = 8;
+  function arrow(pts, { dash = false, id = "" } = {}) {
+    const xs = pts.map((p) => p[0]), ys = pts.map((p) => p[1]);
+    const ox = Math.min(...xs) - ARROW_PAD, oy = Math.min(...ys) - ARROW_PAD;
+    const q = pts.map(([x, y]) => [x - ox, y - oy]);
+    const [[x0, y0], [x1, y1]] = [q[q.length - 2], q[q.length - 1]];
+    const len = Math.hypot(x1 - x0, y1 - y0) || 1, ux = (x1 - x0) / len, uy = (y1 - y0) / len;
+    const wing = (s) => `${x1 - ux * HEAD_LEN - uy * HEAD_HALF * s} ${y1 - uy * HEAD_LEN + ux * HEAD_HALF * s}`;
+    let total = 0;
+    for (let i = 1; i < q.length; i++) total += Math.abs(q[i][0] - q[i - 1][0]) + Math.abs(q[i][1] - q[i - 1][1]);
+    const w = Math.max(...xs) - Math.min(...xs) + ARROW_PAD * 2, h = Math.max(...ys) - Math.min(...ys) + ARROW_PAD * 2;
+    return `<svg class="w-arrow${dash ? " dash" : ""}"${id ? ` id="${id}"` : ""} data-len="${total}" width="${w}" height="${h}" style="left:${ox}px;top:${oy}px">` +
+      `<path class="ln" pathLength="${dash ? total : 1}" d="M${q.map((p) => p.join(" ")).join(" L")}"/>` +
+      `<path class="hd" d="M${wing(1)} L${x1} ${y1} L${wing(-1)}"/></svg>`;
+  }
+  // 그려지는 정도 p(0~1). 점선은 보이는 길이까지만 같은 간격의 점선을 만든다. 화살촉은 선이 닿은 뒤에 나온다.
+  function arrowAt(el, p) {
+    const ln = el.querySelector(".ln"), done = p >= 1;
+    if (el.classList.contains("dash")) {
+      const total = Number(el.dataset.len), seen = total * p, cycles = Math.floor(seen / (DASH * 2));
+      ln.style.strokeDasharray = "4 4 ".repeat(cycles) + `${Math.min(DASH, seen - cycles * DASH * 2)} ${total}`;
+      ln.style.strokeDashoffset = 0;
+    } else ln.style.strokeDashoffset = 1 - p;
+    el.querySelector(".hd").style.opacity = done ? 1 : 0;
+  }
+
+  window.W = { icon, statusBar, appBar, placeholder, listRow, field, button, snackbar, toast, device, rect, pinCenter, pin, leaders, leaderAt, flag, dim, ext, thumb, arrow, arrowAt };
 })();

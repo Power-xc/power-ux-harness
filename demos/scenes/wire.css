@@ -86,3 +86,20 @@
 /* 포인터: 반전 면 위에서도 보이도록 bg 테두리를 두른 accent 점 */
 .w-pointer { position: absolute; width: 16px; height: 16px; margin: -8px 0 0 -8px; border: 2px solid var(--bg); border-radius: 50%; background: var(--accent); opacity: 0; }
 .w-ripple { position: absolute; width: 16px; height: 16px; margin: -8px 0 0 -8px; border: 1.5px solid var(--accent); border-radius: 50%; opacity: 0; }
+
+/* 축소 기기 썸네일: 기기를 배율만큼 줄이고(테두리는 1px로 보이게 1/배율) 아래에 캡션을 둔다. */
+.w-thumb { position: absolute; }
+.w-thumb .scr { position: relative; }
+.w-thumb .w-device { transform-origin: 0 0; }
+.w-thumb.on .w-device { border-color: var(--accent); }
+.w-thumb .cap { position: absolute; left: 50%; top: 100%; margin-top: 4px; transform: translateX(-50%); text-align: center; white-space: nowrap; font: 400 12px/16px var(--ui); color: var(--muted); }
+.w-thumb .cap b { display: block; font: 600 13px/16px var(--ui); color: var(--fg); }
+.w-thumb.on .cap b { color: var(--accent); }
+
+/* 흐름 화살표: 1px --muted 직각 꺾은선 + 열린 화살촉. 점선(.dash)은 예외 경로. */
+.w-arrow { position: absolute; overflow: visible; pointer-events: none; }
+.w-arrow path { fill: none; stroke: var(--muted); stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; }
+.w-arrow .ln { stroke-dasharray: 1 1; stroke-dashoffset: 1; }
+.w-arrow .hd { opacity: 0; }
+.w-arrow.dash .ln { stroke-dasharray: 0 9999; stroke-dashoffset: 0; }
+.w-arrow .ln { stroke-linecap: butt; }
