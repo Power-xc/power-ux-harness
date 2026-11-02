@@ -15,33 +15,58 @@ const MEDIA = path.join(ROOT, "media");
 const FRAMES = path.join(here, ".frames", "reel");
 const FFMPEG = process.env.FFMPEG_PATH || "/opt/homebrew/bin/ffmpeg";
 const CHROME = process.env.CHROME_PATH || path.join(homedir(), ".cache/puppeteer/chrome/mac_arm-155.0.8059.84/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing");
+// 미리보기: --at 8,10.5 처럼 초를 주면 그 프레임만 .frames/reel/ 에 저장하고 영상은 만들지 않는다
+const AT = process.argv.includes("--at") ? new Set(process.argv[process.argv.indexOf("--at") + 1].split(",").map((t) => Math.round(Number(t) * 30))) : null;
 const only = process.argv.includes("--only") ? process.argv[process.argv.indexOf("--only") + 1] : "all";
 if (!existsSync(CHROME)) throw new Error(`Chrome을 찾을 수 없어요: ${CHROME} (CHROME_PATH로 지정)`);
 mkdirSync(MEDIA, { recursive: true });
 
 const FPS = 30, W = 1080, H = 1920, DURATION = 34.5, SEAM_FRAMES = 9;
-const WIN = { x: 60, y: 290, w: 960, h: 680 }; // 릴스 데모 영역
+const WIN = { x: 60, y: 290, w: 960, h: 670 }; // 릴스 데모 영역 (아래 여백 40px 이상: 자막 윗변 y 1000)
 const ACCENT = "#4493f8";
 const ease = (p) => 1 - Math.pow(1 - Math.min(1, Math.max(0, p)), 3);
+const easeInOut = (p) => { p = Math.min(1, Math.max(0, p)); return p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2; };
 const mapT = (kf, r) => {
   if (r <= kf[0][0]) return kf[0][1];
   for (let i = 1; i < kf.length; i++) if (r <= kf[i][0]) return kf[i - 1][1] + (kf[i][1] - kf[i - 1][1]) * (r - kf[i - 1][0]) / (kf[i][0] - kf[i - 1][0]);
   return kf[kf.length - 1][1];
 };
-const K = 960 / 880;
-const centered = (k, x = 0) => ({ k, x, y: 0 });
+// 카메라: 장면 좌표의 중심(cx, cy)과 배율 k. 키프레임 사이는 천천히 가속·감속(배율은 로그 보간)
+const camera = (kfs) => (r) => {
+  if (r <= kfs[0].r) return kfs[0];
+  for (let i = 1; i < kfs.length; i++) if (r <= kfs[i].r) {
+    const a = kfs[i - 1], b = kfs[i], p = easeInOut((r - a.r) / (b.r - a.r));
+    return { k: a.k * Math.pow(b.k / a.k, p), cx: a.cx + (b.cx - a.cx) * p, cy: a.cy + (b.cy - a.cy) * p };
+  }
+  return kfs.at(-1);
+};
+const still = (k, cx, cy) => camera([{ r: 0, k, cx, cy }]);
 
-// 릴스 구간: 장면, 릴스 시각(초), 릴스→장면 시각 대응, 카메라(x,y는 장면 좌표의 왼쪽 위)
+// 릴스 구간: 장면, 릴스 시각(초), 릴스→장면 시각 대응, 카메라. 가장 작은 화면 글자가 1080 캔버스에서 24px 이상이 되도록 핵심 영역만 확대한다.
 const SEGMENTS = [
   { scene: "simulate", from: 0, to: 14, kf: [[0, 0.1], [3, 1.9], [5.2, 3.3], [7.4, 4.7], [9.6, 8.0], [11.8, 9.5], [12, 9.7], [14, 9.7]],
-    cam: (r) => ({ k: 1.5, x: 268 * ease((r - 7.2) / 1.0), y: 0 }) },
-  { scene: "hero", from: 14, to: 21, kf: [[14, 1.0], [15.4, 2.8], [19.6, 9.2], [20.3, 9.9], [21, 10.5]], cam: () => centered(960 / 816, 32) },
-  { scene: "review", from: 21, to: 22.75, kf: [[21, 3.6], [22.75, 5.6]], cam: () => centered(1.25, 36) },
-  { scene: "a11y", from: 22.75, to: 24.5, kf: [[22.75, 0.6], [24.5, 2.4]], cam: () => centered(1.2, 50) },
-  { scene: "dark-patterns", from: 24.5, to: 26.25, kf: [[24.5, 2.9], [26.25, 4.7]], cam: () => centered(1.2, 50) },
-  { scene: "writing", from: 26.25, to: 28, kf: [[26.25, 4.4], [28, 6.3]], cam: () => centered(1.25, 36) },
-  { scene: "reel-skills", from: 28, to: 34.5, kf: [[28, 0], [34.5, 6.5]], cam: () => centered(2) },
+    cam: camera([
+      { r: 0, k: 1.93, cx: 248, cy: 179 }, { r: 4.6, k: 1.93, cx: 248, cy: 179 }, // 입력·조사 열
+      { r: 5.6, k: 2, cx: 512, cy: 170 }, { r: 7.0, k: 2, cx: 512, cy: 170 }, // 페르소나
+      { r: 8.4, k: 1.95, cx: 784, cy: 155 }, { r: 14, k: 1.95, cx: 784, cy: 155 }, // 후보안 표 + 추천 줄(한 화면)
+    ]) },
+  { scene: "reel-hero", from: 14, to: 21, kf: [[14, 0], [21, 7]], cam: still(1, 480, 335) },
+  { scene: "review", from: 21, to: 22.75, kf: [[21, 3.6], [21.6, 4.8], [22.75, 6.4]],
+    cam: camera([{ r: 21, k: 2, cx: 566, cy: 138 }, { r: 21.35, k: 2, cx: 566, cy: 138 }, { r: 21.85, k: 2, cx: 98, cy: 200 }, { r: 22.75, k: 2, cx: 98, cy: 200 }]) },
+  { scene: "a11y", from: 22.75, to: 24.5, kf: [[22.75, 0.5], [23.25, 1.4], [24.5, 5.5]],
+    cam: camera([{ r: 22.75, k: 4, cx: 88, cy: 50 }, { r: 23.2, k: 4, cx: 88, cy: 50 }, { r: 23.7, k: 2, cx: 620, cy: 97 }, { r: 24.5, k: 2, cx: 620, cy: 97 }]) },
+  { scene: "dark-patterns", from: 24.5, to: 26.25, kf: [[24.5, 2.9], [25.4, 5.4], [25.6, 6.3], [26.25, 7.0]],
+    cam: camera([{ r: 24.5, k: 2, cx: 620, cy: 160 }, { r: 25.4, k: 2, cx: 620, cy: 160 }, { r: 25.95, k: 1.85, cx: 140, cy: 200 }, { r: 26.25, k: 1.85, cx: 140, cy: 200 }]) },
+  { scene: "writing", from: 26.25, to: 28, kf: [[26.25, 3.9], [27.0, 4.9], [28, 6.2]],
+    cam: camera([{ r: 26.25, k: 2, cx: 240, cy: 105 }, { r: 26.9, k: 2, cx: 240, cy: 105 }, { r: 27.5, k: 2.4, cx: 660, cy: 100 }, { r: 28, k: 2.4, cx: 660, cy: 100 }]) },
+  { scene: "reel-skills", from: 28, to: 34.5, kf: [[28, 0], [34.5, 6.5]], cam: still(2, 240, 150) },
 ];
+// 데모 뷰포트 가장자리 페이드 폭(px). 정지 상태의 글자·칩은 이 폭 안쪽에 둔다.
+const EDGE_FADE = 28;
+// simulate 후반: 표와 추천 줄이 한 화면에 들어오게 릴스에서만 배치를 조인다(GIF 장면은 그대로)
+const SIMULATE_CSS = `#stage{width:1100px !important;overflow:visible !important}
+  .gc,.gh,.gr{font-size:13px} .gh{width:100px} #rec .chip{font-size:13px}
+  #rep{left:560px !important;top:206px !important} #rec{left:560px !important;top:232px !important} #nt{left:560px !important;top:268px !important}`;
 // 자막: 숫자는 같은 순간 화면의 숫자와 맞춘다. [..]는 강조색(한 가지)
 const CAPTIONS = [
   [-1, 3, "기획서만 넣으면<br>[가상 사용자]가 먼저 써 봐요"],
@@ -69,23 +94,27 @@ async function open(browser, name, theme, vw, vh) {
   return page;
 }
 // 장면 stage를 잘라 보여 주는 창으로 옮긴다
-const prep = (page, win) => page.evaluate((win) => {
+const prep = (page, win, fade = 0) => page.evaluate((win, fade) => {
   DEMO.render(0);
   document.querySelectorAll(".snap").forEach((n) => n.remove());
   const stage = document.getElementById("stage");
   const el = document.createElement("div");
   el.id = "win";
   el.style.cssText = `position:absolute;left:${win.x}px;top:${win.y}px;width:${win.w}px;height:${win.h}px;overflow:hidden`;
+  if (fade) {
+    const g = (d) => `linear-gradient(${d},transparent,#000 ${fade}px,#000 calc(100% - ${fade}px),transparent)`;
+    el.style.webkitMaskImage = el.style.maskImage = `${g("to right")},${g("to bottom")}`;
+    el.style.webkitMaskComposite = "source-in"; el.style.maskComposite = "intersect";
+  }
   document.body.appendChild(el); el.appendChild(stage);
   Object.assign(stage.style, { position: "absolute", left: "0", top: "0", transformOrigin: "0 0" });
   document.body.style.position = "relative";
   return { w: DEMO.width, h: DEMO.height };
-}, win);
+}, win, fade);
 const place = (page, t, cam, win) => page.evaluate((t, cam, win) => {
   DEMO.render(t);
-  const s = document.getElementById("stage"), sw = DEMO.width * cam.k, sh = DEMO.height * cam.k;
-  const tx = -cam.x * cam.k + Math.max(0, (win.w - sw) / 2), ty = -cam.y * cam.k + Math.max(0, (win.h - sh) / 2);
-  s.style.transform = `translate(${tx}px,${ty}px) scale(${cam.k})`;
+  const s = document.getElementById("stage");
+  s.style.transform = `translate(${win.w / 2 - cam.cx * cam.k}px,${win.h / 2 - cam.cy * cam.k}px) scale(${cam.k})`;
 }, t, cam, win);
 
 // ---- 릴스 ----
@@ -94,7 +123,16 @@ async function reel(browser) {
   const N = Math.round(DURATION * FPS);
   for (const seg of SEGMENTS) {
     const page = await open(browser, seg.scene, "dark", W, H);
-    await prep(page, WIN);
+    await prep(page, WIN, EDGE_FADE);
+    if (seg.scene === "simulate") await page.evaluate((css) => {
+      const st = document.createElement("style"); st.textContent = css; document.head.appendChild(st);
+      document.querySelectorAll(".gh,.gc").forEach((el) => { // 열 사이를 벌리고(13px 글자가 서로 닿지 않게) 행 간격을 줄인다
+        const left = parseFloat(el.style.left);
+        if (left >= 780) el.style.left = left + 80 + "px"; else if (left >= 680) el.style.left = left + 40 + "px";
+        if (el.classList.contains("gc")) el.style.top = 66 + Math.round((parseFloat(el.style.top) - 66) / 62) * 34 + "px";
+      });
+      document.querySelectorAll(".gr").forEach((el) => { el.style.left = "556px"; el.style.top = 66 + Math.round((parseFloat(el.style.top) - 66) / 62) * 34 + "px"; });
+    }, SIMULATE_CSS);
     await page.evaluate((caps, accent) => {
       const css = document.createElement("style");
       css.textContent = `body{background:var(--bg)} .cap{position:absolute;left:0;top:0;width:960px;color:#fff;font:800 80px/1.25 "Pretendard Variable",Pretendard,sans-serif;letter-spacing:-0.02em;word-break:keep-all;opacity:0}
@@ -115,6 +153,7 @@ async function reel(browser) {
     }, CAPTIONS, ACCENT);
     const a = Math.round(seg.from * FPS), b = seg === SEGMENTS.at(-1) ? N : Math.round(seg.to * FPS);
     for (let i = a; i < b; i++) {
+      if (AT && !AT.has(i)) continue;
       const r = i / FPS;
       await place(page, mapT(seg.kf, r) * 1000, seg.cam(r), WIN);
       await page.evaluate((r, local, caps, first) => {
@@ -126,6 +165,7 @@ async function reel(browser) {
     console.log(`reel ${seg.scene}: ${a}-${b - 1} (자막 ${await page.evaluate(() => window.__capSize)}px)`);
     await page.close();
   }
+  if (AT) return;
   // 반복 이음새: 마지막 0.3초를 첫 프레임으로 교차 페이드
   for (let j = 0; j < SEAM_FRAMES; j++) {
     const i = N - SEAM_FRAMES + j, p = ((j + 1) / (SEAM_FRAMES + 1)).toFixed(3);
@@ -153,14 +193,28 @@ function handCircle(cx, cy, rx, ry, seed, sq = 0.6) {
   return `M${pts.join(" L")}`;
 }
 
-// ---- 표지: 시뮬레이션 결과 표를 높은 배율로 다시 렌더한 크롭 ----
-async function cover(browser, name, titleHtml, circle) {
+// ---- 표지: 시뮬레이션 결과 표를 크게 다시 렌더한 크롭 (가장 작은 글자 28px 이상) ----
+const COVER_WIN = { x: 60, y: 880, w: 960, h: 690 };
+const COVER_CSS = {
+  // A: 후보안 표. 열 사이를 벌려 B안 열을 둘러싸는 원이 이웃 글자와 겹치지 않게 한다
+  a: "#stage{width:1100px !important;overflow:visible !important} .gc,.gh,.gr{font-size:13px}",
+  // B: 페르소나만. 출처 칩을 이름에서 멀리 떼어 원 밖에 둔다
+  b: ".in,.ck,#ch,.gh,.gr,.gc,#rep,#rec,#nt{display:none} .ph{width:330px} .ph .c{font-size:13px;width:34px;height:34px} .ph .t{font-size:14px} .ph .chip{height:22px;font-size:12px} #phd{display:none}",
+};
+async function cover(browser, name, titleHtml, view, circle) {
   const page = await open(browser, "simulate", "dark", W, H);
-  const k = 1.5, x0 = 252, y0 = 0, win = { x: 60, y: 900, w: 960, h: 674 };
-  await prep(page, win);
-  await place(page, 9700, { k, x: x0, y: y0 }, win);
-  const pageX = (sx) => win.x + (sx - x0) * k, pageY = (sy) => win.y + (sy - y0) * k;
-  const d = handCircle(pageX(circle.cx), pageY(circle.cy), circle.rx * k, circle.ry * k, circle.seed, circle.sq);
+  await prep(page, COVER_WIN);
+  await page.evaluate((css, isA) => {
+    const st = document.createElement("style"); st.textContent = css; document.head.appendChild(st);
+    if (isA) document.querySelectorAll(".gh,.gc").forEach((el) => {
+      const left = parseFloat(el.style.left);
+      if (left >= 780) el.style.left = left + 80 + "px"; else if (left >= 680) el.style.left = left + 40 + "px";
+      if (el.classList.contains("gh")) el.style.width = "100px";
+    });
+  }, COVER_CSS[name], name === "a");
+  await place(page, 9700, view, COVER_WIN);
+  const pageX = (sx) => COVER_WIN.x + COVER_WIN.w / 2 + (sx - view.cx) * view.k, pageY = (sy) => COVER_WIN.y + COVER_WIN.h / 2 + (sy - view.cy) * view.k;
+  const d = handCircle(pageX(circle.cx), pageY(circle.cy), circle.rx * view.k, circle.ry * view.k, circle.seed, circle.sq);
   await page.evaluate((titleHtml, d, accent) => {
     const css = document.createElement("style");
     css.textContent = `body{background:var(--bg)} #t{position:absolute;left:60px;top:370px;width:960px;color:#fff;font:800 168px/1.12 "Pretendard Variable",Pretendard,sans-serif;letter-spacing:-0.03em;word-break:keep-all} #t em{font-style:normal;color:${accent}}`;
@@ -200,8 +254,8 @@ const browser = await puppeteer.launch({ executablePath: CHROME, headless: true,
 try {
   if (only === "all" || only === "social") await social(browser);
   if (only === "all" || only === "covers") {
-    await cover(browser, "a", "기획서만<br>[넣었는데]", { cx: 736, cy: 150, rx: 54, ry: 154, seed: 7, sq: 0.7 }); // B안 열
-    await cover(browser, "b", "가상 사용자<br>[4명]이 써 봄", { cx: 401, cy: 168, rx: 144, ry: 134, seed: 11, sq: 0.6 }); // P1~P4
+    await cover(browser, "a", "기획서만<br>[넣었는데]", { k: 2.2, cx: 758, cy: 142 }, { cx: 781, cy: 144, rx: 67, ry: 150, seed: 7, sq: 0.5 }); // B안 열(머리글 포함)
+    await cover(browser, "b", "가상 사용자<br>[4명]이 써 봄", { k: 2.5, cx: 440, cy: 166 }, { cx: 366, cy: 166, rx: 106, ry: 132, seed: 11, sq: 0.5 }); // P1~P4 배지와 이름
   }
   if (only === "all" || only === "reel") await reel(browser);
 } finally { await browser.close(); }
