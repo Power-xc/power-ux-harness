@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="shared.css" />
+    <link rel="stylesheet" href="wire.css" />
+    <script src="timeline.js"></script>
+    <script src="wire.js"></script>
+    <script src="brand.js"></script>
+    <style>
+      /* 링크 공유 표지 1280×640: 정지 화면 한 장. 움직임 없이 평면으로만 배치한다. */
+      #stage {
+        width: 1280px;
+        height: 640px;
+      }
+      #repo {
+        left: 64px;
+        top: 72px;
+        font: 600 32px/40px var(--mono);
+      }
+      #big {
+        left: 64px;
+        top: 128px;
+        font: 700 88px/104px var(--ui);
+        letter-spacing: -0.02em;
+        white-space: nowrap;
+      }
+      #desc {
+        left: 64px;
+        top: 264px;
+        width: 500px;
+        font: 500 30px/44px var(--ui);
+      }
+      #steps {
+        left: 64px;
+        top: 472px;
+        width: 540px;
+        font: 400 20px/36px var(--ui);
+        color: var(--muted);
+      }
+      .lb {
+        position: absolute;
+        font: 600 20px/24px var(--ui);
+      }
+      .id {
+        position: absolute;
+        font: 500 16px/24px var(--mono);
+        color: var(--muted);
+      }
+      .pn {
+        position: absolute;
+        width: 28px;
+        height: 28px;
+        border: 1.5px solid var(--accent);
+        border-radius: 50%;
+        background: var(--bg);
+        color: var(--accent);
+        font: 600 16px/25px var(--ui);
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div id="repo" class="abs"></div>
+      <div id="big" class="abs">UX 스킬 10개</div>
+      <div id="desc" class="abs">AI 코딩 에이전트가 시니어 프로덕트 디자이너의 절차로 UX를 설계하고 검토하게 해요</div>
+      <div id="steps" class="abs">탐색 · 확인 · 정의 · 설계 · 문구 · 검토 · 접근성 · 기만 패턴 · 측정 · AI</div>
+    </div>
+    <script>
+      document.getElementById("repo").textContent = BRAND;
+      const DH = 400,
+        SC = 0.6,
+        DW = 300 * SC;
+      const NOTES = [
+        ["데미안", "3장 메모 · 2일 전"],
+        ["코스모스", "질문 목록 · 1주 전"],
+      ];
+      const review = (snack) =>
+        W.statusBar() +
+        W.appBar("독서 노트", { back: false, actions: ["search"] }) +
+        `<div class="w-list">${NOTES.map(([title, sub]) => W.listRow({ title, sub, action: "trash" })).join("")}</div>` +
+        (snack
+          ? `<div style="position:absolute;left:16px;top:332px;width:266px">${W.snackbar("노트를 삭제했어요", { action: "되돌리기" })}</div>`
+          : `<div style="position:absolute;left:0;top:336px;width:298px;display:flex;justify-content:center">${W.toast("삭제했어요", { style: "width:112px;padding:0;justify-content:center" })}</div>`);
+      const spec =
+        W.statusBar() +
+        W.appBar("프로필 편집") +
+        `<div id="sf" style="position:absolute;left:16px;right:16px;top:88px">${W.field({ label: "이름", value: "김하늘", help: "다른 사람에게 보이는 이름이에요", count: "3/20" })}</div>` +
+        `<div style="position:absolute;left:16px;right:16px;top:200px;display:flex;gap:8px">${W.button("취소", { style: "flex:1" })}${W.button("저장", { kind: "primary", id: "ssv", style: "flex:1.6" })}</div>` +
+        `<div id="ssn" style="position:absolute;left:16px;right:16px;top:264px"><div class="w-slot">스낵바 자리</div></div>`;
+      const flowScr = {
+        list: () =>
+          W.statusBar() +
+          W.appBar("상품 목록", { back: false, actions: ["search"] }) +
+          `<div class="w-list">${["제주 감귤 1kg", "국산 두부 한 모", "우유 900ml"].map((t) => W.listRow({ title: t, sub: "6,900원", action: "chevron" })).join("")}</div>`,
+        cart: () =>
+          W.statusBar() +
+          W.appBar("장바구니") +
+          `<div class="w-list">${["제주 감귤 1kg", "우유 900ml"].map((t) => W.listRow({ title: t, sub: "1개", action: "close" })).join("")}</div><div style="position:absolute;left:16px;right:16px;bottom:32px">${W.button("주문하기", { kind: "primary" })}</div>`,
+        pay: () =>
+          W.statusBar() +
+          W.appBar("결제") +
+          `<div class="w-body" style="padding-top:8px">${["신용·체크카드", "계좌 이체", "간편 결제"].map((t, k) => `<div style="height:44px;display:flex;align-items:center;gap:12px"><span class="w-radio${k === 0 ? " on" : ""}"></span>${t}</div>`).join("")}</div><div style="position:absolute;left:16px;right:16px;bottom:32px">${W.button("결제하기", { kind: "primary" })}</div>`,
+        done: () =>
+          W.statusBar() +
+          W.appBar("주문 완료", { back: false }) +
+          `<div style="display:grid;place-items:center;padding-top:56px"><div style="display:grid;place-items:center;width:72px;height:72px;border:1.5px solid var(--accent);border-radius:50%;color:var(--accent)">${W.icon("check", 32)}</div></div>`,
+      };
+      const thumb = (inner, x, y, id, scale = SC) => W.thumb(inner, { x, y, h: DH, scale, id });
+      const stage = document.getElementById("stage");
+      const AY = 64,
+        X = [624, 828, 1036];
+      const FS = 0.34,
+        FW = 300 * FS,
+        FY = 408,
+        FX = [624, 624 + FW + 48, 624 + 2 * (FW + 48), 624 + 3 * (FW + 48)];
+      const label = (cls, x, y, text, color = "") =>
+        `<div class="${cls}" style="left:${x}px;top:${y}px${color ? `;color:${color}` : ""}">${text}</div>`;
+      stage.insertAdjacentHTML(
+        "beforeend",
+        thumb(review(false), X[0], AY, "d1") +
+          thumb(review(true), X[1], AY, "d2") +
+          thumb(spec, X[2], AY, "d3") +
+          label("lb", X[0], AY + DH * SC + 12, "고치기 전", "var(--muted)") +
+          label("lb", X[1], AY + DH * SC + 12, "고친 후", "var(--accent)") +
+          label("lb", X[2], AY + DH * SC + 12, "번호 주석") +
+          label("id", X[0], AY + DH * SC + 40, "ux-review") +
+          label("id", X[2], AY + DH * SC + 40, "ux-spec") +
+          [flowScr.list, flowScr.cart, flowScr.pay, flowScr.done]
+            .map((f, k) => thumb(f(), FX[k], FY, "", FS))
+            .join("") +
+          label("lb", FX[0], FY + DH * FS + 12, "화면 흐름") +
+          label("id", FX[0], FY + DH * FS + 40, "ux-flow"),
+      );
+      const yc = FY + (DH * FS) / 2;
+      stage.insertAdjacentHTML(
+        "beforeend",
+        [0, 1, 2]
+          .map((k) =>
+            W.arrow([
+              [FX[k] + FW + 8, yc],
+              [FX[k + 1] - 8, yc],
+            ]),
+          )
+          .join(""),
+      );
+      document.querySelectorAll(".w-arrow").forEach((a) => W.arrowAt(a, 1));
+      // 번호 핀: 부품 왼쪽 위 모서리 바깥(중심이 모서리에서 왼쪽 10, 위 6)
+      const pin = (n, el, right = false) => {
+        const r = W.rect(document.getElementById(el));
+        const x = right ? r.right : r.left - 14,
+          y = r.top - 6;
+        return `<div class="pn" style="left:${x - 14}px;top:${y - 14}px">${n}</div>`;
+      };
+      stage.insertAdjacentHTML("beforeend", pin(1, "sf") + pin(2, "ssv", true) + pin(3, "ssn"));
+      window.DEMO = { width: 1280, height: 640, duration: 0, render() {} };
+    </script>
+  </body>
+</html>
