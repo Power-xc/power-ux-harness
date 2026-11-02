@@ -32,7 +32,11 @@ const ALL = [
 ];
 
 const args = process.argv.slice(2);
-const opt = { theme: "both", fps: 12, scale: 1.5, colors: 96, at: null };
+const opt = { theme: "both", fps: 12, scale: null, colors: null, at: null };
+// 장면마다 다른 기본값: hero는 예산(1.5MB)에 맞추려고 배율과 색 수를 낮춘다.
+const DEFAULTS = { hero: { scale: 1.25, colors: 64 } };
+const scaleOf = (scene) => (opt.scale ? Number(opt.scale) : (DEFAULTS[scene]?.scale ?? 1.5));
+const colorsOf = (scene) => (opt.colors ? Number(opt.colors) : (DEFAULTS[scene]?.colors ?? 96));
 const scenes = [];
 for (let i = 0; i < args.length; i++) {
   const a = args[i];
@@ -43,11 +47,9 @@ for (let i = 0; i < args.length; i++) {
   } else scenes.push(a);
 }
 opt.fps = Number(opt.fps);
-opt.scale = Number(opt.scale);
-opt.colors = Number(opt.colors);
 if (!["light", "dark", "both"].includes(opt.theme)) throw new Error("--theme은 light|dark|both");
 if (!existsSync(CHROME)) throw new Error(`Chrome을 찾을 수 없어요: ${CHROME} (CHROME_PATH로 지정)`);
-const targets = scenes.length ? scenes : ALL; // social-preview.png는 render-reel.mjs가 만든다
+const targets = scenes.length ? scenes : ALL;
 const themes = opt.theme === "both" ? ["light", "dark"] : [opt.theme];
 mkdirSync(OUT, { recursive: true });
 
@@ -70,7 +72,7 @@ const browser = await puppeteer.launch({ executablePath: CHROME, headless: true,
 try {
   for (const scene of targets) {
     for (const theme of themes) {
-      const { page, width, height } = await open(browser, scene, theme, opt.scale);
+      const { page, width, height } = await open(browser, scene, theme, scaleOf(scene));
       const dir = path.join(FRAMES, `${scene}-${theme}`);
       rmSync(dir, { recursive: true, force: true });
       mkdirSync(dir, { recursive: true });
@@ -102,7 +104,7 @@ try {
         "-i",
         pattern,
         "-vf",
-        `palettegen=stats_mode=diff:max_colors=${opt.colors}`,
+        `palettegen=stats_mode=diff:max_colors=${colorsOf(scene)}`,
         palette,
       ]);
       execFileSync(FFMPEG, [
@@ -125,7 +127,7 @@ try {
         scene,
         theme,
         frames: n,
-        px: `${Math.round(width * opt.scale)}x${Math.round(height * opt.scale)}`,
+        px: `${Math.round(width * scaleOf(scene))}x${Math.round(height * scaleOf(scene))}`,
         mb: statSync(gif).size / 1048576,
       });
     }
@@ -138,7 +140,7 @@ if (rows.length) {
   console.log("\n| 장면 | 테마 | 프레임 | 픽셀 | 크기(MB) | 예산 |");
   console.log("| --- | --- | ---: | --- | ---: | --- |");
   for (const r of rows) {
-    const budget = r.scene === "hero" ? 2.5 : 1.5;
+    const budget = 1.5;
     const ok = r.mb <= budget ? "OK" : `초과(>${budget})`;
     console.log(`| ${r.scene} | ${r.theme} | ${r.frames} | ${r.px} | ${r.mb.toFixed(2)} | ${ok} |`);
   }

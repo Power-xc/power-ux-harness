@@ -3,25 +3,38 @@
   <head>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="shared.css" />
+    <link rel="stylesheet" href="wire.css" />
     <script src="timeline.js"></script>
+    <script src="wire.js"></script>
     <script src="brand.js"></script>
     <style>
-      .row {
+      /* 반복 이음용 복제본은 id가 없어 #stage 규칙(위치·배경)이 빠지므로 여기서 채운다. 없으면 끝 화면이 비쳐 보인다. */
+      .snap {
+        position: absolute;
+        left: 0;
+        top: 0;
+        overflow: hidden;
+        background: var(--bg);
+        pointer-events: none;
+      }
+
+      /* 왼쪽 단계 목록 */
+      .lr {
         position: absolute;
         left: 32px;
-        width: 280px;
+        width: 232px;
         height: 40px;
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 12px;
       }
       .dot {
+        position: relative;
+        flex: none;
         width: 12px;
         height: 12px;
         border: 1.5px solid var(--lowc);
         border-radius: 50%;
-        flex: none;
-        position: relative;
       }
       .dot i {
         position: absolute;
@@ -31,123 +44,206 @@
         opacity: 0;
       }
       .step {
-        width: 64px;
         flex: none;
+        width: 68px;
         color: var(--muted);
         font-size: 13px;
         white-space: nowrap;
       }
       .sid {
         flex: none;
-        font: 13px var(--mono);
         color: var(--muted);
+        font: 13px var(--mono);
         white-space: nowrap;
       }
-      .row.on .dot {
+      .lr.on .dot {
         border-color: var(--accent);
       }
-      .row.on .dot i {
+      .lr.on .dot i {
         background: var(--accent);
         opacity: 1;
       }
-      .row.on .step {
+      .lr.on .step {
         color: var(--fg);
       }
-      .row.on .sid {
+      .lr.on .sid {
         color: var(--accent);
         font-weight: 600;
       }
-      .row.done {
-        opacity: 0.5;
-      }
-      .row.done .dot {
+      .lr.done .dot {
         border-color: var(--ok);
       }
-      .row.done .dot i {
+      .lr.done .dot i {
         opacity: 1;
       }
-      .frame {
-        position: absolute;
-        left: 330px;
-        top: 84px;
-        width: 250px;
-        height: 440px;
-        border: 1px solid var(--line);
-        border-radius: 24px;
-      }
+
+      /* 가운데 화면: 스킬마다 한 장씩 쌓아 두고 차례로 보여 준다. */
       .pane {
         position: absolute;
-        left: 347px;
-        top: 100px;
-        width: 216px;
-        height: 408px;
-        overflow: hidden;
+        left: 0;
+        top: 0;
+        width: 880px;
+        height: 592px;
       }
-      .lay {
-        position: absolute;
-        inset: 0;
-      }
-      .ring {
-        position: absolute;
-        border: 1px solid var(--p1);
-        border-radius: 12px;
-      }
-      .a0 {
-        position: absolute;
-      }
-      .fl {
-        font-size: 14px;
-        line-height: 1.45;
-      }
-      .big {
-        font-size: 18px;
-        font-weight: 600;
-        line-height: 1.35;
-      }
-      .cap {
-        font: 12px var(--mono);
-        color: var(--muted);
-      }
-      .btn.full {
-        display: grid;
-        width: 100%;
-        padding: 0 10px;
-      }
-      .side {
-        position: absolute;
-        left: 610px;
-        width: 238px;
-        top: 84px;
-        height: 440px;
-      }
-      .pat {
+      .ovl {
         position: absolute;
         left: 0;
-        top: 14px;
-        width: 238px;
-        font-size: 17px;
-        font-weight: 600;
-        line-height: 1.35;
+        top: 0;
+        width: 0;
+        height: 0;
+      }
+      .v2 {
+        display: grid;
+      }
+      .v2 > * {
+        grid-area: 1 / 1;
+        min-width: 0;
       }
       .blk {
         position: absolute;
-        left: 0;
-        width: 238px;
-        font-size: 13px;
-        line-height: 1.5;
+        left: 16px;
+        right: 16px;
       }
-      .blk .chip {
-        margin-bottom: 6px;
+      .mut {
+        font: 400 12px/16px var(--ui);
+        color: var(--muted);
       }
-      .blk div {
-        display: block;
+      .sub {
+        font: 400 13px/20px var(--ui);
+        color: var(--muted);
       }
-      .ibtn {
+      .doc {
+        position: absolute;
+        left: 288px;
+        top: 80px;
+        width: 300px;
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+      }
+      .doc .id {
+        font: 12px/24px var(--mono);
+        color: var(--muted);
+      }
+      .doc .nm {
+        font: 600 15px/24px var(--ui);
+      }
+      .card {
+        padding: 16px;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: var(--subtle);
+      }
+      .card .ct {
+        height: 48px;
+        margin: 8px 0 16px;
+        font: 400 15px/24px var(--ui);
+      }
+      .tb {
         display: grid;
         place-items: center;
-        border-radius: 8px;
+        flex: none;
         border: 1px solid var(--line);
-        color: var(--fg);
+        border-radius: 4px;
+      }
+      .grp {
+        position: absolute;
+        right: 16px;
+        display: flex;
+      }
+      .opt {
+        height: 44px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font: 400 15px/20px var(--ui);
+      }
+      .err {
+        display: flex;
+        gap: 8px;
+        font: 400 15px/20px var(--ui);
+      }
+      .err .wi {
+        flex: none;
+        margin-top: 0;
+        color: var(--p1);
+      }
+      .caution {
+        display: flex;
+        gap: 8px;
+        padding: 8px 12px;
+        border-radius: 8px;
+        background: var(--subtle);
+        font: 400 13px/20px var(--ui);
+      }
+      .caution .wi {
+        flex: none;
+        color: var(--muted);
+      }
+      .regen {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .regen .pill {
+        flex: 1;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        font: 600 15px/24px var(--ui);
+      }
+      .regen .w-ib {
+        color: var(--muted);
+      }
+      .ax {
+        position: absolute;
+      }
+      .big {
+        font: 600 16px/24px var(--ui);
+      }
+
+      /* 오른쪽 열: 패턴 이름 · 고치기 전 · 고친 후 */
+      .side {
+        position: absolute;
+        left: 624px;
+        top: 80px;
+        width: 224px;
+        height: 480px;
+      }
+      .side > div {
+        position: absolute;
+        left: 0;
+        width: 224px;
+      }
+      .side .hd {
+        top: 0;
+        font: 600 16px/24px var(--ui);
+      }
+      .side .bb {
+        top: 64px;
+      }
+      .side .ba {
+        top: 208px;
+      }
+      .side .tx {
+        margin-top: 8px;
+        font: 400 15px/24px var(--ui);
+      }
+      .n {
+        display: inline-grid;
+        place-items: center;
+        width: 20px;
+        height: 20px;
+        margin-right: 8px;
+        border: 1px solid var(--accent);
+        border-radius: 50%;
+        color: var(--accent);
+        font: 600 12px/1 var(--ui);
+        vertical-align: 1px;
       }
     </style>
   </head>
@@ -155,263 +251,483 @@
     <div id="stage">
       <div id="brand" class="abs mono muted" style="left: 32px; top: 16px; font-size: 12px"></div>
       <div id="prompt" class="abs mono" style="left: 32px; top: 40px; font-size: 15px"></div>
-      <div class="frame"></div>
     </div>
     <script>
-      const ic = {
-        heart: svg('<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/>'),
-        share: svg('<path d="M12 15V4M8 8l4-4 4 4M5 13v6h14v-6"/>'),
-        trash: svg('<path d="M5 7h14M10 7V4h4v3M7 7l1 13h8l1-13"/>'),
-        check: svg('<path d="M5 12.5l4.5 4.5L19 7.5"/>', 'style="width:14px;height:14px;stroke-width:2"'),
+      const W_ = 880,
+        H_ = 592,
+        DX = 288,
+        DY = 80,
+        DH = 480;
+      const va = (h, extra = "") => `<div class="va"${extra}>${h}</div>`;
+      const vb = (h, extra = "") => `<div class="vb"${extra}>${h}</div>`;
+      const v2 = (a, b) => `<div class="v2">${va(a)}${vb(b)}</div>`;
+      // 기기 밖 좌표(#stage 기준)에 얹는 층. in = 나타나는 시각(ms, 고친 후는 전환 시각 기준)
+      const ovl = (cls, html, at = 0) => `<div class="ovl ${cls}"${at ? ` data-in="${at}"` : ""}>${html}</div>`;
+      const dev = (inner, id = "") => W.device(inner, { id, x: DX, y: DY, h: DH });
+      const rc = (el) => W.rect(typeof el === "string" ? $(el) : el);
+      const NOTES = [
+        ["데미안", "3장 메모 · 2일 전"],
+        ["어린 왕자", "인상 깊은 문장 · 5일 전"],
+        ["코스모스", "질문 목록 · 1주 전"],
+      ];
+
+      // 축소 썸네일 안 화면(읽지 않아도 되는 크기)
+      const body = (h, top = 0) => `<div class="w-body" style="padding-top:${top}px">${h}</div>`;
+      const pinBtn = (label, kind = "primary") =>
+        `<div class="blk" style="bottom:32px;top:auto">${W.button(label, { kind })}</div>`;
+      const SCR = {
+        signA: () =>
+          W.statusBar() +
+          W.appBar("회원가입") +
+          body(
+            `<div style="display:grid;gap:8px">${W.field({ label: "이메일", value: "haneul@example.com" })}${W.field({ label: "비밀번호", value: "••••••••" })}${W.field({ label: "이름", value: "김하늘" })}</div>`,
+          ) +
+          pinBtn("가입하기"),
+        signB: () =>
+          W.statusBar() +
+          W.appBar("회원가입") +
+          body(
+            `<div class="mut" style="margin-bottom:16px">1 / 3 단계</div><div class="big" style="margin-bottom:16px">이메일을 알려 주세요</div>${W.field({ label: "이메일", value: "haneul@example.com" })}`,
+          ) +
+          pinBtn("다음"),
+        browseC: () =>
+          W.statusBar() +
+          W.appBar("장보기", { back: false, actions: ["search"] }) +
+          `<div class="w-list">${["제주 감귤 1kg", "국산 두부 한 모", "우유 900ml", "대파 한 단"].map((t) => W.listRow({ title: t, sub: "6,900원", action: "chevron" })).join("")}</div>`,
+        cart: () =>
+          W.statusBar() +
+          W.appBar("장바구니") +
+          `<div class="w-list">${["제주 감귤 1kg", "우유 900ml"].map((t) => W.listRow({ title: t, sub: "1개", action: "close" })).join("")}</div>` +
+          pinBtn("주문하기"),
+        pay: () =>
+          W.statusBar() +
+          W.appBar("결제") +
+          body(
+            ["신용·체크카드", "계좌 이체", "간편 결제"]
+              .map((t, k) => `<div class="opt"><span class="w-radio${k === 0 ? " on" : ""}"></span>${t}</div>`)
+              .join(""),
+            8,
+          ) +
+          pinBtn("15,000원 결제하기"),
+        done: () =>
+          W.statusBar() +
+          W.appBar("주문 완료", { back: false }) +
+          `<div style="display:grid;place-items:center;padding-top:56px"><div style="display:grid;place-items:center;width:72px;height:72px;border:1.5px solid var(--accent);border-radius:50%;color:var(--accent)">${W.icon("check", 32)}</div></div><div class="big" style="text-align:center;margin-top:16px">주문이 완료됐어요</div>` +
+          pinBtn("주문 내역 보기"),
+        alt: () =>
+          W.statusBar() +
+          W.appBar("결제") +
+          `<div class="w-sheet" style="position:absolute;left:0;right:0;bottom:0;height:300px"><div class="grab"></div><div class="blk big" style="top:28px">다른 수단으로 결제</div>${body(
+            ["신용·체크카드", "계좌 이체", "간편 결제"]
+              .map((t, k) => `<div class="opt"><span class="w-radio${k === 1 ? " on" : ""}"></span>${t}</div>`)
+              .join(""),
+            64,
+          )}${pinBtn("15,000원 결제하기")}</div>`,
       };
-      const O = (s) => `<span class="accent" style="font-weight:600">${s}</span>`;
+      const thumbsAt = (list, y, scale, pitch, x0) =>
+        list
+          .map(([scr, name, sub, on], k) =>
+            W.thumb(scr(), { x: x0 + k * pitch, y, h: DH, scale, name, sub: sub || "", on: !!on }),
+          )
+          .join("");
+
       const SK = [
         {
           step: "탐색",
           id: "ux-simulate",
           req: "기획서랑 링크 줄 테니 어떤 UX가 맞을지 봐 줘",
-          pat: "Synthetic persona → 가설",
-          bt: "「사용자 78%가 B안 선호」 → 바로 개발",
-          at: "「합성 시뮬레이션 · 가설」 B안 추천 → 실제 사용자 5명으로 확인",
-          b: `<div class="a0 big" style="left:10px;top:76px;width:196px">사용자 78%가<br>B안 선호</div><div class="a0" style="left:10px;top:150px;width:196px"><span class="btn primary full">바로 개발</span></div>`,
-          a: `<div class="a0" style="left:10px;top:76px"><span class="chip accent">합성 시뮬레이션 · 가설</span></div><div class="a0 big" style="left:10px;top:108px">B안 추천</div><div class="a0" style="left:10px;top:150px;width:196px"><span class="btn full">실제 사용자 5명으로 확인</span></div>`,
-          rb: [0, 62, 216, 140],
-          ra: [0, 62, 216, 140],
+          head: "합성 시뮬레이션 · 가설",
+          bt: "「사용자 78%가 B안 선호」로 읽고 바로 개발해요",
+          at: "가설이에요. B안을 추천하고 실제 사용자 5명으로 확인해요",
+          build() {
+            const th = thumbsAt(
+              [
+                [SCR.signA, "A안", "한 화면 가입"],
+                [SCR.signB, "B안", "단계형 가입", true],
+                [SCR.browseC, "C안", "둘러보기 먼저"],
+              ],
+              128,
+              0.28,
+              108,
+              DX,
+            );
+            const doc = `<div class="doc"><span class="id">SIM-REG-01</span><span class="nm">후보안 시뮬레이션</span></div>`;
+            const before =
+              `<div class="ax big" style="left:${DX}px;top:320px;width:300px">사용자 78%가 B안 선호</div>` +
+              `<div class="ax" style="left:${DX}px;top:360px;width:300px">${W.button("바로 개발", { kind: "primary" })}</div>`;
+            const after =
+              `<div class="ax" style="left:${DX}px;top:320px"><span class="chip accent">합성 시뮬레이션 · 가설</span></div>` +
+              `<div class="ax big" style="left:${DX}px;top:352px;width:300px">추천 B안</div>` +
+              `<div class="ax" style="left:${DX}px;top:392px;width:300px">${W.button("실제 사용자 5명으로 확인")}</div>`;
+            return doc + th + ovl("va", before) + ovl("vb", after);
+          },
         },
         {
           step: "확인",
           id: "ux-research",
-          req: "왜 온보딩 중간에 그만두는지 알고 싶어",
-          pat: "Leading question → Open question",
-          bt: "「새 온보딩, 편하셨죠?」",
-          at: "「마지막으로 가입하다 멈춘 때를 처음부터 들려주세요」",
-          b: `<div class="a0 cap" style="left:10px;top:72px">인터뷰 질문</div><div class="a0 big" style="left:10px;top:98px;width:196px">새 온보딩,<br>편하셨죠?</div>`,
-          a: `<div class="a0 cap" style="left:10px;top:72px">인터뷰 질문</div><div class="a0 big" style="left:10px;top:98px;width:196px">마지막으로 가입하다 멈춘 때를 처음부터 들려주세요</div>`,
-          rb: [0, 62, 216, 104],
-          ra: [0, 62, 216, 134],
+          req: "독서 노트를 왜 그만 쓰는지 알고 싶어",
+          head: "화면 라벨 노출",
+          bt: "「‘공유’ 버튼을 눌러 보세요」 화면 글자를 그대로 읽어 줘요",
+          at: "「어제 읽은 책의 메모를 친구에게 보내 주세요」 상황으로 바꿔요",
+          build() {
+            return dev(
+              W.statusBar() +
+                W.appBar("독서 노트", { back: false, actions: ["search"] }) +
+                `<div class="w-list">${NOTES.map(([title, sub]) => W.listRow({ title, sub })).join("")}</div>` +
+                `<div class="blk card" style="top:264px"><div class="mut">과제 2 / 3</div><div class="ct" id="rct">${v2("‘공유’ 버튼을 눌러 보세요", "어제 읽은 책의 메모를 친구에게 보내 주세요")}</div>${W.button("과제를 마쳤어요", { h: "h44" })}</div>`,
+            );
+          },
+          post(pane) {
+            pane.insertAdjacentHTML("beforeend", ovl("va", W.flag(rc("rct"), { pad: 4 }), 800));
+          },
         },
         {
           step: "정의",
           id: "ux-flow",
-          req: "회원가입부터 첫 주문까지 화면 목록이랑 예외 경로",
-          pat: "Dead end → Recovery path",
-          bt: "「네트워크 오류. 잠시 후 다시 시도하세요」 · 버튼 없음",
-          at: "「연결이 끊겼어요. 장바구니는 저장했어요」 + [다시 시도] [오프라인으로 보기]",
-          b: `<div class="a0 fl" style="left:10px;top:92px;width:196px">네트워크 오류. 잠시 후 다시 시도하세요</div>`,
-          a: `<div class="a0 fl" style="left:10px;top:76px;width:196px">연결이 끊겼어요. 장바구니는 저장했어요</div><div class="a0" style="left:10px;top:132px;width:196px"><span class="btn primary full">다시 시도</span></div><div class="a0" style="left:10px;top:176px;width:196px"><span class="btn full">오프라인으로 보기</span></div>`,
-          rb: [0, 78, 216, 70],
-          ra: [0, 62, 216, 160],
+          req: "주문 흐름 화면 목록이랑 예외 경로 정리해 줘",
+          head: "예외 경로",
+          bt: "결제가 실패하면 갈 곳이 없어요",
+          at: "결제 수단 다시 고르기로 이어요. 점선이 예외 경로예요",
+          X: [294, 408, 522],
+          build() {
+            const [x0, x1, x2] = this.X;
+            const doc = `<div class="doc"><span class="id">FLW-ORD-01</span><span class="nm">주문 흐름</span></div>`;
+            const row1 = thumbsAt(
+              [
+                [SCR.cart, "장바구니"],
+                [SCR.pay, "결제"],
+                [SCR.done, "주문 완료"],
+              ],
+              128,
+              0.24,
+              114,
+              x0,
+            );
+            const yc = 128 + 58;
+            const arrows =
+              W.arrow(
+                [
+                  [x0 + 72 + 6, yc],
+                  [x1 - 6, yc],
+                ],
+                { id: "fa0" },
+              ) +
+              W.arrow(
+                [
+                  [x1 + 72 + 6, yc],
+                  [x2 - 6, yc],
+                ],
+                { id: "fa1" },
+              );
+            const chip = `<div class="ax" style="left:${x1 + 36 - 20}px;top:268px"><span class="chip p1">실패</span></div>`;
+            const exc = W.arrow(
+              [
+                [x1 + 36, 300],
+                [x1 + 36, 350],
+              ],
+              { dash: true, id: "fa2" },
+            );
+            const alt = W.thumb(SCR.alt(), {
+              x: x1,
+              y: 360,
+              h: DH,
+              scale: 0.24,
+              name: "다른 수단",
+              sub: "결제 수단 다시 고르기",
+            });
+            return doc + row1 + arrows + chip + ovl("vb", exc + alt);
+          },
+          extra(u, S, pc) {
+            W.arrowAt($("fa0"), 1);
+            W.arrowAt($("fa1"), 1);
+            const p = easeOutCubic(progress(u, S + 100, 450));
+            W.arrowAt($("fa2"), p);
+            const a = this.pane.querySelector("#fa2");
+            a.style.opacity = 1;
+          },
         },
         {
           step: "설계",
           id: "ux-spec",
-          req: "개발자한테 넘길 화면설계서",
-          pat: "Component states",
-          bt: "저장 버튼에 「누르면 저장」 한 줄",
-          at: "기본 → 저장 중 → 완료 → 실패로 바뀌고 상태마다 문구",
-          custom: "spec",
-          S: 1250,
-          b: `<div class="a0" style="left:10px;top:100px;width:196px"><span id="sbtn" class="btn full">저장</span></div><div id="scap" class="a0 cap" style="left:10px;top:146px;width:196px;text-align:center">누르면 저장</div>
-        <div id="schips" class="a0" style="left:0;top:200px;width:216px;display:flex;justify-content:center;gap:4px;opacity:0"><span class="chip gray">기본</span><span class="chip gray">저장 중</span><span class="chip gray">완료</span><span class="chip gray">실패</span></div>`,
-          rb: [0, 88, 216, 82],
-          ra: [0, 88, 216, 82],
+          req: "프로필 편집 화면설계서 개발자한테 넘길 거야",
+          head: "번호 주석",
+          bt: "저장 버튼에 「누르면 저장」 한 줄뿐이에요",
+          at: `<div><span class="n">1</span>입력칸 · 최대 20자</div><div><span class="n">2</span>저장 버튼 · 4가지 상태</div><div><span class="n">3</span>스낵바 · 완료와 실패</div>`,
+          build() {
+            return dev(
+              W.statusBar() +
+                W.appBar("프로필 편집") +
+                `<div class="blk" id="sf" style="top:88px">${W.field({ label: "이름", value: "김하늘", help: "다른 사람에게 보이는 이름이에요", count: "3/20" })}</div>` +
+                `<div class="blk" style="top:192px">${W.field({ label: "소개", value: "책 읽고 그림 그리는 걸 좋아해요. 주말엔 동네 도서관에 가요.", box: 72, help: "프로필에 보이는 짧은 소개예요", count: "35/100" })}</div>` +
+                `<div class="blk" style="top:328px;display:flex;gap:8px">${W.button("취소", { style: "flex:1" })}${W.button("저장", { kind: "primary", id: "ssv", style: "flex:1.6" })}</div>` +
+                va(`<div class="blk mut" style="top:392px;text-align:center">누르면 저장</div>`) +
+                vb(`<div class="blk" id="ssn" style="top:392px"><div class="w-slot">스낵바 자리</div></div>`),
+            );
+          },
+          post(pane) {
+            const pins = [W.pin(1, rc("sf"), "sp0"), W.pin(2, rc("ssv"), "sp1"), W.pin(3, rc("ssn"), "sp2")];
+            pane.insertAdjacentHTML("beforeend", pins.map((p, k) => ovl("vb", p, 200 + k * 160)).join(""));
+          },
         },
         {
           step: "문구",
           id: "ux-writing",
-          req: "오류 문구 다듬어 줘",
-          pat: "Error message: 원인 + 해결",
-          bt: "「오류가 발생했습니다. (E-402)」 [확인]",
-          at: "「카드 한도를 넘어 결제하지 못했어요」 [다른 카드로 결제] [나중에 결제하기]",
-          b: `<div class="a0 fl" style="left:10px;top:92px;width:196px">오류가 발생했습니다. (E-402)</div><div class="a0" style="left:10px;top:148px;width:196px"><span class="btn full">확인</span></div>`,
-          a: `<div class="a0 fl" style="left:10px;top:76px;width:196px">카드 한도를 넘어 결제하지 못했어요</div><div class="a0" style="left:10px;top:132px;width:196px"><span class="btn primary full">다른 카드로 결제</span></div><div class="a0" style="left:10px;top:176px;width:196px"><span class="btn full">나중에 결제하기</span></div>`,
-          rb: [0, 78, 216, 108],
-          ra: [0, 62, 216, 160],
+          req: "카드 번호 오류 문구 다듬어 줘",
+          head: "무엇이 · 왜 · 어떻게",
+          bt: "「오류가 발생했습니다. (E-402)」 원인도 해결도 없어요",
+          at: "「카드 번호 16자리 중 15자리만 입력했어요. 마지막 자리를 확인해 주세요」",
+          build() {
+            const box = (css = "") => `<div class="bx" style="${css}">1234 5678 9012 345</div>`;
+            return dev(
+              W.statusBar() +
+                W.appBar("결제") +
+                `<div class="blk" style="top:88px;height:44px;display:flex;justify-content:space-between;align-items:center"><div><div>월 구독</div><div class="mut">매월 30일 결제</div></div><div class="big">9,900원</div></div>` +
+                `<div class="blk w-div" style="top:144px"></div>` +
+                `<div class="blk w-field" style="top:160px"><div class="lb">카드 번호</div>${v2(box(), box("border-color:var(--p1)"))}</div>` +
+                `<div class="blk" id="wer" style="top:236px;height:72px">${v2(
+                  `<div id="wet" class="mut" style="display:inline-block;font-size:13px;line-height:18px">오류가 발생했습니다. (E-402)</div>`,
+                  `<div class="err">${W.icon("warning", 20)}<span>카드 번호 16자리 중 15자리만 입력했어요. 마지막 자리를 확인해 주세요.</span></div>`,
+                )}</div>` +
+                `<div class="blk" id="wbt" style="top:400px;display:flex;gap:8px">${W.button(v2("취소", "닫기"), { style: "flex:1" })}${W.button(v2("확인", "결제하기"), { kind: "primary", style: "flex:1.6" })}</div>`,
+            );
+          },
+          post(pane) {
+            pane.insertAdjacentHTML(
+              "beforeend",
+              ovl("va", W.flag(rc("wet"), { pad: 4 }), 800) + ovl("va", W.flag(rc("wbt"), { pad: 6 }), 950),
+            );
+          },
         },
         {
           step: "검토",
           id: "ux-review",
           req: "삭제를 토스트로만 알리는데 되돌리기를 줄지",
-          pat: "Toast → Snackbar + Undo",
-          bt: "「삭제되었습니다」 Toast가 잠깐 떴다 사라짐",
-          at: "「노트를 삭제했어요 · 되돌리기」 Snackbar가 남고, 되돌리기를 누르면 복구",
-          custom: "review",
-          S: 1250,
-          b: `<div class="a0 title" style="left:10px;top:10px">독서 노트</div>
-        <div id="rl" class="a0" style="left:0;top:50px;width:216px;border-bottom:1px solid var(--line)">
-          <div class="li" style="height:44px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 10px;font-size:13px"><span>데미안 — 3장 메모</span><span class="muted" style="font-size:12px">삭제</span></div>
-          <div id="r2" style="height:44px;overflow:hidden;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 10px;font-size:13px;white-space:nowrap"><span>어린 왕자 — 문장 모음</span><span class="muted" style="font-size:12px">삭제</span></div>
-          <div class="li" style="height:44px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 10px;font-size:13px"><span>코스모스 — 질문 목록</span><span class="muted" style="font-size:12px">삭제</span></div>
-        </div>
-        <div id="rrip" class="ripple" style="left:195px;top:116px"></div><div id="rrip2" class="ripple" style="left:186px;top:355px"></div>
-        <div id="toast" class="a0 field" style="left:0;top:340px;width:216px;height:36px;display:flex;align-items:center;padding:0 12px;font-size:13px">삭제되었습니다</div>
-        <div id="snack" class="a0 field" style="left:0;top:340px;width:216px;height:36px;display:flex;align-items:center;justify-content:space-between;padding:0 12px;font-size:13px"><span>노트를 삭제했어요</span>${O("되돌리기")}</div>`,
-          rb: [0, 334, 216, 48],
-          ra: [0, 334, 216, 48],
+          head: "스낵바 + 되돌리기",
+          bt: "「삭제했어요」 토스트가 사라지면 되돌릴 수 없어요",
+          at: "「노트를 삭제했어요」 스낵바에 되돌리기를 달았어요",
+          build() {
+            const rows = NOTES.map(
+              ([title, sub], k) =>
+                `<div class="rw" id="rw${k}" style="overflow:hidden">${W.listRow({ title, sub, action: "trash", id: "rr" + k })}</div>`,
+            ).join("");
+            return dev(
+              W.statusBar() +
+                W.appBar("독서 노트", { back: false, actions: ["search"] }) +
+                `<div class="w-list">${rows}</div>` +
+                va(
+                  `<div style="position:absolute;left:0;top:404px;width:298px;display:flex;justify-content:center">${W.toast("삭제했어요", { id: "rtoast", style: "width:112px;padding:0;justify-content:center" })}</div>`,
+                  ' data-in="800"',
+                ) +
+                vb(
+                  `<div id="rsnack" style="position:absolute;left:16px;top:400px;width:266px">${W.snackbar("노트를 삭제했어요", { action: "되돌리기" })}</div>`,
+                ),
+            );
+          },
+          post(pane) {
+            this.trash = rc($("rr1").querySelector(".w-ib"));
+            this.undo = rc($("rsnack").querySelector(".act"));
+            pane.insertAdjacentHTML(
+              "beforeend",
+              ovl("va", W.flag(rc("rtoast"), { pad: 6 }), 1000) +
+                `<div class="w-ripple" id="rip1"></div><div class="w-ripple" id="rip2"></div>`,
+            );
+          },
+          extra(u, S) {
+            const e = easeOutCubic;
+            let h = 1;
+            if (u >= S + 500) h = e(progress(u, S + 500, 240));
+            else if (u >= 500) h = 1 - e(progress(u, 500, 240));
+            const rw = $("rw1");
+            rw.style.height = 56 * h + "px";
+            rw.style.opacity = h;
+            const ripple = (el, c, start) => {
+              const p = progress(u, start, 320);
+              el.style.left = c.left + c.width / 2 + "px";
+              el.style.top = c.top + c.height / 2 + "px";
+              el.style.opacity = p > 0 && p < 1 ? 1 - p : 0;
+              el.style.transform = `scale(${1 + 2.2 * e(p)})`;
+            };
+            ripple($("rip1"), this.trash, 500);
+            ripple($("rip2"), this.undo, S + 450);
+          },
         },
         {
           step: "접근성",
           id: "ux-a11y",
-          req: "터치 영역 크기",
-          pat: "Target size · WCAG 2.5.8",
-          bt: "아이콘 버튼 3개가 20×20px로 붙어 있음",
-          at: "버튼마다 44×44px 누르는 영역, 간격 확보",
-          custom: "a11y",
-          S: 1250,
-          b: `<div id="ibar" class="a0" style="left:0;top:110px;width:216px;display:flex;justify-content:center;align-items:center"><span class="ibtn">${ic.heart}</span><span class="ibtn">${ic.share}</span><span class="ibtn">${ic.trash}</span></div><div id="icap" class="a0 cap" style="left:0;top:182px;width:216px;text-align:center">20×20px</div>`,
-          rb: [60, 100, 96, 40],
-          ra: [20, 100, 176, 60],
+          req: "터치 영역 크기 괜찮은지 봐 줘",
+          head: "2.5.8 대상 크기(최소)",
+          bt: "아이콘 버튼 3개가 20×20px로 붙어 있어요",
+          at: "버튼마다 44×44px · 기준 24×24px 이상이에요",
+          build() {
+            const ICONS = ["search", "info", "more"];
+            const grp = (cls, id, size, glyph, top) =>
+              `<span class="grp ${cls}" style="top:${top}px">${ICONS.map((n, k) => `<span class="tb" ${k === 0 ? `id="${id}"` : ""} style="width:${size}px;height:${size}px">${W.icon(n, glyph)}</span>`).join("")}</span>`;
+            const fld = (label, value, top) =>
+              `<div class="blk w-field" style="top:${top}px"><div class="lb">${label}</div><div class="bx">${value}</div></div>`;
+            return dev(
+              W.statusBar() +
+                `<div class="w-appbar" style="position:relative"><span class="t">배송지</span>${grp("va", "ag0", 20, 16, 14)}${grp("vb", "ag1", 44, 24, 2)}</div>` +
+                `<div class="blk mut" style="top:104px;font-size:13px;line-height:24px">받는 분 정보를 입력해 주세요</div>` +
+                fld("받는 분", "김하늘", 144) +
+                fld("연락처", "010-1234-5678", 228) +
+                `<div class="blk opt" style="top:316px"><span class="w-check"></span>기본 배송지로 저장</div>` +
+                `<div class="blk" style="top:400px">${W.button("다음", { kind: "primary" })}</div>`,
+            );
+          },
+          post(pane) {
+            const g0 = rc("ag0"),
+              g1 = rc("ag1");
+            const grpR = (r, n) => ({
+              left: r.left,
+              top: r.top,
+              width: r.width * n,
+              height: r.height,
+              right: r.left + r.width * n,
+              bottom: r.bottom,
+            });
+            const dim20 =
+              W.dim({ axis: "h", at: g0.bottom + 12, from: g0.left, to: g0.right - 1, label: "" }).replace(
+                /<span class="w-dim lb"[^>]*><\/span>/,
+                "",
+              ) + `<span class="w-dim lb" style="left:${g0.right + 3}px;top:${g0.bottom + 4}px">20</span>`;
+            const dim44 =
+              `${W.ext({ axis: "v", at: g1.left, from: g1.bottom, to: g1.bottom + 8 })}${W.ext({ axis: "v", at: g1.right - 1, from: g1.bottom, to: g1.bottom + 8 })}` +
+              W.dim({ axis: "h", at: g1.bottom + 8, from: g1.left, to: g1.right - 1, label: "44" });
+            pane.insertAdjacentHTML(
+              "beforeend",
+              ovl("va", dim20, 700) + ovl("vb", dim44, 400) + ovl("va", W.flag(grpR(g0, 3), { pad: 4 }), 950),
+            );
+          },
         },
         {
           step: "기만 패턴",
           id: "ux-dark-patterns",
-          req: "부가 서비스가 기본으로 체크돼 있는데 괜찮아?",
-          pat: "사전 선택 · 공정위 다크패턴 유형",
-          bt: "[✓] 부가 서비스 추가 +2,900원이 미리 체크됨",
-          at: "[ ] 기본 해제, 사용자가 직접 고름",
-          custom: "dark",
-          S: 1250,
-          b: `<div class="a0" style="left:10px;top:112px;width:196px;display:flex;align-items:center;gap:10px;font-size:14px"><span id="cbx" style="width:20px;height:20px;border:1px solid var(--accent);border-radius:5px;display:grid;place-items:center;color:var(--accent);flex:none"><span id="ck" style="display:grid">${ic.check}</span></span><span style="flex:1">부가 서비스 추가</span><span class="cap">+2,900원</span></div>
-        <div class="a0" style="left:10px;top:176px;width:196px"><span class="btn primary full">다음</span></div>`,
-          rb: [0, 98, 216, 48],
-          ra: [0, 98, 216, 48],
+          req: "구독 해지 화면에 문제 없는지 봐 줘",
+          head: "취소·탈퇴 등의 방해",
+          bt: "해지 4단계 · 해지하기는 12px · 동의가 미리 체크돼요",
+          at: "해지 1단계 · 같은 크기의 두 버튼 · 동의는 직접 골라요",
+          build() {
+            return dev(
+              W.statusBar() +
+                W.appBar("구독 해지") +
+                `<div class="blk mut" id="dstep" style="top:96px">${v2("해지 4/4 단계", "해지 1/1 단계")}</div>` +
+                `<div class="blk" style="top:144px;height:64px">${v2(
+                  `<div class="big">정말 떠나시겠어요?</div><div class="sub" style="margin-top:4px">모든 혜택을 잃어요</div>`,
+                  `<div class="big">구독을 해지할까요?</div><div class="sub" style="margin-top:4px">해지해도 11월 30일까지 쓸 수 있어요</div>`,
+                )}</div>` +
+                `<div class="blk" id="dbtn" style="top:240px;height:104px">${v2(
+                  W.button("구독 유지", { kind: "primary" }) +
+                    `<div style="height:48px;margin-top:8px;display:grid;place-items:center;font:400 12px/16px var(--ui);color:var(--lowc)">해지하기</div>`,
+                  W.button("구독 유지") + `<div style="height:8px"></div>` + W.button("해지하기"),
+                )}</div>` +
+                `<div class="blk opt" id="dcon" style="top:392px"><span style="position:relative;flex:none;width:20px;height:20px"><span class="w-check on va" style="position:absolute;left:0;top:0">${W.icon("check", 14)}</span><span class="w-check vb" style="position:absolute;left:0;top:0"></span></span><span style="font-size:13px">마케팅 정보 수신 동의 (선택)</span></div>`,
+            );
+          },
+          post(pane) {
+            pane.insertAdjacentHTML(
+              "beforeend",
+              ovl("va", W.flag(rc("dstep"), { pad: 8 }), 700) +
+                ovl("va", W.flag(rc("dbtn"), { pad: 6 }), 850) +
+                ovl("va", W.flag(rc("dcon"), { pad: 4 }), 1000),
+            );
+          },
         },
         {
           step: "측정",
           id: "ux-metrics",
-          req: "성공 지표 정해 줘",
-          pat: "Vanity metric → Success metric + Guardrail",
-          bt: "페이지뷰 · 클릭 수 · 체류 시간",
-          at: "주 지표 「첫 주문 완료율」 · 가드레일 「오류 문의 수」",
-          b: `<div class="a0 fl" style="left:10px;top:76px;width:196px;line-height:2.1">페이지뷰<br>클릭 수<br>체류 시간</div>`,
-          a: `<div class="a0" style="left:10px;top:76px"><span class="chip accent">주 지표</span></div><div class="a0 big" style="left:10px;top:106px">첫 주문 완료율</div><div class="a0" style="left:10px;top:164px"><span class="chip gray">가드레일</span></div><div class="a0 big" style="left:10px;top:194px">오류 문의 수</div>`,
-          rb: [0, 62, 216, 114],
-          ra: [0, 62, 216, 176],
+          req: "노트 공유 기능 성공 지표 정해 줘",
+          head: "목표–신호–지표",
+          bt: "페이지뷰와 클릭 수만 세요",
+          at: "번호는 신호가 나오는 지점이에요. 지표는 공유 시작 대비 완료율이에요",
+          build() {
+            const optRow = (t, on) => `<div class="opt"><span class="w-radio${on ? " on" : ""}"></span>${t}</div>`;
+            return dev(
+              W.statusBar() +
+                `<div id="mapp">${W.appBar("3장 메모", { actions: ["trash"] })}</div>` +
+                `<div class="blk" style="top:80px"><div class="mut">데미안 · 2일 전</div><div style="margin-top:4px;font:400 15px/24px var(--ui)">알은 세계다. 태어나려는 자는 하나의 세계를 깨뜨려야 한다.</div></div>` +
+                `<div class="w-sheet" id="msh" style="position:absolute;left:0;right:0;bottom:0;height:272px"><div class="grab"></div>` +
+                `<div class="blk big" style="top:28px">노트 공유하기</div>` +
+                `<div class="blk" style="top:60px">${optRow("링크로 공유", true)}${optRow("이미지로 저장")}${optRow("텍스트 복사")}</div>` +
+                `<div class="blk" style="top:200px;display:flex;gap:8px">${W.button("취소", { id: "mcn", style: "flex:1" })}${W.button("공유하기", { kind: "primary", id: "msd", style: "flex:1.6" })}</div></div>`,
+            );
+          },
+          post(pane) {
+            const tr = rc($("mapp").querySelector(".w-appbar .w-ib:last-child svg"));
+            const pins = [
+              W.pin(1, rc("msh"), "mp0"),
+              W.pin(2, rc("msd"), "mp1"),
+              W.pin(3, rc("mcn"), "mp2"),
+              W.pin(4, { ...tr, top: tr.top + 18 }, "mp3"),
+            ];
+            pane.insertAdjacentHTML("beforeend", pins.map((p, k) => ovl("vb", p, 200 + k * 160)).join(""));
+          },
         },
         {
           step: "AI",
           id: "ux-ai",
-          req: "답변에 출처랑 다시 생성 버튼을 어떻게 넣을지",
-          pat: "Source · Stop · Regenerate",
-          bt: "AI 답이 출처 없이 단정하고 멈출 버튼 없음",
-          at: "출처 칩 + [중지] / [다시 생성] + 「AI 답은 틀릴 수 있어요」",
-          b: `<div class="a0 fl" style="left:10px;top:84px;width:196px">이 기능은 모든 요금제에서 쓸 수 있습니다.</div>`,
-          a: `<div class="a0 fl" style="left:10px;top:70px;width:196px">이 기능은 모든 요금제에서 쓸 수 있습니다.</div><div class="a0" style="left:10px;top:124px;display:flex;gap:6px"><span class="chip gray">출처 1</span><span class="chip gray">출처 2</span></div><div class="a0" style="left:10px;top:162px;width:196px;display:flex;gap:8px"><span class="btn" style="flex:1;height:32px;padding:0 8px">중지</span><span class="btn" style="flex:1.4;height:32px;padding:0 8px">다시 생성</span></div><div class="a0 cap" style="left:10px;top:206px;width:196px;font-family:var(--ui)">AI 답은 틀릴 수 있어요</div>`,
-          rb: [0, 70, 216, 60],
-          ra: [0, 58, 216, 180],
+          req: "책 요약 답변에 출처랑 다시 생성을 어떻게 넣을지",
+          head: "출처 칩 · 다시 생성",
+          bt: "출처 없이 단정하고 주의 문구도 없어요",
+          at: "쪽 번호 출처 칩 · 주의 문구 · 다시 생성 · 피드백을 달았어요",
+          build() {
+            const t1 = "3장은 주인공이 처음으로 스스로 선택하는 장면을 다뤄요. 저자는 이 선택을 성장의 시작으로 봐요.";
+            const t2 = `3장은 주인공이 처음으로 스스로 선택하는 장면을 다뤄요${W.cite("42쪽")}. 저자는 이 선택을 성장의 시작으로 봐요${W.cite("57쪽")}.`;
+            return dev(
+              W.statusBar() +
+                W.appBar("책 요약", { actions: ["more"] }) +
+                `<div class="blk" style="top:80px;text-align:right">${W.bubble("이 책 3장을 요약해 줘")}</div>` +
+                `<div class="blk" id="aans" style="top:136px;height:120px">${v2(W.answer(t1, { id: "aat" }), W.answer(t2))}</div>` +
+                vb(
+                  `<div class="blk caution" style="top:264px">${W.icon("info", 20)}<span>확인하지 못한 내용: 저자 인터뷰 인용은 책에 없어요</span></div>` +
+                    `<div class="blk regen" style="top:344px"><span class="w-ib">${W.icon("thumbUp")}</span><span class="w-ib">${W.icon("thumbDown")}</span><span class="pill">${W.icon("refresh", 20)}다시 생성 · 1/2</span></div>`,
+                ) +
+                `<div class="blk" style="top:404px">${W.inputBar("질문을 입력해 주세요")}</div>`,
+            );
+          },
+          post(pane) {
+            pane.insertAdjacentHTML("beforeend", ovl("va", W.flag(rc("aat"), { pad: 6 }), 800));
+          },
         },
       ];
 
       const T0 = 300,
-        PER = 2400,
+        PER = 2600,
+        S = 1400,
         N = SK.length,
-        STEP_Y = 80,
+        LIST_Y = 88,
         PITCH = 44,
-        DEF_S = 1250;
+        PANE_IN = 300;
       const stage = $("stage");
-      const ease = easeOutCubic;
       SK.forEach((s, i) => {
         const row = document.createElement("div");
-        row.className = "row";
-        row.style.top = STEP_Y + i * PITCH + "px";
+        row.className = "lr";
+        row.style.top = LIST_Y + i * PITCH + "px";
         row.innerHTML = `<span class="dot"><i></i></span><span class="step">${s.step}</span><span class="sid">${s.id}</span>`;
         stage.appendChild(row);
         s.row = row;
 
         const pane = document.createElement("div");
         pane.className = "pane";
-        pane.innerHTML = `<div class="lay lb">${s.b}</div>${s.a ? `<div class="lay la">${s.a}</div>` : ""}<div class="ring"></div>`;
+        pane.innerHTML = s.build();
         stage.appendChild(pane);
         s.pane = pane;
+        s.post?.call(s, pane);
+        s.vas = [...pane.querySelectorAll(".va")];
+        s.vbs = [...pane.querySelectorAll(".vb")];
 
         const side = document.createElement("div");
         side.className = "side";
-        side.innerHTML = `<div class="pat">${s.pat}</div>
-    <div class="blk bb" style="top:118px"><span class="chip p1">고치기 전</span><div>${s.bt}</div></div>
-    <div class="blk ba" style="top:236px"><span class="chip ok">고친 후</span><div>${s.at}</div></div>`;
+        side.innerHTML =
+          `<div class="hd">${s.head}</div>` +
+          `<div class="bb"><span class="chip gray">고치기 전</span><div class="tx">${s.bt}</div></div>` +
+          `<div class="ba"><span class="chip accent">고친 후</span><div class="tx">${s.at}</div></div>`;
         stage.appendChild(side);
         s.side = side;
       });
 
-      const custom = {
-        spec(u, s, S) {
-          const btn = $("sbtn"),
-            cap = $("scap"),
-            chips = $("schips").children;
-          const k = u < S ? -1 : Math.min(3, Math.floor((u - S) / 280));
-          const ST = [
-            ["저장", "primary", ""],
-            ["저장하는 중…", "", "var(--muted)"],
-            ["저장했어요", "", "var(--ok)"],
-            ["저장하지 못했어요", "", "var(--p1)"],
-          ];
-          if (k < 0) {
-            btn.textContent = "저장";
-            btn.style.cssText = "";
-            btn.className = "btn full";
-            cap.textContent = "누르면 저장";
-          } else {
-            btn.textContent = ST[k][0];
-            btn.className = "btn full " + ST[k][1];
-            btn.style.cssText = ST[k][2] ? `color:${ST[k][2]};border-color:${ST[k][2]}` : "";
-            cap.textContent = ["기본", "로딩", "완료", "실패"][k];
-          }
-          opacityAt($("schips"), k < 0 ? 0 : progress(u, S, 200));
-          [...chips].forEach((c, j) => {
-            c.className = "chip " + (j === k ? ["accent", "accent", "ok", "p1"][j] : "gray");
-            c.style.opacity = j === k ? 1 : 0.55;
-          });
-        },
-        review(u, s, S) {
-          const ROW = 44,
-            r2 = $("r2");
-          // 1차(Toast): 삭제 350, 접힘 400~640, 토스트 600~1150, 초기화 1250~1500
-          // 2차(Snackbar): 삭제 1400, 접힘 1450~1670, 스낵바 1550~, 되돌리기 1950, 복구 2000~2200
-          let h = ROW;
-          if (u >= 2000) h = ROW * ease(progress(u, 2000, 200));
-          else if (u >= 1450) h = ROW * (1 - ease(progress(u, 1450, 220)));
-          else if (u >= 1150) h = ROW * ease(progress(u, 1150, 180));
-          else if (u >= 400) h = ROW * (1 - ease(progress(u, 400, 240)));
-          r2.style.height = h + "px";
-          r2.style.opacity = h / ROW;
-          r2.style.borderTopWidth = h < 1 ? 0 : 1;
-          fade($("toast"), u, 600, 220, 1100, 160);
-          fade($("snack"), u, 1550, 220, 2200, 160);
-          const rp = (st) => {
-            const p = progress(u, st, 320);
-            return p > 0 && p < 1 ? p : null;
-          };
-          const p1 = rp(350),
-            p2 = rp(1400),
-            p3 = rp(1950);
-          $("rrip").style.opacity = p1 !== null ? 1 - p1 : p2 !== null ? 1 - p2 : 0;
-          $("rrip").style.transform = `scale(${1 + 2.2 * ease(p1 ?? p2 ?? 0)})`;
-          $("rrip2").style.opacity = p3 !== null ? 1 - p3 : 0;
-          $("rrip2").style.transform = `scale(${1 + 2.2 * ease(p3 ?? 0)})`;
-        },
-        a11y(u, s, S) {
-          const p = ease(progress(u, S, 420)),
-            size = lerp(20, 44, p),
-            gap = lerp(2, 8, p);
-          const bar = $("ibar");
-          bar.style.gap = gap + "px";
-          [...bar.children].forEach((b) => {
-            b.style.width = b.style.height = size + "px";
-            b.style.borderColor = p < 0.02 ? "transparent" : "var(--line)";
-            b.style.opacity = 1;
-          });
-          $("icap").textContent = u < S + 200 ? "20×20px" : "44×44px";
-        },
-        dark(u, s, S) {
-          const p = progress(u, S + 80, 220);
-          $("ck").style.opacity = 1 - p;
-        },
-      };
-      const lerpRect = (a, b, p) => a.map((v, i) => lerp(v, b[i], p));
-
       window.DEMO = defineDemo({
-        width: 880,
-        height: 560,
+        width: W_,
+        height: H_,
         end: T0 + PER * N,
         draw(t) {
           $("brand").textContent = BRAND;
@@ -419,42 +735,33 @@
           SK.forEach((s, i) => {
             const start = T0 + PER * i,
               u = t - start;
-            s.row.className = "row" + (t < start ? "" : i === idx && u < PER ? " on" : " done");
-            if (i === N - 1 && t >= start) s.row.className = "row on";
-            const last = i === N - 1,
-              S = s.S || DEF_S;
-            const outAt = last ? Infinity : PER - 170;
-            fade(s.pane, u, 140, 220, outAt, 170, 4);
-            fade(s.side, u, 140, 220, outAt, 170, 4);
+            s.row.classList.toggle("on", t >= start + 300 && (i === idx || i === N - 1));
+            s.row.classList.toggle("done", t >= start + PER - 170 && i !== N - 1);
+            const outAt = i === N - 1 ? Infinity : PER - 170;
+            fade(s.pane, u, PANE_IN, 240, outAt, 170, 4);
+            fade(s.side, u, 0, 1, outAt, 170, 0);
             if (u < 0 || u > PER) return;
-            const lb = s.pane.querySelector(".lb"),
-              la = s.pane.querySelector(".la"),
-              ring = s.pane.querySelector(".ring");
-            const pc = ease(progress(u, S, 260));
-            if (la) {
-              opacityAt(lb, 1 - pc);
-              opacityAt(la, pc);
-            }
-            if (custom[s.custom]) custom[s.custom](u, s, S);
-            const r = lerpRect(s.rb, s.ra, pc);
-            ring.style.left = r[0] + "px";
-            ring.style.top = r[1] + "px";
-            ring.style.width = r[2] + "px";
-            ring.style.height = r[3] + "px";
-            ring.style.borderColor = u < S ? "var(--p1)" : "var(--ok)";
-            opacityAt(ring, u < S ? progress(u, 480, 200) : Math.max(progress(u, S + 40, 200), 0.001));
+            const pc = easeOutCubic(progress(u, S, 240));
+            s.vas.forEach((el) => {
+              const at = +el.dataset.in || 0;
+              opacityAt(el, (1 - pc) * (at ? progress(u, at, 240) : 1));
+            });
+            s.vbs.forEach((el) => {
+              const at = +el.dataset.in || 0;
+              opacityAt(el, pc * (at ? progress(u, S + at, 240) : 1));
+            });
+            s.extra?.call(s, u, S, pc);
             const bb = s.side.querySelector(".bb"),
-              ba = s.side.querySelector(".ba");
-            fade(bb, u, 520, 220);
-            bb.style.opacity = bb.style.opacity * (1 - 0.55 * progress(u, S, 200));
-            fade(ba, u, S + 40, 220);
+              ba = s.side.querySelector(".ba"),
+              hd = s.side.querySelector(".hd");
+            fade(hd, u, 400);
+            fade(bb, u, 500);
+            bb.style.opacity = bb.style.opacity * (1 - 0.5 * progress(u, S, 200));
+            fade(ba, u, S + 60);
           });
-          const u0 = t - (T0 + PER * idx);
-          $("prompt").style.visibility = t < T0 ? "visible" : "visible";
-          typeInto($("prompt"), "› " + SK[idx].req, Math.max(0, t < T0 ? t - T0 + 400 : u0), 0, 75, true, 700);
-          if (t < T0)
-            $("prompt").innerHTML =
-              '› <span class="caret" style="visibility:' + (blink(t) ? "visible" : "hidden") + '"></span>';
+          const u0 = Math.max(0, t - (T0 + PER * idx));
+          if (t < T0) $("prompt").innerHTML = '› <span class="caret"></span>';
+          else typeInto($("prompt"), "› " + SK[idx].req, u0, 0, 60, true, 700);
         },
       });
     </script>
