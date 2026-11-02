@@ -2,7 +2,7 @@
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/hero-dark.gif">
-  <img src="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/hero-light.gif" width="800" alt="요청 한 줄마다 맞는 스킬이 켜지고, 스킬 10개가 차례로 자기 예시를 고치기 전에서 고친 후로 바꾸는 모습">
+  <img src="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/hero-light.gif" width="800" alt="요청 한 줄마다 맞는 스킬이 켜지고, 스킬 10개가 차례로 같은 와이어프레임 화면을 고치기 전에서 고친 후로 바꾸는 모습. 후보안 썸네일 3개, 독서 노트 과제 카드, 주문 흐름 썸네일과 점선 예외 경로, 번호 핀을 단 프로필 편집 화면, 카드 번호 오류 문구, 스낵바와 되돌리기, 20픽셀에서 44픽셀로 커지는 아이콘 버튼, 구독 해지 화면, 공유 시트의 번호 핀, 출처 칩과 다시 생성이 차례로 나옵니다">
 </picture>
 
 # power-ux-harness

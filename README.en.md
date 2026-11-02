@@ -2,7 +2,7 @@
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/hero-dark.gif">
-  <img src="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/hero-light.gif" width="800" alt="Each request lights up the matching skill, and the ten skills take turns turning their own example from before the fix to after the fix">
+  <img src="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/hero-light.gif" width="800" alt="Each request lights up the matching skill, and the ten skills take turns turning the same wireframe screen from before the fix to after the fix: three candidate thumbnails, a task card on a reading-notes screen, order-flow thumbnails with a dashed exception path, a profile-edit screen with numbered pins, a card-number error message, a snackbar with Undo, icon buttons growing from 20 to 44 pixels, a subscription-cancel screen, numbered pins on a share sheet, and source chips with Regenerate">
 </picture>
 
 # power-ux-harness
