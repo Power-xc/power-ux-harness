@@ -17,5 +17,8 @@
   "scripts": {
     "validate": "node scripts/validate.mjs",
     "test": "node scripts/validate.mjs && node --test \"tests/**/*.test.mjs\""
+  },
+  "bin": {
+    "ux-design-harness": "scripts/install.mjs"
   }
 }
