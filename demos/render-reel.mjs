@@ -47,7 +47,7 @@ const SEGMENTS = [
   { scene: "simulate", from: 0, to: 14, kf: [[0, 0.1], [3, 1.9], [5.2, 3.3], [7.4, 4.7], [9.6, 8.0], [11.8, 9.5], [12, 9.7], [14, 9.7]],
     cam: camera([
       { r: 0, k: 1.93, cx: 248, cy: 179 }, { r: 4.6, k: 1.93, cx: 248, cy: 179 }, // 입력·조사 열
-      { r: 5.6, k: 2, cx: 512, cy: 170 }, { r: 7.0, k: 2, cx: 512, cy: 170 }, // 페르소나
+      { r: 5.6, k: 2, cx: 480, cy: 170 }, { r: 7.0, k: 2, cx: 480, cy: 170 }, // 페르소나
       { r: 8.4, k: 1.95, cx: 784, cy: 155 }, { r: 14, k: 1.95, cx: 784, cy: 155 }, // 후보안 표 + 추천 줄(한 화면)
     ]) },
   { scene: "reel-hero", from: 14, to: 21, kf: [[14, 0], [21, 7]], cam: still(1, 480, 335) },
@@ -55,8 +55,8 @@ const SEGMENTS = [
     cam: camera([{ r: 21, k: 2, cx: 566, cy: 138 }, { r: 21.35, k: 2, cx: 566, cy: 138 }, { r: 21.85, k: 2, cx: 98, cy: 200 }, { r: 22.75, k: 2, cx: 98, cy: 200 }]) },
   { scene: "a11y", from: 22.75, to: 24.5, kf: [[22.75, 0.5], [23.25, 1.4], [24.5, 5.5]],
     cam: camera([{ r: 22.75, k: 4, cx: 88, cy: 50 }, { r: 23.2, k: 4, cx: 88, cy: 50 }, { r: 23.7, k: 2, cx: 620, cy: 97 }, { r: 24.5, k: 2, cx: 620, cy: 97 }]) },
-  { scene: "dark-patterns", from: 24.5, to: 26.25, kf: [[24.5, 2.9], [25.4, 5.4], [25.6, 6.3], [26.25, 7.0]],
-    cam: camera([{ r: 24.5, k: 2, cx: 620, cy: 160 }, { r: 25.4, k: 2, cx: 620, cy: 160 }, { r: 25.95, k: 1.85, cx: 140, cy: 200 }, { r: 26.25, k: 1.85, cx: 140, cy: 200 }]) },
+  { scene: "dark-patterns", from: 24.5, to: 26.25, kf: [[24.5, 2.9], [25.4, 5.4], [26.25, 5.6]],
+    cam: still(2, 620, 160) },
   { scene: "writing", from: 26.25, to: 28, kf: [[26.25, 3.9], [27.0, 4.9], [28, 6.2]],
     cam: camera([{ r: 26.25, k: 2, cx: 240, cy: 105 }, { r: 26.9, k: 2, cx: 240, cy: 105 }, { r: 27.5, k: 2.4, cx: 660, cy: 100 }, { r: 28, k: 2.4, cx: 660, cy: 100 }]) },
   { scene: "reel-skills", from: 28, to: 34.5, kf: [[28, 0], [34.5, 6.5]], cam: still(2, 240, 150) },
@@ -75,10 +75,10 @@ const CAPTIONS = [
   [7.4, 9.6, "후보안 [3개]를 직접 써 보고"],
   [9.6, 12, "가장 [덜 막히는 안]을 추천해요"],
   [12, 14, "결과는 [가설] →<br>실제 사용자로 확인"],
-  [14, 21, "설계부터 출시 전 점검까지<br>[9단계]로"],
+  [14, 21, "요청마다 맞는 [스킬]이<br>알아서 켜져요"],
   [21, 22.75, "삭제를 토스트로만?<br>→ [되돌리기]"],
   [22.75, 24.5, "터치 영역 [24px] 미만은<br>FAIL"],
-  [24.5, 26.25, "해지가 가입보다 깊으면 [P1]"],
+  [24.5, 26.25, "미리 체크해 둔 선택도<br>[P1]"],
   [26.25, 28, "[무엇이·왜·어떻게]<br>고치는지"],
   [28, 31, "AI 코딩 에이전트에 바로 설치<br>스킬 [10개] · 무료 오픈소스"],
   [31, 34.5, "팔로우 + 댓글 [「링크」]<br>→ DM으로 보내드려요"],
@@ -234,12 +234,12 @@ async function cover(browser, name, titleHtml, view, circle) {
 // ---- 링크 공유 표지 1280x640 (라이트) ----
 async function social(browser) {
   const page = await open(browser, "simulate", "light", 1280, 640);
-  const k = 1.6, win = { x: 700, y: 48, w: 528, h: 544 };
+  const win = { x: 700, y: 48, w: 528, h: 544 };
   await prep(page, win);
-  await place(page, 9700, { k, x: 548, y: 0 }, win);
+  await place(page, 9700, { k: 1.1, cx: 755, cy: 230 }, win); // 후보안 표 + 추천 줄(페르소나 열은 가린다)
   await page.evaluate(() => {
     const css = document.createElement("style");
-    css.textContent = `#t{position:absolute;left:72px;top:206px;font:800 68px/1.3 "Pretendard Variable",Pretendard,sans-serif;letter-spacing:-0.03em;color:var(--fg);word-break:keep-all} #l{position:absolute;left:72px;top:60px;font:500 20px/1.2 var(--mono);color:var(--muted)}`;
+    css.textContent = `#stage{width:1100px !important;overflow:visible !important} .ph,#phd,.in,.ck,#ch,.abs.mono{display:none} #rep,#rec,#nt{left:560px !important} #t{position:absolute;left:72px;top:206px;font:800 68px/1.3 "Pretendard Variable",Pretendard,sans-serif;letter-spacing:-0.03em;color:var(--fg);word-break:keep-all} #l{position:absolute;left:72px;top:60px;font:500 20px/1.2 var(--mono);color:var(--muted)}`;
     document.head.appendChild(css);
     const t = document.createElement("div"); t.id = "t"; t.innerHTML = "가상 사용자 4명이<br>먼저 써 봤어요"; document.body.appendChild(t);
     const l = document.createElement("div"); l.id = "l"; l.textContent = "power-ux-harness"; document.body.appendChild(l);
@@ -255,7 +255,7 @@ try {
   if (only === "all" || only === "social") await social(browser);
   if (only === "all" || only === "covers") {
     await cover(browser, "a", "기획서만<br>[넣었는데]", { k: 2.2, cx: 758, cy: 142 }, { cx: 781, cy: 144, rx: 67, ry: 150, seed: 7, sq: 0.5 }); // B안 열(머리글 포함)
-    await cover(browser, "b", "가상 사용자<br>[4명]이 써 봄", { k: 2.5, cx: 440, cy: 166 }, { cx: 366, cy: 166, rx: 106, ry: 132, seed: 11, sq: 0.5 }); // P1~P4 배지와 이름
+    await cover(browser, "b", "가상 사용자<br>[4명]이 써 봄", { k: 2.5, cx: 440, cy: 166 }, { cx: 384, cy: 166, rx: 126, ry: 132, seed: 11, sq: 0.5 }); // P1~P4 배지와 이름
   }
   if (only === "all" || only === "reel") await reel(browser);
 } finally { await browser.close(); }
