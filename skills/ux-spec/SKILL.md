@@ -62,6 +62,7 @@ license: MIT
 - 화면 목록·흐름·상태 표: `ux-flow`
 - 문구 다듬기와 점검: `ux-writing`
 - 접근성 기준 확인: `ux-a11y`
+- 맥락(연령·환경·예외)별 안과 다른 서비스 사례: `ux-benchmark`
 - 패턴 쓰임이 맞는지 점검: `ux-review`
 - 이벤트를 지표로 연결: `ux-metrics`
 - AI 응답 화면이 포함되면 신뢰·통제 패턴: `ux-ai`

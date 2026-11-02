@@ -73,6 +73,7 @@ goal과 user가 요청이나 제품에서 분명하면 다시 묻지 않는다. 
 - 접근성 기준(WCAG 2.2·KWCAG) 감사: `ux-a11y`
 - 기만 패턴과 규제 유형 점검: `ux-dark-patterns`
 - 오류·버튼·빈 상태·알림 문구 작성: `ux-writing`
+- 패턴을 들일 근거로 다른 서비스 사례가 필요할 때: `ux-benchmark`
 - 수정안을 화면 설계서로 옮기기: `ux-spec`
 - 원인 가설을 사용자로 검증: `ux-research`
 - 수정 효과를 재는 지표: `ux-metrics`
