@@ -81,6 +81,7 @@
     return {
       width,
       height,
+      end,
       duration: end + HOLD + SEAM,
       render(t) {
         if (!snap) prepare();

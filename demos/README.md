@@ -29,8 +29,9 @@ node render.mjs hero review --theme dark --fps 10
 node render.mjs a11y --at 3,6  # 지정한 시각(초)의 PNG만 .frames/ 에 저장해 눈으로 확인
 ```
 
-옵션: `--theme light|dark|both`(기본 both), `--fps 12`, `--scale 1.5`, `--colors 96`, `--at 초,초`. `hero`만 기본 배율 1.25·색 64예요.
+옵션: `--theme light|dark|both`(기본 both), `--fps 12`, `--scale 1.5`, `--colors 96`, `--at 초,초`. `hero`는 기본 배율 1.25·색 64, `spec`·`ai`는 색 64예요(600KB 예산).
 Chrome 경로는 `CHROME_PATH`, ffmpeg 경로는 `FFMPEG_PATH`(기본 `/opt/homebrew/bin/ffmpeg`)로 바꿀 수 있어요.
+장면 GIF는 끝 상태(고친 후)에서 시작해 정지 화면으로 봐도 결과가 보이고, `hero`만 시작 틀에서 시작해요.
 끝에 장면·테마·프레임 수·픽셀·파일 크기 표를 출력해요. 예산은 장면당 1.5MB예요(`hero`는 이 안에 맞추려고 배율과 색 수를 낮췄어요).
 
 ## 규칙

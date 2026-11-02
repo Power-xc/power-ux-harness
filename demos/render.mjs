@@ -33,8 +33,10 @@ const ALL = [
 
 const args = process.argv.slice(2);
 const opt = { theme: "both", fps: 12, scale: null, colors: null, at: null };
-// 장면마다 다른 기본값: hero는 예산(1.5MB)에 맞추려고 배율과 색 수를 낮춘다.
-const DEFAULTS = { hero: { scale: 1.25, colors: 64 } };
+// 장면마다 다른 기본값: spec·ai는 예산(600KB)에 맞추려고 색 수를 낮추고, hero는 예산(1.5MB)에 맞추려고 배율과 색 수를 낮추고, 0번 프레임을 시작 틀로 둔다.
+const DEFAULTS = { hero: { scale: 1.25, colors: 64, fromEnd: false }, spec: { colors: 64 }, ai: { colors: 64 } };
+// 장면 GIF는 끝 상태(고친 후)에서 시작한다. 정지 화면으로 보는 사용자에게도 결과가 보이게 하려는 것이다.
+const fromEndOf = (scene) => DEFAULTS[scene]?.fromEnd ?? true;
 const scaleOf = (scene) => (opt.scale ? Number(opt.scale) : (DEFAULTS[scene]?.scale ?? 1.5));
 const colorsOf = (scene) => (opt.colors ? Number(opt.colors) : (DEFAULTS[scene]?.colors ?? 96));
 const scenes = [];
@@ -85,10 +87,11 @@ try {
         console.log(`${scene}-${theme}: ${dir}/at-*.png`);
         continue;
       }
-      const duration = await page.evaluate(() => DEMO.duration);
+      const { duration, end } = await page.evaluate(() => ({ duration: DEMO.duration, end: DEMO.end }));
       const n = Math.round((duration / 1000) * opt.fps);
+      const offset = fromEndOf(scene) ? end : 0; // 끝 상태에서 시작해 유지 → 교차 페이드 → 처음부터 재생한 뒤 다시 끝 상태로 이어진다.
       for (let i = 0; i < n; i++) {
-        await page.evaluate((t) => DEMO.render(t), (i * 1000) / opt.fps);
+        await page.evaluate((t) => DEMO.render(t), (offset + (i * 1000) / opt.fps) % duration);
         await page.screenshot({ path: path.join(dir, `f${String(i).padStart(4, "0")}.png`) });
       }
       await page.close();
