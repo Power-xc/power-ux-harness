@@ -26,7 +26,7 @@ Synthetic personas screen candidate designs first, and flows, screen specs, UX c
 
 **Email gives you seconds, a messenger gives you a day, a delayed bank transfer gives you three hours.** The same "take back what I sent" runs on undo windows thousands of times apart, because the time it takes to notice a mistake or a scam differs from service to service.
 
-Being in another app is not evidence. Why it worked there, and whether that reason exists in your product, is. These 17 come from the 33-case casebook that `ux-benchmark` starts from.
+Being in another app is not evidence. Why it worked there, and whether that reason exists in your product, is. These 17 come from the 38-case casebook that `ux-benchmark` starts from.
 
 **Age · ability**
 
@@ -359,7 +359,7 @@ Verdicts rest on published standards; each skill's `references/` opens with its 
 - **Deceptive design** — the dark-pattern provisions of Korea's e-commerce consumer-protection act (in force 2025-02-14), the Korea Fair Trade Commission's guideline on online interfaces against dark patterns (2026-10-06), EU DSA Article 25, the US FTC staff report
 - **Research and metrics** — heuristic evaluation and severity, cognitive walkthroughs, HEART, SUS, controlled-experiment design
 - **Synthetic users** — the repeat, baseline, decoy and rank-only reporting rules come from studies of the positivity bias, reduced variance and option-order bias of synthetic responses
-- **Context and cases** — the context card builds on ISO 9241-11's view of usability within a context of use and adds business and risk fields; the eyesight, motor and cognition fields lean on WCAG 2.2 and Korea's digital divide survey. The 33 cases were checked against official help pages, press releases and regulators' documents, with the date each was opened
+- **Context and cases** — the context card builds on ISO 9241-11's view of usability within a context of use and adds business and risk fields; the eyesight, motor and cognition fields lean on WCAG 2.2 and Korea's digital divide survey. The 38 cases were checked against official help pages, press releases and regulators' documents, with the date each was opened
 
 ## Checks and contributing
 
