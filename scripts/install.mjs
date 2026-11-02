@@ -19,7 +19,7 @@ const USAGE = `사용법: npx github:Power-xc/power-ux-harness [옵션]
                                claude → <dir>/.claude/skills
   --only <id,id>               지정한 스킬만 설치
   --dir <프로젝트>             설치할 프로젝트 폴더 (기본 현재 폴더)
-  --force                      내용이 다른 기존 파일을 덮어쓴다
+  --force                      같은 이름의 다른 스킬도 덮어쓴다(없으면 그 스킬 폴더를 통째로 건너뜀)
   --dry-run                    파일을 쓰지 않고 할 일만 출력한다
   --list                       설치 가능한 스킬 목록을 출력한다
   -h, --help                   이 도움말`;
@@ -80,33 +80,37 @@ function listFilesRecursive(dir, base = dir, out = []) {
   return out;
 }
 
-// 한 파일을 복사하고 'installed' | 'skipped' | 'same' 을 돌려준다.
-function copyFile(src, dest, { force, dryRun }) {
+// 파일마다 'install' | 'same' | 'conflict'(내용이 다른 기존 파일)를 정한다.
+function planFile(src, dest) {
   const content = readFileSync(src);
-  if (existsSync(dest)) {
-    if (readFileSync(dest).equals(content)) return "same";
-    if (!force) return "skipped";
-  }
-  if (!dryRun) {
-    mkdirSync(dirname(dest), { recursive: true });
-    writeFileSync(dest, content);
-  }
-  return "installed";
+  if (!existsSync(dest)) return { content, action: "install" };
+  return { content, action: readFileSync(dest).equals(content) ? "same" : "conflict" };
 }
 
+// 같은 이름의 다른 스킬이 있으면 폴더를 통째로 건너뛴다 — 파일 단위로 섞으면 옛 SKILL.md와 새 references가 한 폴더에 남는다.
 function installSkill(id, targetRoot, opts, tally) {
   const srcDir = join(SKILLS_DIR, id);
-  for (const rel of listFilesRecursive(srcDir)) {
-    const dest = join(targetRoot, id, rel);
-    const result = copyFile(join(srcDir, rel), dest, opts);
-    const shown = join(id, rel);
-    if (result === "installed") {
-      tally.installed++;
-      console.log(`${opts.dryRun ? "설치 예정" : "설치"}  ${join(targetRoot, shown)}`);
-    } else if (result === "skipped") {
-      tally.skipped++;
-      console.log(`건너뜀  ${join(targetRoot, shown)} (내용이 달라 보존, 덮어쓰려면 --force)`);
+  const plan = listFilesRecursive(srcDir).map((rel) => ({
+    rel,
+    dest: join(targetRoot, id, rel),
+    ...planFile(join(srcDir, rel), join(targetRoot, id, rel)),
+  }));
+  const conflicts = plan.filter((p) => p.action === "conflict");
+  if (conflicts.length > 0 && !opts.force) {
+    tally.conflicts.push(join(targetRoot, id));
+    console.log(
+      `충돌  ${join(targetRoot, id)} — 내용이 다른 같은 이름의 스킬이 있어 폴더를 통째로 건너뜀 (다른 파일 ${conflicts.length}개, 덮어쓰려면 --force)`,
+    );
+    return;
+  }
+  for (const { rel, dest, content, action } of plan) {
+    if (action === "same") continue;
+    if (!opts.dryRun) {
+      mkdirSync(dirname(dest), { recursive: true });
+      writeFileSync(dest, content);
     }
+    tally.installed++;
+    console.log(`${opts.dryRun ? "설치 예정" : "설치"}  ${join(targetRoot, id, rel)}`);
   }
 }
 
@@ -128,12 +132,17 @@ function run(argv) {
   if (unknown.length > 0) {
     throw new UsageError(`알 수 없는 스킬: ${unknown.join(", ")}\n설치 가능: ${all.join(", ")}`);
   }
-  const tally = { installed: 0, skipped: 0 };
+  const tally = { installed: 0, conflicts: [] };
   const roots = targetRoots(opts);
   for (const root of roots) for (const id of ids) installSkill(id, root, opts, tally);
   console.log(
-    `${opts.dryRun ? "[dry-run] " : ""}설치 ${tally.installed} · 건너뜀 ${tally.skipped} · 위치 ${roots.join(", ")}`,
+    `${opts.dryRun ? "[dry-run] " : ""}설치 ${tally.installed} · 충돌로 건너뛴 스킬 ${tally.conflicts.length} · 위치 ${roots.join(", ")}`,
   );
+  if (tally.conflicts.length > 0) {
+    console.log(
+      "\n같은 이름의 스킬이 이미 있습니다. 두 스킬이 함께 켜지면 설명이 겹쳐 발동이 갈립니다 — 하나만 남기거나 --only로 겹치지 않는 스킬만 설치하세요.",
+    );
+  }
 }
 
 try {

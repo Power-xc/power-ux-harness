@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
-import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { after, test } from 'node:test';
@@ -50,9 +50,21 @@ test('바뀐 파일은 --force 없이 보존하고 --force 로 덮어쓴다', ()
   writeFileSync(file, 'mine');
   const kept = install(dir);
   assert.equal(readFileSync(file, 'utf8'), 'mine');
-  assert.match(kept.out, /건너뜀 1/);
+  assert.match(kept.out, /충돌로 건너뛴 스킬 1/);
   install(dir, '--force');
   assert.notEqual(readFileSync(file, 'utf8'), 'mine');
+});
+
+test('같은 이름의 다른 스킬이 있으면 폴더를 통째로 건너뛰어 파일을 섞지 않는다', () => {
+  const dir = tmp();
+  const own = join(dir, '.agents/skills/ux-review/SKILL.md');
+  mkdirSync(dirname(own), { recursive: true });
+  writeFileSync(own, 'another ux-review');
+  const r = install(dir);
+  assert.equal(readFileSync(own, 'utf8'), 'another ux-review');
+  assert.equal(existsSync(join(dir, '.agents/skills/ux-review/references')), false);
+  assert.ok(existsSync(join(dir, '.agents/skills/ux-writing/SKILL.md')));
+  assert.match(r.out, /충돌 {2}.*ux-review/);
 });
 
 test('--dry-run 은 파일을 만들지 않는다', () => {
