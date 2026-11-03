@@ -1,6 +1,6 @@
 # 리서치 방법 고르기
 
-출처: NN/g Christian Rohrer「When to Use Which User-Experience Research Methods」(2022, 2026 검토)·Jakob Nielsen「Why You Only Need to Test with 5 Users」(2000)·Raluca Budiu·Kate Moran「How Many Participants for Quantitative Usability Studies」(2021)·Jakob Nielsen「Thinking Aloud: The #1 Usability Tool」(2012)·Marieke McCloskey「Turn User Goals into Task Scenarios for Usability Testing」(2014). 원문 문장을 옮기지 않고 요약했다.
+출처: NN/g Christian Rohrer「When to Use Which User-Experience Research Methods」(2022, 2026 검토)·Jakob Nielsen「Why You Only Need to Test with 5 Users」(2000)·Raluca Budiu·Kate Moran「How Many Participants for Quantitative Usability Studies」(2021)·Jakob Nielsen「Thinking Aloud: The #1 Usability Tool」(2012)·Marieke McCloskey「Turn User Goals into Task Scenarios for Usability Testing」(2014)·Kathryn Whitenton「Triangulation: Get Better Research Results by Using Multiple UX Methods」(2021). 원문 문장을 옮기지 않고 요약했다.
 
 ## 1. 질문을 세 축에 놓는다
 
@@ -25,7 +25,8 @@
 | 설계      | 사용성 테스트(진행형·비진행형) | 이 화면으로 과제를 끝낼 수 있나, 어디서 막히나   |
 | 출시·평가 | 벤치마크 테스트                | 이전 버전·경쟁 대비 성공률·시간                  |
 | 출시·평가 | A/B 테스트                     | 두 안 중 어느 쪽이 지표를 움직이나               |
-| 출시·평가 | 로그·분석                      | 어디서 얼마나 이탈하나                           |
+| 출시·평가 | 로그·퍼널 분석                 | 어느 단계에서 얼마나 빠지나                      |
+| 출시·평가 | 히트맵(클릭·스크롤)            | 화면 어디를 누르고 어디까지 내리나               |
 
 ## 3. 인원 기준
 
@@ -53,3 +54,23 @@
 - 화면의 라벨이나 단계를 과제 문장에 쓰지 않는다(「‘선물하기’ 버튼을 눌러」 금지).
 - 이름·날짜처럼 과제에 필요한 세부는 주되, 어디를 누를지는 알려 주지 않는다.
 - 과제마다 성공 기준(끝 화면·입력 결과)과 실패로 볼 행동을 미리 정한다.
+
+## 6. 질문의 꼴이 방법을 정한다
+
+「리서치하자」는 말에 인터뷰부터 잡지 않는다. 알고 싶은 것이 어떤 꼴의 질문인지 먼저 적고 그 꼴에 맞는 방법을 고른다. 한 방법으로 모르는 것은 다른 방법으로 메운다.
+
+| 질문의 꼴                        | 맞는 방법                      | 그 방법만으로는 모르는 것                         |
+| -------------------------------- | ------------------------------ | ------------------------------------------------- |
+| 어느 단계에서 몇 명이 빠지나     | 로그·퍼널 분석                 | 왜 빠지는지                                       |
+| 화면 어디를 누르고 어디까지 보나 | 히트맵                         | 못 본 건지 보고도 지나친 건지, 왜 거기를 누르는지 |
+| 얼마나 많은 사람이 그렇게 느끼나 | 설문                           | 말한 것과 실제 행동의 차이                        |
+| 왜 그렇게 하나, 어디서 막히나    | 인터뷰·사용성 테스트·현장 관찰 | 얼마나 흔한지                                     |
+| 며칠에 걸쳐 어떻게 쓰나          | 다이어리 연구                  | 원인의 크기                                       |
+| 정보를 어떻게 묶고 부르나        | 카드 소팅                      | 정한 구조에서 실제로 찾는지                       |
+| 정한 메뉴 구조에서 찾나          | 트리 테스트                    | 실제 화면의 라벨·배치가 주는 영향                 |
+| 고친 안이 정말 나은가            | A/B 테스트                     | 왜 나아졌는지                                     |
+
+흔한 순서는 「어디 → 왜 → 정말 나아졌나」다. 퍼널로 빠지는 단계를 찾고, 그 단계를 사용성 테스트나 인터뷰로 보며 이유를 듣고, 고친 안을 A/B로 다시 확인한다. 트래픽이 모자라 A/B가 안 되면 `ux-metrics`의 소표본 규칙을 따른다 — 이벤트를 먼저 깔고 비율은 관찰 지표로만 읽는다.
+
+- 정성 결과는 표본이 작고 지표는 맥락이 없다. 결과 하나로 결정하지 말고 다른 각도의 증거로 한 번 더 확인한다. 되돌리기 어렵고 비싼 결정일수록 더 많은 방법으로 확인하고, 쉽게 되돌리는 결정은 짧게 확인한다.
+- 히트맵은 기기별로 따로 본다. 터치 화면에는 마우스 이동이 없고, 화면 폭이 다르면 같은 자리가 다른 요소를 가리킨다. 몇 명의 데이터인지 함께 적는다.

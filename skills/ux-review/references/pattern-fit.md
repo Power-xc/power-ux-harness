@@ -2,7 +2,7 @@
 
 리뷰 대상의 요소를 패턴 이름으로 적은 뒤, 그 패턴이 지금 쓰임에 맞는지 이 표로 판정한다. 수정안도 같은 이름으로 쓴다. 「로딩 넣어 주세요」라고만 하면 대부분 스피너가 되고, 「피드백 강화」는 읽는 사람마다 다른 화면이 된다.
 
-출처: NN/g Katie Sherwin「Progress Indicators Make a Slow System Less Insufferable」(2014)·Samhita Tankala「Skeleton Screens 101」(2023)·Alita Kendrick「Toggle-Switch Guidelines」(2018)·Angie Li「Date-Input Form Fields」(2017)·Aurora Harley「Slider Design: Rules of Thumb」(2015)·Jakob Nielsen「Confirmation Dialogs Can Prevent User Errors」(2018)·Page Laubheimer「Executing UX Animations」(2020)·Aurora Harley「Icon Usability」(2014)·Hoa Loranger「Infinite Scrolling Is Not for Every Website」(2014), Buell·Norton「The Labor Illusion」(Management Science, 2011), 토스「좋은 에러 메시지를 만드는 6가지 원칙」(2022), Google Material Design 3의 Snackbar·Dialogs·Bottom sheets 지침, W3C WCAG 2.2와 Understanding 2.2.1·4.1.3. 원문 문장을 옮기지 않고 요약했다.
+출처: NN/g Katie Sherwin「Progress Indicators Make a Slow System Less Insufferable」(2014)·Samhita Tankala「Skeleton Screens 101」(2023)·Alita Kendrick「Toggle-Switch Guidelines」(2018)·Angie Li「Date-Input Form Fields」(2017)·Aurora Harley「Slider Design: Rules of Thumb」(2015)·Jakob Nielsen「Confirmation Dialogs Can Prevent User Errors」(2018)·Page Laubheimer「Executing UX Animations」(2020)·Aurora Harley「Icon Usability」(2014)·Hoa Loranger「Infinite Scrolling Is Not for Every Website」(2014)·Kara Pernice·Raluca Budiu「Hamburger Menus and Hidden Navigation Hurt UX Metrics」(2016), Buell·Norton「The Labor Illusion」(Management Science, 2011), 토스「좋은 에러 메시지를 만드는 6가지 원칙」(2022), Google Material Design 3의 Snackbar·Dialogs·Bottom sheets 지침, W3C WCAG 2.2와 Understanding 2.2.1·4.1.3. 원문 문장을 옮기지 않고 요약했다.
 
 ## 1. 알림·피드백 — 방해 수준
 
@@ -67,6 +67,7 @@
 - **가변 보상 루프**: 당겨서 새로고침처럼 당길 때마다 결과가 달라지는 장치는 습관을 만든다. 사용자의 목표를 해치는 반복 사용을 유도하는지, 멈출 지점이 있는지 본다.
 - **보이지 않는 제스처**: 밀어서 삭제·길게 누르기·드래그는 화면에 보이지 않는다. 같은 기능을 버튼이나 메뉴에도 둔다. 끌기 동작에는 한 번 누르기 대안이 필요하다(WCAG 2.5.7).
 - **아이콘**: 집·검색·인쇄처럼 널리 통하는 아이콘은 드물다. 그 밖의 아이콘에는 늘 보이는 텍스트 라벨을 붙인다. 이미 관습이 된 아이콘은 실물과 닮지 않았다는 이유로 바꾸지 않는다.
+- **숨긴 메뉴(햄버거)**: 데스크톱에서 주요 메뉴를 햄버거 뒤에 숨기지 않는다. 숨긴 메뉴는 보이는 메뉴보다 덜 쓰이고(데스크톱 27% 대 48%) 과제 시간이 39% 넘게 길었다. 모바일은 최상위 목적지가 4개 이하면 모두 보이게 두고, 그보다 많을 때만 자주 쓰는 것을 보이고 나머지를 숨긴다(콤보). 아이콘만 있는 메뉴 버튼은 모양 별명(케밥·미트볼) 대신 기능 이름으로 적는다 — `ux-spec`의 컴포넌트 이름표 6절.
 - **모션**: 방향만 말하지 말고 이름과 시간을 쓴다. 대부분의 UI 전환은 100\~500ms, 체크·토글 같은 작은 반응은 약 100ms, 대화상자 등장은 200\~300ms가 기준이다. 들어오는 요소는 이즈 아웃, 나가는 요소는 이즈 인 계열을 쓰고 나가는 쪽을 조금 짧게 한다. 「부드럽게」는 이즈 아웃, 「튕기게」는 스프링이다. 움직임 줄이기 설정(`prefers-reduced-motion`)을 따르는지 본다.
 
 ## 5. 결정 과제로 패턴 고르기

@@ -386,7 +386,7 @@ acceptance: 삭제 직후 되돌리기 한 번으로 노트가 같은 자리에 
 | 온보딩 개편이 성공했는지 볼 지표랑 가드레일 정해 줘                                   | `ux-metrics`       |
 | AI 에이전트가 메일을 대신 보내기 전에 어떤 확인 화면이 필요한지 봐 줘                 | `ux-ai`            |
 
-요청과 기대 스킬 52쌍은 [`evals/cases.json`](evals/cases.json)에 있습니다. 옆 스킬과 헷갈리기 쉬운 요청은 `shouldNotFire`로 묶어 경계를 고정해 둡니다.
+요청과 기대 스킬 53쌍은 [`evals/cases.json`](evals/cases.json)에 있습니다. 옆 스킬과 헷갈리기 쉬운 요청은 `shouldNotFire`로 묶어 경계를 고정해 둡니다.
 
 ## 설치
 

@@ -1,6 +1,6 @@
 # 흐름도·화면 목록·상태 표 양식
 
-출처: 국내 화면설계서 관례(이랜서 블로그「스토리보드/화면 설계서 작성법」2022, 요즘IT 정병준「IA, 메뉴구조도, 화면목록이 헷갈린다면?」2022, brunch @planbasic「IT 기획의 화면 정의서 폼 정의」2026), Google Material Design 3 Navigation bar 지침, Mermaid flowchart 문법. 양식은 이 저장소에서 정리했다.
+출처: 국내 화면설계서 관례(이랜서 블로그「스토리보드/화면 설계서 작성법」2022, 요즘IT 정병준「IA, 메뉴구조도, 화면목록이 헷갈린다면?」2022, brunch @planbasic「IT 기획의 화면 정의서 폼 정의」2026), Google Material Design 3 Navigation bar 지침, NN/g Kara Pernice·Raluca Budiu「Hamburger Menus and Hidden Navigation Hurt UX Metrics」(2016), Mermaid flowchart 문법. 양식은 이 저장소에서 정리했다.
 
 ## 1. 흐름도 범례 (Mermaid)
 
@@ -66,6 +66,8 @@ flowchart LR
 | 목적지가 많거나 자주 쓰지 않음                | 드로어·메뉴             |
 | 같은 화면 안에서 보기 전환                    | 상단 탭·세그먼트 컨트롤 |
 | 단계가 정해진 과제                            | 단계 표시 + 뒤로        |
+
+데스크톱에서는 최상위 메뉴를 햄버거 뒤에 숨기지 않고 화면에 보이게 둔다. 모바일은 최상위 목적지가 4개 이하면 모두 보이게 두고, 그보다 많을 때만 자주 쓰는 것을 남기고 나머지를 메뉴로 숨긴다.
 
 ## 7. 자주 빠지는 예외
 

@@ -251,6 +251,13 @@
       "why": "실제 사용자 검증 설계"
     },
     {
+      "id": "research-6",
+      "prompt": "결제 단계에서 사람들이 어디서 빠지는지, 왜 빠지는지 둘 다 알고 싶어. 어떤 조사를 어떤 순서로 할지 계획해 줘",
+      "expectSkill": "ux-research",
+      "shouldNotFire": "ux-metrics",
+      "why": "경계 양성 — 어디와 왜를 함께 묻는 조사 순서 설계, 지표 체계 설계가 아님"
+    },
+    {
       "id": "benchmark-1",
       "prompt": "@ux benchmark 처음 보내는 계좌로 큰돈 보낼 때 화면 — 60대 이용자가 늘었어",
       "expectSkill": "ux-benchmark",
