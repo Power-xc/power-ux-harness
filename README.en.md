@@ -76,6 +76,7 @@ Each case in the [casebook](skills/ux-benchmark/references/casebook.md) lists it
 - **Hypotheses stay hypotheses** — synthetic results are labeled as such on the first line, reported as rankings and stability instead of percentages, and always end in a real-user validation plan.
 - **Fixes name the pattern** — not "improve feedback" but "snackbar + Undo, 'Note deleted'": pattern, state and copy.
 - **Verdicts against standards** — WCAG 2.2, KWCAG 2.2, Korea's dark-pattern guideline and e-commerce act, HEART and SUS, with item numbers behind every PASS or FAIL.
+- **Judge only what was seen** — demo and production are recorded separately, states that could not be checked stay on the verdict as "partial", and production is observed with write and analytics requests blocked so a check never changes live data.
 - **Skills hand off to each other** — every skill uses the same evidence labels and the same priorities (P1–P3), so one skill's output is the next skill's input.
 - **Any agent** — two lines for the Claude Code plugin, one `npx` line for Codex, Cursor, Gemini CLI and Copilot.
 
@@ -115,6 +116,7 @@ Given a description, a URL or a planning doc, it fills a 20-field context card �
 - **When** — "How do similar services handle this?", "Find what worked elsewhere and adapt it to us", "More of our users are in their 60s, how should this screen change?", `@ux benchmark`, `@ux context`
 - **Age becomes fields** — "users in their 60s" is rewritten as digital skill, eyesight, motor precision, cognitive load, a helper and exposure to fraud: fields you can design for. An age label stigmatizes, and the same need shows up at any age.
 - **Context distance** — each case is checked against your context and judged adopt, adapt or don't adopt, with a one-line reason. Every proposal carries at least one "don't copy this" and one "try this small first".
+- **Weight of evidence** — each case keeps the facts apart from the evidence that it worked (an official ruling or announcement > a record of keeping or expanding it > review reactions > inference), and cases exposed by sanctions or rulings become counterexample cards. Screens behind a login count only the steps public material confirms.
 - **Never** — "because the competitor does it", citing a source it did not open, copying screens or copy, or splitting people by age alone.
 
 <details>
@@ -169,8 +171,8 @@ Verdict: READY
 Given a domain, links and a planning doc, it opens every source and tags it with an ID, then researches the rules that apply, how similar services structure the flow, and what app reviews complain about. Three to five personas built from structured attributes walk through two or three candidate designs step by step (a cognitive walkthrough), and the least obstructed candidate is recommended with its chain of evidence.
 
 - **When** — "Here's the doc and some links, which UX fits?", "Narrow the options before we interview anyone", `@ux simulate`, `@ux discover`
-- **Personas** — every attribute carries a source ID or `가정` (assumption); an accessibility or edge persona and a skeptic are mandatory. It also explains how to draw a stratified sample from a public synthetic-persona dataset aligned to Korean population statistics.
-- **Trustworthy runs** — repeated runs with shuffled order and labels (three by default), an empty persona and a demographics-only baseline, a hidden decoy option with a deliberate flaw, and a log of model, prompt and date.
+- **Personas** — every attribute carries a source ID or `가정` (assumption); an accessibility or edge persona and a skeptic are mandatory. It also explains how to draw a stratified sample from a public synthetic-persona dataset aligned to Korean population statistics. Accessibility conditions are given as captures rendered under that condition, not as a description.
+- **Trustworthy runs** — candidates described with the same number of pros and cons and differing in one element at a time, repeated runs with shuffled order and unordered labels (three by default), an empty persona and a demographics-only baseline, a hidden decoy with a deliberate flaw that is also checked with a separate yes/no question, single-candidate runs for first impressions, and a log of model, prompt and date.
 - **Never** — percentages like "70% of users prefer", citing a source it did not open, or a recommendation without a validation plan.
 
 ### ux-research
@@ -182,8 +184,8 @@ Given a domain, links and a planning doc, it opens every source and tags it with
   <img src="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/research-light.gif" width="800" alt="A research plan opens with the question of why people stop using reading notes and the decision it serves; on its say-versus-do, why-versus-how-much 2×2 method map only contextual interviews and five usability-test participants are highlighted, and in the interview guide and a task card on a small device screen a leading question and a label-revealing task are struck through and the rewritten lines get PASS">
 </picture>
 
-- **When** — "Why do people drop out of onboarding?", "Tasks and a script for five participants next week", "Turn these eight interview transcripts into what we fix next"
-- **What it does** — narrows the question to one decision, chooses methods by what people say vs. do and why vs. how much, asks about past behavior instead of opinions, keeps screen labels out of tasks, and recruits five per round.
+- **When** — "Why do people drop out of onboarding?", "Tasks and a script for five participants next week", "Turn these eight interview transcripts into what we fix next", "Where and why do people drop out at checkout?"
+- **What it does** — narrows the question to one decision and picks the method by the shape of the question — funnels and heatmaps for where people drop out, interviews and observation for why, A/B tests for whether a fix really works — instead of defaulting to interviews, and confirms big decisions with a second method from another angle. It asks about past behavior instead of opinions, keeps screen labels out of tasks, and recruits five per round.
 - **Aliases** — `@ux research` · `@ux interview` · `@ux usability-test`
 
 ### ux-flow
@@ -196,7 +198,7 @@ Given a domain, links and a planning doc, it opens every source and tags it with
 </picture>
 
 - **When** — "Screens and edge cases from sign-up to first order", "Structure the My Page menu"
-- **What it does** — draws the task flow in Mermaid, gives every screen an ID (`SCR-ORD-03`), records loading, empty, error, done and end states, and collects open policy questions separately.
+- **What it does** — draws the task flow in Mermaid, gives every screen an ID (`SCR-ORD-03`), records loading, empty, error, done and end states, and collects open policy questions separately. A hub screen such as home, which branches to many destinations, uses an entry → destination table as its completion condition, and screens that render differently in demo and production get a code-branch table. Top-level desktop menus are not hidden behind a hamburger, and on mobile four or fewer destinations all stay visible.
 - **Aliases** — `@ux flow` · `@ux ia`
 
 ### ux-spec
@@ -209,7 +211,7 @@ Given a domain, links and a planning doc, it opens every source and tags it with
 </picture>
 
 - **When** — "A spec developers can build from", "A screen spec an agent can implement directly"
-- **What it does** — pins down names people mix up (toast vs. snackbar, dialog vs. bottom sheet) so design, engineering and agents call the same thing by the same name, and runs a handoff checklist for missing states and copy.
+- **What it does** — pins down names people mix up (toast vs. snackbar, dialog vs. bottom sheet) so design, engineering and agents call the same thing by the same name, writes icon-only buttons known by their shape (hamburger, kebab, meatball) by function and accessible name, and runs a handoff checklist for missing states and copy.
 - **Alias** — `@ux spec`
 
 ### ux-writing
@@ -235,7 +237,8 @@ Given a domain, links and a planning doc, it opens every source and tags it with
 </picture>
 
 - **When** — "Users seem lost in onboarding", "Delete only shows a toast; Undo or a confirmation dialog?", "A switch plus a Save button, is that OK?"
-- **What it does** — finds heuristic violations along the observed path, checks whether each notification fits its interruption level (0–3), converts severity to P1–P3 and picks the one to three fixes to do first.
+- **What it does** — finds heuristic violations along the observed path, checks whether each notification fits its interruption level (0–3) and whether a pricing table shows its comparison items, the basis of its recommendation and the billed amount, then converts severity to P1–P3 and picks the one to three fixes to do first.
+- **Scope of the verdict** — checks empty and near-empty first-run (cold start), error and end states; errors that cannot be triggered safely in production are reproduced by failing requests in a demo build or confirmed in code. A state still unseen adds "partial" to the verdict, and a block that happens only on some devices, permissions or data adds "conditional". When a screen renders differently in demo and production, every finding records the observed build.
 - **Aliases** — `@ux review` · `@ux funnel`
 
 ### ux-a11y
@@ -260,8 +263,8 @@ Given a domain, links and a planning doc, it opens every source and tags it with
   <img src="https://raw.githubusercontent.com/Power-xc/power-ux-harness/main/assets/demos/dark-patterns-light.gif" width="800" alt="Four findings on a subscription-cancel screen (obstruction, a guilt-inducing decline line, false hierarchy and preselection) are numbered and marked P1 or P2, then the same screen shows two equal buttons, an unchecked optional consent and a neutral line, and each item passes">
 </picture>
 
-- **When** — "Is our cancel flow legal?", "An add-on is pre-checked at checkout", "Is this pop-up too frequent?", "Can we add a pricier plan so the middle one sells?"
-- **What it does** — counts the steps of the sign-up and cancel paths side by side, pairs each type with an honest alternative, separates honest use from deception for pricing-table nudges (anchoring, the compromise effect, decoy plans, struck-through list prices), adds EU DSA and US FTC checks for overseas users, and leaves the final legal call to counsel.
+- **When** — "Is our cancel flow legal?", "An add-on is pre-checked at checkout", "Is this pop-up too frequent?", "Can we add a pricier plan so the middle one sells?", "Where should the label go on ad cards mixed into the feed?"
+- **What it does** — counts the steps of the sign-up and cancel paths side by side, pairs each type with an honest alternative, separates honest use from deception for pricing-table nudges (anchoring, the compromise effect, decoy plans, struck-through list prices), checks how ads are told apart from content in ad- or sponsorship-funded services, measures whether cancellation and account deletion show the restore deadline as a date and offer the app-store account-deletion path, adds EU DSA and US FTC checks for overseas users, and leaves the final legal call to counsel.
 - **Alias** — `@ux dark`
 
 ### ux-metrics
@@ -274,7 +277,7 @@ Given a domain, links and a planning doc, it opens every source and tags it with
 </picture>
 
 - **When** — "Define success metrics", "Will a step-by-step sign-up raise the completion rate?", "Score our SUS survey"
-- **What it does** — defines metrics per user (denominator, window, unit), adds guardrails, writes the decision rule before the experiment starts, and falls back to usability testing when traffic is too small, stating the limit.
+- **What it does** — defines metrics per user (denominator, window, unit), adds guardrails, writes the decision rule before the experiment starts, and, when real users are too few to reach the required sample, plans no A/B test: it lays the events first, reads rates only as observation metrics and defers the decision rule until the sample is reached.
 - **Aliases** — `@ux metrics` · `@ux experiment`
 
 ### ux-ai
@@ -287,7 +290,7 @@ Given a domain, links and a planning doc, it opens every source and tags it with
 </picture>
 
 - **When** — "Design our AI chat screen", "Where do citations and Regenerate go?", "What should the agent show before it sends an email for me?"
-- **What it does** — checks 18 human–AI interaction guidelines across first use, during use, when wrong and over time, and names screen elements by pattern (suggested prompts, streaming + Stop, citation chips, approval before action …).
+- **What it does** — checks 18 human–AI interaction guidelines across first use, during use, when wrong and over time, and names screen elements by pattern (suggested prompts, streaming + Stop, citation chips, approval before action …). Promises in guide and onboarding copy are checked line by line against the result screen's defaults.
 - **Alias** — `@ux ai`
 
 ## Example requests
@@ -356,8 +359,8 @@ When merging reports from several skills, read `ux-a11y`'s `automated` · `manua
 Verdicts rest on published standards; each skill's `references/` opens with its sources and their publication or effective dates.
 
 - **Accessibility** — WCAG 2.2, KWCAG 2.2 (KS X OT0003:2022), Korea's mobile-app content accessibility standard (KS X 3253:2025)
-- **Deceptive design** — the dark-pattern provisions of Korea's e-commerce consumer-protection act (in force 2025-02-14), the Korea Fair Trade Commission's guideline on online interfaces against dark patterns (2026-10-06), EU DSA Article 25, the US FTC staff report
-- **Research and metrics** — heuristic evaluation and severity, cognitive walkthroughs, HEART, SUS, controlled-experiment design
+- **Deceptive design** — the dark-pattern provisions of Korea's e-commerce consumer-protection act (in force 2025-02-14), the Korea Fair Trade Commission's guideline on online interfaces against dark patterns (2026-10-06) and its review guideline on endorsements and testimonials in advertising, EU DSA Article 25, the US FTC staff report and Endorsement Guides
+- **Research and metrics** — heuristic evaluation and severity, cognitive walkthroughs, choosing methods by question type and triangulation, HEART, SUS, controlled-experiment design
 - **Synthetic users** — the repeat, baseline, decoy and rank-only reporting rules come from studies of the positivity bias, reduced variance and option-order bias of synthetic responses
 - **Context and cases** — the context card builds on ISO 9241-11's view of usability within a context of use and adds business and risk fields; the eyesight, motor and cognition fields lean on WCAG 2.2 and Korea's digital divide survey. The 38 cases were checked against official help pages, press releases and regulators' documents, with the date each was opened
 
