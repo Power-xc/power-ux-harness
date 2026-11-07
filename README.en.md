@@ -211,7 +211,7 @@ Given a domain, links and a planning doc, it opens every source and tags it with
 </picture>
 
 - **When** — "A spec developers can build from", "A screen spec an agent can implement directly"
-- **What it does** — pins down names people mix up (toast vs. snackbar, dialog vs. bottom sheet) so design, engineering and agents call the same thing by the same name, writes icon-only buttons known by their shape (hamburger, kebab, meatball) by function and accessible name, and runs a handoff checklist for missing states and copy.
+- **What it does** — pins down names people mix up (toast vs. snackbar, dialog vs. bottom sheet) so design, engineering and agents call the same thing by the same name, writes icon-only buttons known by their shape (hamburger, kebab, meatball) by function and accessible name, picks between 18 look-alike pairs (switch vs. checkbox, menu vs. select, tooltip vs. popover …) with one deciding question, names indicators, rating widgets, share icons and screen transitions, and, when an AI draws the screen, replaces "make it pretty" with a style name plus the accessibility criteria that style breaks first. It runs a handoff checklist for missing states and copy.
 - **Alias** — `@ux spec`
 
 ### ux-writing
@@ -237,8 +237,8 @@ Given a domain, links and a planning doc, it opens every source and tags it with
 </picture>
 
 - **When** — "Users seem lost in onboarding", "Delete only shows a toast; Undo or a confirmation dialog?", "A switch plus a Save button, is that OK?"
-- **What it does** — finds heuristic violations along the observed path, checks whether each notification fits its interruption level (0–3) and whether a pricing table shows its comparison items, the basis of its recommendation and the billed amount, then converts severity to P1–P3 and picks the one to three fixes to do first.
-- **Scope of the verdict** — checks empty and near-empty first-run (cold start), error and end states; errors that cannot be triggered safely in production are reproduced by failing requests in a demo build or confirmed in code. A state still unseen adds "partial" to the verdict, and a block that happens only on some devices, permissions or data adds "conditional". When a screen renders differently in demo and production, every finding records the observed build.
+- **What it does** — finds heuristic violations along the observed path, checks whether each notification fits its interruption level (0–3) and whether a pricing table shows its comparison items, the basis of its recommendation and the billed amount, and whether a completion cue fits the size of the task, then converts severity to P1–P3 and picks the one to three fixes to do first.
+- **Scope of the verdict** — splits empty states by why they are empty (first use, no results, offline, permission, all caught up, just emptied, failed to load, locked) and catches false empty states that show a failed load as "nothing here yet"; also checks near-empty first-run (cold start), error and end states; errors that cannot be triggered safely in production are reproduced by failing requests in a demo build or confirmed in code. A state still unseen adds "partial" to the verdict, and a block that happens only on some devices, permissions or data adds "conditional". When a screen renders differently in demo and production, every finding records the observed build.
 - **Aliases** — `@ux review` · `@ux funnel`
 
 ### ux-a11y
@@ -290,7 +290,7 @@ Given a domain, links and a planning doc, it opens every source and tags it with
 </picture>
 
 - **When** — "Design our AI chat screen", "Where do citations and Regenerate go?", "What should the agent show before it sends an email for me?"
-- **What it does** — checks 18 human–AI interaction guidelines across first use, during use, when wrong and over time, and names screen elements by pattern (suggested prompts, streaming + Stop, citation chips, approval before action …). Promises in guide and onboarding copy are checked line by line against the result screen's defaults.
+- **What it does** — checks 18 human–AI interaction guidelines across first use, during use, when wrong and over time, and names screen elements by pattern (suggested prompts, streaming + Stop, citation chips, approval before action …). Promises in guide and onboarding copy are checked line by line against the result screen's defaults. For features that assemble a screen per request, it checks that the same request yields the same structure and that a re-plan shows what changed and asks before changing a confirmed booking or payment.
 - **Alias** — `@ux ai`
 
 ## Example requests
@@ -310,7 +310,7 @@ Given a domain, links and a planning doc, it opens every source and tags it with
 | Set metrics and guardrails to tell whether the onboarding revamp worked                           | `ux-metrics`       |
 | What confirmation should an AI agent show before sending an email for me?                         | `ux-ai`            |
 
-All 53 request–skill pairs live in [`evals/cases.json`](evals/cases.json). Requests that are easy to confuse with a neighboring skill carry `shouldNotFire`, which pins the boundary.
+All 56 request–skill pairs live in [`evals/cases.json`](evals/cases.json). Requests that are easy to confuse with a neighboring skill carry `shouldNotFire`, which pins the boundary.
 
 ## Install
 

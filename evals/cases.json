@@ -33,6 +33,13 @@
       "why": "고르는 화면의 비교·추천 구성을 묻는다 — 장치가 기만인지 묻지 않음"
     },
     {
+      "id": "review-6",
+      "prompt": "검색 결과가 없을 때, 필터를 걸어서 없을 때, 서버 오류일 때 빈 화면이 다 똑같이 '아직 없어요'로 나와. 이거 괜찮은지 봐 줘",
+      "expectSkill": "ux-review",
+      "shouldNotFire": "ux-writing",
+      "why": "경계 양성 — 빈 상태의 종류 구분과 실패를 빈 상태로 그린 문제를 판정, 문구 다듬기가 아님"
+    },
+    {
       "id": "research-1",
       "prompt": "@ux interview 30대 맞벌이 부부의 장보기 습관",
       "expectSkill": "ux-research",
@@ -107,6 +114,13 @@
       "expectSkill": "ux-spec",
       "shouldNotFire": "ux-review",
       "why": "평가가 아니라 명세로 옮기기"
+    },
+    {
+      "id": "spec-5",
+      "prompt": "설정 화면 설계서 쓰는데 알림 받기는 스위치인지 체크박스인지, 정렬 고르는 건 메뉴인지 셀렉트인지까지 이름 정해서 영역별로 써 줘",
+      "expectSkill": "ux-spec",
+      "shouldNotFire": "ux-review",
+      "why": "경계 양성 — 닮은 짝 중 이름을 골라 설계서 영역에 적는 일, 만든 화면 평가가 아님"
     },
     {
       "id": "write-1",
@@ -223,6 +237,13 @@
       "expectSkill": "ux-ai",
       "shouldNotFire": "ux-review",
       "why": "AI 실행 승인"
+    },
+    {
+      "id": "ai-4",
+      "prompt": "말하면 여행 일정 화면을 그때그때 만들어 주고 비가 오면 실내 일정으로 다시 짜 주는 AI 기능인데, 사용자가 헷갈리지 않게 하려면 화면을 어떻게 해야 해?",
+      "expectSkill": "ux-ai",
+      "shouldNotFire": "ux-review",
+      "why": "자연어 — 생성형 UI의 예측 가능성과 다시 짠 결과 비교"
     },
     {
       "id": "sim-1",
