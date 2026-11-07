@@ -10,7 +10,7 @@
       "source": "./",
       "displayName": "Power UX Harness",
       "description": "AI 코딩 에이전트가 서비스의 규모·타깃·나이·상황을 읽는 맥락 벤치마킹과 합성 페르소나 시뮬레이션부터 리서치·흐름·화면 설계서·문구·리뷰·접근성·기만 패턴·지표·AI 화면까지 시니어 프로덕트 디자이너의 절차로 일하게 하는 UX 스킬 하네스",
-      "version": "1.1.0",
+      "version": "1.2.0",
       "category": "design",
       "tags": ["ux", "design", "research", "accessibility", "review"],
       "license": "MIT",
