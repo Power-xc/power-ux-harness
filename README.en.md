@@ -93,7 +93,7 @@ Following one feature from the first question to release looks like this. You ca
 | Confirm          | `ux-research`      | Research plan · interview guide · usability-test tasks · synthesis          |
 | Define           | `ux-flow`          | Flow diagram · screen list · screen × state table · navigation              |
 | Design           | `ux-spec`          | Screen spec with numbered regions · handoff checklist                       |
-| Copy             | `ux-writing`       | Error, button, empty-state and dialog copy · glossary                       |
+| Copy             | `ux-writing`       | Error, button, empty-state and dialog copy · glossary · AI-tone word check  |
 | Review           | `ux-review`        | Heuristic and pattern verdicts · P1–P3 findings · fixes                     |
 | Accessibility    | `ux-a11y`          | WCAG 2.2 and KWCAG 2.2 audit                                                |
 | Deceptive design | `ux-dark-patterns` | Verdicts on 13 types · sign-up vs. cancel path comparison                   |
@@ -211,7 +211,7 @@ Given a domain, links and a planning doc, it opens every source and tags it with
 </picture>
 
 - **When** — "A spec developers can build from", "A screen spec an agent can implement directly"
-- **What it does** — pins down names people mix up (toast vs. snackbar, dialog vs. bottom sheet) so design, engineering and agents call the same thing by the same name, writes icon-only buttons known by their shape (hamburger, kebab, meatball) by function and accessible name, picks between 18 look-alike pairs (switch vs. checkbox, menu vs. select, tooltip vs. popover …) with one deciding question, names indicators, rating widgets, share icons and screen transitions, and, when an AI draws the screen, replaces "make it pretty" with a style name plus the accessibility criteria that style breaks first. It runs a handoff checklist for missing states and copy.
+- **What it does** — pins down names people mix up (toast vs. snackbar, dialog vs. bottom sheet) so design, engineering and agents call the same thing by the same name, writes icon-only buttons known by their shape (hamburger, kebab, meatball) by function and accessible name, picks between 18 look-alike pairs (switch vs. checkbox, menu vs. select, tooltip vs. popover …) with one deciding question, names indicators, rating widgets, share icons, screen transitions, page layouts, date pickers, first-run screens, button states, text effects and gestures, looks a name up from a description ("the panel that slides up from the bottom"), rewrites vague requests ("add a loader") as instructions with a name, a condition and a duration, and, when an AI draws the screen, replaces "make it pretty" with a style name plus the accessibility criteria that style breaks first. It runs a handoff checklist for missing states and copy.
 - **Alias** — `@ux spec`
 
 ### ux-writing
@@ -224,7 +224,7 @@ Given a domain, links and a planning doc, it opens every source and tags it with
 </picture>
 
 - **When** — "Polish these error messages", "Every button says OK, what should each say?", "Review our English UI copy"
-- **What it does** — writes errors, buttons, empty states, notifications, confirmation dialogs, permission requests and form labels by Korean and English rules, and builds a glossary so one thing keeps one name.
+- **What it does** — writes errors, buttons, empty states, notifications, confirmation dialogs, permission requests and form labels by Korean and English rules, and builds a glossary so one thing keeps one name. It also finds Korean words that read fine but that people rarely use at work (a literary verb where a plain business term is the norm) with a word list and a bundled script, and replaces them.
 - **Aliases** — `@ux write` · `@ux copy-review`
 
 ### ux-review
@@ -304,13 +304,14 @@ Given a domain, links and a planning doc, it opens every source and tags it with
 | List the screens and edge cases from sign-up to first order                                       | `ux-flow`          |
 | Spec just the payment-method screen: components, states and copy by region                        | `ux-spec`          |
 | Every button says OK, decide what each screen's button should say                                 | `ux-writing`       |
+| The Korean UI copy has literary words people don't use at work; replace them with plain ones      | `ux-writing`       |
 | Delete only shows a toast that disappears; should we add Undo or a confirmation dialog?           | `ux-review`        |
 | Can a screen-reader user get through checkout? Check contrast and focus order                     | `ux-a11y`          |
 | The cancel button sits small at the bottom of My Page, is that a dark pattern?                    | `ux-dark-patterns` |
 | Set metrics and guardrails to tell whether the onboarding revamp worked                           | `ux-metrics`       |
 | What confirmation should an AI agent show before sending an email for me?                         | `ux-ai`            |
 
-All 56 request–skill pairs live in [`evals/cases.json`](evals/cases.json). Requests that are easy to confuse with a neighboring skill carry `shouldNotFire`, which pins the boundary.
+All 58 request–skill pairs live in [`evals/cases.json`](evals/cases.json). Requests that are easy to confuse with a neighboring skill carry `shouldNotFire`, which pins the boundary.
 
 ## Install
 
@@ -370,7 +371,7 @@ Verdicts rest on published standards; each skill's `references/` opens with its 
 npm test
 ```
 
-Checks skill structure and size, required section order, hard-gate numbering, relative links, chaining targets, trigger cases, the README skill list, manifest versions, and secrets, absolute paths and tool-attribution lines, then runs the script tests. No dependencies to install. The rules for adding or changing a skill are in [CONTRIBUTING.md](CONTRIBUTING.md) (Korean).
+Checks skill structure and size, required section order, hard-gate numbering, relative links, chaining targets, trigger cases, the README skill list, manifest versions, and secrets, absolute paths and tool-attribution lines, then runs the script tests. The tests also fail if a repository document contains an error-level word from the word list. No dependencies to install. The rules for adding or changing a skill are in [CONTRIBUTING.md](CONTRIBUTING.md) (Korean).
 
 The README GIFs are rendered from the deterministic scenes in [`demos/`](demos/); edit a scene and re-render with the same command.
 

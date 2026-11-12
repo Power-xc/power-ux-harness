@@ -1,6 +1,6 @@
 # 광고와 콘텐츠의 구분 표시
 
-출처: 공정거래위원회「추천·보증 등에 관한 표시·광고 심사지침」(2020-09-01 시행 개정)·「표시·광고의 공정화에 관한 법률」 제3조(기만적인 표시·광고), 미국 FTC「Guides Concerning the Use of Endorsements and Testimonials in Advertising」(16 CFR Part 255, 2023 개정)·「Enforcement Policy Statement on Deceptively Formatted Advertisements」(2015), EU 불공정거래관행지침(2005/29/EC) 부속서 I 11번(대가를 받은 편집 콘텐츠). 원문 문장을 옮기지 않고 요약했다.
+출처: 공정거래위원회「추천·보증 등에 관한 표시·광고 심사지침」(2020-09-01 시행 개정)·「표시·광고의 공정화에 관한 법률」 제3조(기만적인 표시·광고), 미국 FTC「Guides Concerning the Use of Endorsements and Testimonials in Advertising」(16 CFR Part 255, 2023 개정)·「Enforcement Policy Statement on Deceptively Formatted Advertisements」(2015), EU 불공정거래관행지침(2005/29/EC) 부속서 I 11번(대가를 받은 편집 콘텐츠). 원문 문장을 복사하지 않고 요약했다.
 
 광고·협찬·추천으로 버는 서비스에서 사용자가 광고를 일반 콘텐츠로 믿게 되면 기만이다. 대가 관계를 숨긴 광고는 P1이다.
 

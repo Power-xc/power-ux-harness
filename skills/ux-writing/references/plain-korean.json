@@ -1,0 +1,2189 @@
+{
+  "version": 1,
+  "entries": [
+    {
+      "id": "ko-A-kkurida",
+      "category": "A",
+      "avoid": "꾸리다 (팀을 꾸려)",
+      "match": "(?<![가-힣])(?:꾸리|꾸려|꾸린|꾸릴|꾸렸)",
+      "suggest": ["구성하다", "만들다", "준비하다"],
+      "fix": "swap",
+      "level": "error",
+      "except": "짐·살림처럼 실제로 싸서 묶는 일",
+      "examples": {
+        "bad": ["팀을 꾸려 일을 나눈다"],
+        "ok": ["꾸러미 목록을 확인한다"]
+      }
+    },
+    {
+      "id": "ko-A-topabo",
+      "category": "A",
+      "avoid": "톺아보다",
+      "match": "(?<![가-힣])(?:톺아)",
+      "suggest": ["자세히 살펴보다", "분석하다"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "개발 블로그 제목 관용 「~ 톺아보기」. 화면·실무 문서에는 쓰지 않는다",
+      "examples": {
+        "bad": ["요구 사항을 톺아본다"],
+        "ok": ["톱니바퀴 아이콘을 쓴다"]
+      }
+    },
+    {
+      "id": "ko-A-galmuri",
+      "category": "A",
+      "avoid": "갈무리하다",
+      "match": "(?<![가-힣])(?:갈무리)",
+      "suggest": ["정리하다", "마무리하다", "저장하다"],
+      "fix": "swap",
+      "level": "error",
+      "except": "공공기관이 다듬은 말 「화면 갈무리」를 요구할 때",
+      "examples": {
+        "bad": ["회의 내용을 갈무리한다"],
+        "ok": ["갈매기 모양 아이콘을 쓴다"]
+      }
+    },
+    {
+      "id": "ko-A-byeorida",
+      "category": "A",
+      "avoid": "벼리다",
+      "match": "(?<![가-힣])(?:벼리|벼려|벼린|벼릴|벼렸)",
+      "suggest": ["다듬다", "강화하다", "개선하다"],
+      "fix": "swap",
+      "level": "error",
+      "except": "칼·연장을 실제로 벼릴 때",
+      "examples": {
+        "bad": ["검증 기준을 벼려 둔다"],
+        "ok": ["벼랑 끝 경고 문구를 줄인다"]
+      }
+    },
+    {
+      "id": "ko-A-aureuda",
+      "category": "A",
+      "avoid": "아우르다",
+      "match": "(?<![가-힣])(?:아우르|아우른|아우를|아울렀)",
+      "suggest": ["포함하다", "함께 다루다"],
+      "fix": "swap",
+      "level": "error",
+      "except": "문학·인용. 접속 부사 「아울러」는 대상이 아니다",
+      "examples": {
+        "bad": ["세 화면을 아우르는 규칙을 둔다"],
+        "ok": ["아울러 로그도 확인한다"]
+      }
+    },
+    {
+      "id": "ko-A-nokyeonaeda",
+      "category": "A",
+      "avoid": "녹여 내다",
+      "match": "(?<![가-힣])(?:녹여\\s*(?:내|낸|낼|냈|넣))",
+      "suggest": ["반영하다", "넣다"],
+      "fix": "swap",
+      "level": "error",
+      "except": "물질을 실제로 녹일 때",
+      "examples": {
+        "bad": ["현장 경험을 녹여 낸 화면이다"],
+        "ok": ["치즈를 녹여 먹는 순서를 적는다"]
+      }
+    },
+    {
+      "id": "ko-A-damanaeda",
+      "category": "A",
+      "avoid": "담아내다",
+      "match": "(?<![가-힣])(?:담아\\s*(?:내|낸|낼|냈))",
+      "suggest": ["담다", "넣다", "보여 주다"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "사진·영상 비평",
+      "examples": {
+        "bad": ["사용자 의도를 담아낸 문구다"],
+        "ok": ["목록에 담아 둔 항목을 지운다"]
+      }
+    },
+    {
+      "id": "ko-A-pureonaeda",
+      "category": "A",
+      "avoid": "풀어내다",
+      "match": "(?<![가-힣])(?:풀어\\s*(?:내|낸|낼|냈))",
+      "suggest": ["설명하다", "해결하다"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "인터뷰·서사의 「이야기를 풀어내다」",
+      "examples": {
+        "bad": ["복잡한 흐름을 풀어낸다"],
+        "ok": ["매듭을 풀어 준다는 안내는 아니다"]
+      }
+    },
+    {
+      "id": "ko-A-ilguda",
+      "category": "A",
+      "avoid": "일구다·일궈 내다",
+      "match": "(?<![가-힣])(?:일구(?:다|는|며|고|면)|일궈|일군|일굴|일궜)",
+      "suggest": ["만들다", "이루다"],
+      "fix": "swap",
+      "level": "error",
+      "except": "밭을 일구다",
+      "examples": {
+        "bad": ["새 시장을 일구는 계획이다"],
+        "ok": ["일관성 점검 결과를 적는다"]
+      }
+    },
+    {
+      "id": "ko-A-bicheonaeda",
+      "category": "A",
+      "avoid": "빚어내다",
+      "match": "(?<![가-힣])(?:빚어\\s*(?:내|낸|낼|냈))",
+      "suggest": ["만들다", "일으키다"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "관용 「갈등·혼선을 빚다」",
+      "examples": {
+        "bad": ["오류를 빚어내는 조건이다"],
+        "ok": ["빚을 갚는 일정을 적는다"]
+      }
+    },
+    {
+      "id": "ko-A-yeokkeonaeda",
+      "category": "A",
+      "avoid": "엮어 내다",
+      "match": "(?<![가-힣])(?:엮어\\s*(?:내|낸|낼|냈))",
+      "suggest": ["묶다", "연결하다"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "「책을 엮다」(편찬)",
+      "examples": {
+        "bad": ["세 기능을 엮어 낸다"],
+        "ok": ["엮는 방식은 문서에 있다"]
+      }
+    },
+    {
+      "id": "ko-A-geodeunnada",
+      "category": "A",
+      "avoid": "거듭나다",
+      "match": "(?<![가-힣])(?:거듭나|거듭난|거듭날|거듭났)",
+      "suggest": ["바뀌다", "새로 만들다"],
+      "fix": "swap",
+      "level": "error",
+      "except": "종교 문맥",
+      "examples": {
+        "bad": ["화면이 새롭게 거듭난다"],
+        "ok": ["거듭제곱 계산을 확인한다"]
+      }
+    },
+    {
+      "id": "ko-A-baldotum",
+      "category": "A",
+      "avoid": "발돋움하다·도약하다",
+      "match": "(?<![가-힣])(?:발돋움|도약)",
+      "suggest": ["성장하다", "~가 되다(근거와 함께)"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "보도자료 관용, 체육",
+      "examples": {
+        "bad": ["선두로 도약한다"],
+        "ok": ["도입 약관을 확인한다"]
+      }
+    },
+    {
+      "id": "ko-A-talbakkum",
+      "category": "A",
+      "avoid": "탈바꿈하다",
+      "match": "(?<![가-힣])(?:탈바꿈)",
+      "suggest": ["바뀌다", "개편하다"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "곤충의 변태",
+      "examples": {
+        "bad": ["메뉴가 새 구조로 탈바꿈한다"],
+        "ok": ["탈퇴 버튼을 아래에 둔다"]
+      }
+    },
+    {
+      "id": "ko-A-sunota",
+      "category": "A",
+      "avoid": "수놓다",
+      "match": "(?<![가-힣])(?:수놓)",
+      "suggest": ["채우다", "지움"],
+      "fix": "swap",
+      "level": "error",
+      "except": "자수",
+      "examples": {
+        "bad": ["화면을 아이콘으로 수놓는다"],
+        "ok": ["수납장 문을 닫는 동작을 그린다"]
+      }
+    },
+    {
+      "id": "ko-A-arosaegida",
+      "category": "A",
+      "avoid": "아로새기다",
+      "match": "(?<![가-힣])(?:아로새기|아로새겨|아로새긴|아로새길|아로새겼|마음에\\s*새기|마음에\\s*새겨|마음에\\s*새긴)",
+      "suggest": ["기억하다", "기록하다"],
+      "fix": "swap",
+      "level": "error",
+      "except": "각인·조각",
+      "examples": {
+        "bad": ["사용자 말을 마음에 새긴다"],
+        "ok": ["아로마 향 설정을 끈다"]
+      }
+    },
+    {
+      "id": "ko-A-gopssipda",
+      "category": "A",
+      "avoid": "곱씹다",
+      "match": "(?<![가-힣])(?:곱씹)",
+      "suggest": ["다시 검토하다"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "에세이",
+      "examples": {
+        "bad": ["지난 결정을 곱씹는다"],
+        "ok": ["곱셈 결과를 표시한다"]
+      }
+    },
+    {
+      "id": "ko-A-doejipda",
+      "category": "A",
+      "avoid": "되짚다",
+      "match": "(?<![가-힣])(?:되짚)",
+      "suggest": ["다시 확인하다"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "회의록 「지난 논의를 되짚다」",
+      "examples": {
+        "bad": ["지난 논의를 되짚는다"],
+        "ok": ["되돌리기 버튼을 누른다"]
+      }
+    },
+    {
+      "id": "ko-A-gyeonjuda",
+      "category": "A",
+      "avoid": "견주다",
+      "match": "(?<![가-힣])(?:견주(?:다|어|는|며|고|면|니)|견줄|견준|견줘|견주었)",
+      "suggest": ["비교하다"],
+      "fix": "swap",
+      "level": "error",
+      "except": "관용 「어깨를 견주다」",
+      "examples": {
+        "bad": ["두 안을 견줘 본다"],
+        "ok": ["견본 화면을 비교한다"]
+      }
+    },
+    {
+      "id": "ko-A-ganeumhada",
+      "category": "A",
+      "avoid": "가늠하다",
+      "match": "(?<![가-힣])(?:가늠)",
+      "suggest": ["추정하다", "판단하다"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "일상 대화",
+      "examples": {
+        "bad": ["규모를 가늠한다"],
+        "ok": ["가능한 값을 고른다"]
+      }
+    },
+    {
+      "id": "ko-A-churida",
+      "category": "A",
+      "avoid": "추리다",
+      "match": "(?<![가-힣])(?:추리(?:다|어|는|고|면)|추려|추린|추릴|추렸)",
+      "suggest": ["고르다", "선별하다"],
+      "fix": "swap",
+      "level": "info",
+      "except": "구어 「몇 개만 추려」",
+      "examples": {
+        "bad": ["후보를 세 개로 추린다"],
+        "ok": ["추리 소설 카드를 만든다"]
+      }
+    },
+    {
+      "id": "ko-A-sogaaenaeda",
+      "category": "A",
+      "avoid": "솎아 내다",
+      "match": "(?<![가-힣])(?:솎아)",
+      "suggest": ["제외하다", "걸러 내다"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "농사",
+      "examples": {
+        "bad": ["낮은 점수 항목을 솎아 낸다"],
+        "ok": ["속도 제한을 건다"]
+      }
+    },
+    {
+      "id": "ko-A-hearida",
+      "category": "A",
+      "avoid": "헤아리다",
+      "match": "(?<![가-힣])(?:헤아리|헤아려|헤아린|헤아릴|헤아렸)",
+      "suggest": ["고려하다", "이해하다"],
+      "fix": "swap",
+      "level": "info",
+      "except": "감정을 헤아리다",
+      "examples": {
+        "bad": ["사용자 처지를 헤아려 쓴다"],
+        "ok": ["헤더 영역을 고정한다"]
+      }
+    },
+    {
+      "id": "ko-A-ilkeotda",
+      "category": "A",
+      "avoid": "일컫다",
+      "match": "(?<![가-힣])(?:일컫|일컬)",
+      "suggest": ["부르다", "뜻하다"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "용어 정의 문장",
+      "examples": {
+        "bad": ["이를 요약 카드라 일컫는다"],
+        "ok": ["일괄 처리 결과를 본다"]
+      }
+    },
+    {
+      "id": "ko-A-jotda",
+      "category": "A",
+      "avoid": "좇다",
+      "match": "(?<![가-힣])(?:좇(?:다|아|는|고|으|을|은))",
+      "suggest": ["따르다"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "「꿈을 좇다」",
+      "examples": {
+        "bad": ["지표만 좇는 설계다"],
+        "ok": ["좋은 예와 나쁜 예를 나란히 둔다"]
+      }
+    },
+    {
+      "id": "ko-A-maemanjida",
+      "category": "A",
+      "avoid": "매만지다",
+      "match": "(?<![가-힣])(?:매만지|매만져|매만진|매만질|매만졌)",
+      "suggest": ["수정하다", "다듬다"],
+      "fix": "swap",
+      "level": "error",
+      "except": "머리를 매만지다",
+      "examples": {
+        "bad": ["문장을 매만진다"],
+        "ok": ["매트릭스 열을 맞춘다"]
+      }
+    },
+    {
+      "id": "ko-A-sonboda",
+      "category": "A",
+      "avoid": "손보다",
+      "match": "(?<![가-힣])(?:손보(?:다|아|는|고|면)|손봐|손본|손볼|손봤|손봅)",
+      "suggest": ["수정하다"],
+      "fix": "swap",
+      "level": "info",
+      "except": "구어 지시 「좀 손봐 줘」",
+      "examples": {
+        "bad": ["오류 문구를 손본다"],
+        "ok": ["손잡이 모양 아이콘을 쓴다"]
+      }
+    },
+    {
+      "id": "ko-A-barojapda",
+      "category": "A",
+      "avoid": "바로잡다",
+      "match": "(?<![가-힣])(?:바로잡)",
+      "suggest": ["수정하다", "정정하다"],
+      "fix": "swap",
+      "level": "info",
+      "except": "정정 공지 「바로잡습니다」, 「오해를 바로잡다」",
+      "examples": {
+        "bad": ["표기를 바로잡는다"],
+        "ok": ["바로가기 링크를 연다"]
+      }
+    },
+    {
+      "id": "ko-A-seda",
+      "category": "A",
+      "avoid": "세다 (집계: 센다·셉니다)",
+      "match": "(?<![가-힣])(?:센다|셉니다|셌다|세어\\s*(?:본|보|줄|주))",
+      "suggest": ["집계하다", "계산하다"],
+      "fix": "swap",
+      "level": "info",
+      "except": "일상 대화, 지시형 「세어 주세요」",
+      "examples": {
+        "bad": ["호출 횟수를 센다"],
+        "ok": ["센서 값을 읽는다"]
+      }
+    },
+    {
+      "id": "ko-A-dajida",
+      "category": "A",
+      "avoid": "다지다 (기반을 다지다)",
+      "match": "(?<![가-힣])(?:(?:기반|기초|기틀|입지|내실)(?:을|를)?\\s*다(?:지|져|진|질|졌))",
+      "suggest": ["마련하다", "강화하다"],
+      "fix": "swap",
+      "level": "info",
+      "except": "보도 관용, 요리·땅",
+      "examples": {
+        "bad": ["성장 기반을 다진다"],
+        "ok": ["마늘을 다져 넣는다"]
+      }
+    },
+    {
+      "id": "ko-A-ssaktiuda",
+      "category": "A",
+      "avoid": "싹틔우다·꽃피우다",
+      "match": "싹(?:을\\s*)?(?:틔|트[다는고며])|꽃피우|꽃을\\s*피우",
+      "suggest": ["시작하다", "활성화하다"],
+      "fix": "swap",
+      "level": "error",
+      "except": "원예",
+      "examples": {
+        "bad": ["새 서비스의 싹을 틔운다"],
+        "ok": ["싹둑 잘라 낸 목록을 복원한다"]
+      }
+    },
+    {
+      "id": "ko-A-ppurinaerida",
+      "category": "A",
+      "avoid": "뿌리내리다",
+      "match": "뿌리(?:를)?\\s*내(?:리|려|린|릴|렸)",
+      "suggest": ["자리 잡다", "정착하다"],
+      "fix": "swap",
+      "level": "error",
+      "except": "식물",
+      "examples": {
+        "bad": ["새 방식이 팀에 뿌리내린다"],
+        "ok": ["뿌리 폴더 경로를 적는다"]
+      }
+    },
+    {
+      "id": "ko-A-umkyeojwida",
+      "category": "A",
+      "avoid": "움켜쥐다·주도권을 쥐다",
+      "match": "움켜|주도권을?\\s*쥐|주도권을?\\s*쥔",
+      "suggest": ["확보하다", "가지다"],
+      "fix": "swap",
+      "level": "error",
+      "except": "손동작",
+      "examples": {
+        "bad": ["점유율을 움켜쥔다"],
+        "ok": ["주도권은 팀 리더에게 있다"]
+      }
+    },
+    {
+      "id": "ko-A-jitnureuda",
+      "category": "A",
+      "avoid": "짓누르다",
+      "match": "(?<![가-힣])(?:짓누르|짓눌|짓눌러|짓누른)",
+      "suggest": ["부담이 크다"],
+      "fix": "swap",
+      "level": "error",
+      "except": "물리적 압박",
+      "examples": {
+        "bad": ["업무량이 팀을 짓누른다"],
+        "ok": ["짓궂은 질문을 막는다"]
+      }
+    },
+    {
+      "id": "ko-A-jamsik",
+      "category": "A",
+      "avoid": "잠식하다",
+      "match": "(?<![가-힣])(?:잠식)",
+      "suggest": ["점유율을 뺏다", "줄이다"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "회계 용어 「자본 잠식」, 의학 용어",
+      "examples": {
+        "bad": ["경쟁사가 시장을 잠식한다"],
+        "ok": ["잠시 멈춘다"]
+      }
+    },
+    {
+      "id": "ko-A-matdat",
+      "category": "A",
+      "avoid": "맞닿다 (~와 맞닿아 있다)",
+      "match": "(?<![가-힣])(?:맞닿)",
+      "suggest": ["관련 있다", "이어지다"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "화면 요소나 물체가 실제로 붙어 있을 때",
+      "examples": {
+        "bad": ["목표와 맞닿아 있다"],
+        "ok": ["맞는 항목을 고른다"]
+      }
+    },
+    {
+      "id": "ko-A-eourojida",
+      "category": "A",
+      "avoid": "어우러지다",
+      "match": "(?<![가-힣])(?:어우러)",
+      "suggest": ["잘 맞다", "함께 쓰다"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "음식·음악 리뷰",
+      "examples": {
+        "bad": ["색과 글꼴이 어우러진다"],
+        "ok": ["어울리는 색을 고른다"]
+      }
+    },
+    {
+      "id": "ko-A-pumda",
+      "category": "A",
+      "avoid": "품다 (가능성을 품다)",
+      "match": "(?:가능성|잠재력|의미|가치|꿈|뜻)(?:을|를)\\s*품",
+      "suggest": ["있다"],
+      "fix": "swap",
+      "level": "error",
+      "except": "껴안다",
+      "examples": {
+        "bad": ["성장 가능성을 품고 있다"],
+        "ok": ["품목 가치를 평가한다"]
+      }
+    },
+    {
+      "id": "ko-A-gitdeulda",
+      "category": "A",
+      "avoid": "깃들다",
+      "match": "(?<![가-힣])(?:깃(?:들|든|드))",
+      "suggest": ["담기다", "있다"],
+      "fix": "swap",
+      "level": "error",
+      "except": "문학",
+      "examples": {
+        "bad": ["설계 의도가 깃들어 있다"],
+        "ok": ["깃발 아이콘을 쓴다"]
+      }
+    },
+    {
+      "id": "ko-A-jaanaeda",
+      "category": "A",
+      "avoid": "자아내다",
+      "match": "(?<![가-힣])(?:자아\\s*(?:내|낸|낼|냈))",
+      "suggest": ["일으키다"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "관용 「웃음을 자아내다」",
+      "examples": {
+        "bad": ["혼란을 자아낸다"],
+        "ok": ["자동 완성을 켠다"]
+      }
+    },
+    {
+      "id": "ko-A-maedipjitda",
+      "category": "A",
+      "avoid": "매듭짓다",
+      "match": "매듭(?:을)?\\s*(?:짓|지)",
+      "suggest": ["마무리하다", "확정하다"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "협상 보도",
+      "examples": {
+        "bad": ["논의를 매듭짓는다"],
+        "ok": ["매듭 모양 아이콘을 쓴다"]
+      }
+    },
+    {
+      "id": "ko-B-jipda",
+      "category": "B",
+      "avoid": "짚다 (사본별로 짚는다)",
+      "match": "(?<![가-힣])(?:짚(?:는|고|어|은|을|으|었|습|겠|다))",
+      "suggest": ["표시하다", "지정하다", "가리키다"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "관용 「핵심 쟁점을 짚다」",
+      "examples": {
+        "bad": ["사본별로 짚는다"],
+        "ok": ["짚단 아이콘을 쓴다"]
+      }
+    },
+    {
+      "id": "ko-B-gareuda",
+      "category": "B",
+      "avoid": "가르다 (자격을 가르는 질문)",
+      "match": "(?<![가-힣])(?:가르(?:는|고|며|면|다)|가른|가를|갈랐)",
+      "suggest": ["구분하다", "결정하다"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "「승패를 가르다」",
+      "examples": {
+        "bad": ["자격을 가르는 질문을 둔다"],
+        "ok": ["수학을 가르치는 교사를 찾는다"]
+      }
+    },
+    {
+      "id": "ko-B-omgida",
+      "category": "B",
+      "avoid": "옮기다 (기준을 ~에 옮긴다)",
+      "match": "(?<![가-힣])옮(?:기|겨(?!\\s*적)|긴|길|겼|김|깁)",
+      "suggest": ["반영하다", "추가하다", "적용하다", "이식하다"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "파일·데이터의 실제 이동, 번역 「영어로 옮기다」, 「옮겨 적기」",
+      "examples": {
+        "bad": ["기준을 새 문서에 옮긴다"],
+        "ok": ["옳은 값을 고른다", "인증번호를 옮겨 적는다"]
+      }
+    },
+    {
+      "id": "ko-B-jamgeuda",
+      "category": "B",
+      "avoid": "잠그다 (기준선으로 잠가)",
+      "match": "(?<![가-힣])(?:잠(?:그|가|근|글|갔))",
+      "suggest": ["고정하다"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "실제 잠금 기능(계정 잠금·lockfile)",
+      "examples": {
+        "bad": ["부채를 기준선으로 잠가 둔다"],
+        "ok": ["계정 잠금 기능을 켠다"]
+      }
+    },
+    {
+      "id": "ko-B-deureonaeda",
+      "category": "B",
+      "avoid": "드러내다",
+      "match": "(?<![가-힣])(?:드러(?:내|낸|낼|냈|나|난|날|났))",
+      "suggest": ["보여 주다", "표시하다", "찾아내다"],
+      "fix": "swap",
+      "level": "info",
+      "except": "「문제가 드러나다」(발견) 보도 관용",
+      "examples": {
+        "bad": ["겹치는 영역을 드러낸다"],
+        "ok": ["드롭다운 목록을 닫는다"]
+      }
+    },
+    {
+      "id": "ko-B-geoteonaeda",
+      "category": "B",
+      "avoid": "걷어 내다",
+      "match": "(?<![가-힣])(?:걷어\\s*(?:내|낸|낼|냈))",
+      "suggest": ["삭제하다", "제거하다"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "이불·커튼",
+      "examples": {
+        "bad": ["표식을 걷어 낸다"],
+        "ok": ["걷기 기록을 저장한다"]
+      }
+    },
+    {
+      "id": "ko-B-deoreonaeda",
+      "category": "B",
+      "avoid": "덜어 내다",
+      "match": "(?<![가-힣])(?:덜어\\s*(?:내|낸|낼|냈))",
+      "suggest": ["줄이다", "빼다"],
+      "fix": "swap",
+      "level": "info",
+      "except": "정착한 원칙 이름",
+      "examples": {
+        "bad": ["중복 문장을 덜어 낸다"],
+        "ok": ["덜 중요한 항목을 접는다"]
+      }
+    },
+    {
+      "id": "ko-B-deurida",
+      "category": "B",
+      "avoid": "들이다 (생성기를 들였다)",
+      "match": "(?<![가-힣])(?:들였|들인|들일)",
+      "suggest": ["추가했다", "도입했다"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "「시간·비용을 들이다」",
+      "examples": {
+        "bad": ["생성기를 들였다"],
+        "ok": ["들여쓰기를 맞춘다"]
+      }
+    },
+    {
+      "id": "ko-B-ttaragada",
+      "category": "B",
+      "avoid": "따라가다 (템플릿이 따라간다)",
+      "match": "(?<![가-힣])(?:따라(?:가|간|갈|갔))",
+      "suggest": ["반영된다", "함께 바뀐다"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "실제 이동",
+      "examples": {
+        "bad": ["변경이 템플릿에도 따라간다"],
+        "ok": ["따라서 결과를 정리한다"]
+      }
+    },
+    {
+      "id": "ko-B-guthida",
+      "category": "B",
+      "avoid": "굳히다",
+      "match": "(?<![가-힣])(?:굳히|굳혀|굳힌|굳힐|굳혔)",
+      "suggest": ["확정하다"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "「입지를 굳히다」",
+      "examples": {
+        "bad": ["방향을 굳힌다"],
+        "ok": ["굳은 표정 사진을 쓴다"]
+      }
+    },
+    {
+      "id": "ko-B-gyeoteurida",
+      "category": "B",
+      "avoid": "곁들이다",
+      "match": "(?<![가-힣])(?:곁들이|곁들여|곁들인|곁들일)",
+      "suggest": ["함께 제공하다", "추가하다"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "음식",
+      "examples": {
+        "bad": ["설명에 예시를 곁들인다"],
+        "ok": ["곁에 있는 버튼을 누른다"]
+      }
+    },
+    {
+      "id": "ko-B-matmulida",
+      "category": "B",
+      "avoid": "맞물리다",
+      "match": "(?<![가-힣])(?:맞물)",
+      "suggest": ["연동되다"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "톱니, 아이콘 모양 묘사",
+      "examples": {
+        "bad": ["두 단계가 맞물린다"],
+        "ok": ["맞춤 설정을 연다"]
+      }
+    },
+    {
+      "id": "ko-B-namgida",
+      "category": "B",
+      "avoid": "남기다 (근거를 남긴다)",
+      "match": "(?:근거|이유|증거|흔적)(?:를|을)\\s*남",
+      "suggest": ["기록하다", "적다"],
+      "fix": "swap",
+      "level": "info",
+      "except": "일상 표현으로 흔함",
+      "examples": {
+        "bad": ["근거를 남긴다"],
+        "ok": ["남은 근거는 표에 적었다"]
+      }
+    },
+    {
+      "id": "ko-C-jatdae",
+      "category": "C",
+      "avoid": "잣대",
+      "match": "잣대",
+      "suggest": ["기준"],
+      "fix": "swap",
+      "level": "error",
+      "except": "실제 자(측정 도구). 관용 「이중 잣대」도 「이중 기준」으로 바꾼다",
+      "examples": {
+        "bad": ["같은 잣대로 평가한다"],
+        "ok": ["잣나무 합판 규격을 확인한다"]
+      }
+    },
+    {
+      "id": "ko-C-gilja",
+      "category": "C",
+      "avoid": "길잡이·길라잡이",
+      "match": "(?<![가-힣])(?:길라잡이|길잡이)",
+      "suggest": ["안내", "안내서", "가이드"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "고유 제목, 번역 범주명",
+      "examples": {
+        "bad": ["시작 길잡이를 둔다"],
+        "ok": ["길이 제한을 확인한다"]
+      }
+    },
+    {
+      "id": "ko-C-mitgeoreum",
+      "category": "C",
+      "avoid": "밑거름",
+      "match": "(?<![가-힣])(?:밑거름)",
+      "suggest": ["바탕", "기반(구체 사실로)"],
+      "fix": "swap",
+      "level": "error",
+      "except": "비료, 축사·인사말",
+      "examples": {
+        "bad": ["이번 실험이 다음 단계의 밑거름이다"],
+        "ok": ["밑줄 스타일을 바꾼다"]
+      }
+    },
+    {
+      "id": "ko-C-didimdol",
+      "category": "C",
+      "avoid": "디딤돌",
+      "match": "(?<![가-힣])(?:디딤돌)",
+      "suggest": ["기반", "첫 단계"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "상품명 「디딤돌 대출」",
+      "examples": {
+        "bad": ["첫 화면이 디딤돌이 된다"],
+        "ok": ["디딤 시간을 측정한다"]
+      }
+    },
+    {
+      "id": "ko-C-chuseok",
+      "category": "C",
+      "avoid": "초석·주춧돌·토대",
+      "match": "(?<![가-힣])(?:초석|주춧돌|토대(?!로))",
+      "suggest": ["기반", "기초"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "건축, 과거 사실 서술. 「~을 토대로」는 대상이 아니다",
+      "examples": {
+        "bad": ["설계 원칙이 토대가 된다"],
+        "ok": ["초소형 카드를 쓴다", "조사 결과를 토대로 정한다"]
+      }
+    },
+    {
+      "id": "ko-C-cheongsajin",
+      "category": "C",
+      "avoid": "청사진",
+      "match": "(?<![가-힣])(?:청사진)",
+      "suggest": ["계획", "설계안", "로드맵"],
+      "fix": "swap",
+      "level": "error",
+      "except": "건축 도면",
+      "examples": {
+        "bad": ["서비스 청사진을 그린다"],
+        "ok": ["청소년 모드를 켠다"]
+      }
+    },
+    {
+      "id": "ko-C-majungmul",
+      "category": "C",
+      "avoid": "마중물",
+      "match": "(?<![가-힣])(?:마중물)",
+      "suggest": ["초기 투자", "계기"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "정책 보도 관용",
+      "examples": {
+        "bad": ["초기 지원이 마중물이다"],
+        "ok": ["마중 나갈 위치를 지정한다"]
+      }
+    },
+    {
+      "id": "ko-C-nachimban",
+      "category": "C",
+      "avoid": "나침반·등대",
+      "match": "(?<![가-힣])(?:나침반|등대)",
+      "suggest": ["기준", "안내"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "실물, 지도 앱의 나침반 기능",
+      "examples": {
+        "bad": ["원칙이 팀의 나침반이다"],
+        "ok": ["등록 대기 목록을 연다"]
+      }
+    },
+    {
+      "id": "ko-C-ijeongpyo",
+      "category": "C",
+      "avoid": "이정표",
+      "match": "(?<![가-힣])(?:이정표)",
+      "suggest": ["주요 단계", "달성 시점"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "도로 표지",
+      "examples": {
+        "bad": ["이정표를 세 개 둔다"],
+        "ok": ["이전 표를 복원한다"]
+      }
+    },
+    {
+      "id": "ko-C-sigeumseok",
+      "category": "C",
+      "avoid": "시금석",
+      "match": "(?<![가-힣])(?:시금석)",
+      "suggest": ["시험대", "판단 기준"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "보도",
+      "examples": {
+        "bad": ["이 사례가 시금석이다"],
+        "ok": ["시간 순서로 정렬한다"]
+      }
+    },
+    {
+      "id": "ko-C-yeojeong",
+      "category": "C",
+      "avoid": "여정",
+      "match": "(?<![가-힣])(?<!(?:사용자|이용자|고객|구매|유저)\\s?)여정(?!\\s?(?:지도|맵))",
+      "suggest": ["과정", "흐름", "단계"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "UX 용어 「사용자 여정」「고객 여정」「여정 지도」, 여행 일정",
+      "examples": {
+        "bad": ["서비스와 함께하는 여정을 시작한다"],
+        "ok": ["대여정책 문서를 연다", "사용자 여정 지도를 그린다", "여정 지도를 그린다"]
+      }
+    },
+    {
+      "id": "ko-C-gyeol",
+      "category": "C",
+      "avoid": "결 (같은 결)",
+      "match": "(?<![가-힣])결(?:이|을)?\\s*(?:같|다르|맞)|같은\\s*결(?:로|이|을|에|은|의)?(?![가-힣])",
+      "suggest": ["성격", "방향", "톤"],
+      "fix": "swap",
+      "level": "info",
+      "except": "나뭇결·머릿결. 구어에서 흔함",
+      "examples": {
+        "bad": ["같은 결로 쓴다"],
+        "ok": ["결과를 확인한다", "결제 결과를 표로 적는다"]
+      }
+    },
+    {
+      "id": "ko-C-hankkeut",
+      "category": "C",
+      "avoid": "한 끗 (차이)",
+      "match": "(?<![가-힣])(?:한\\s*끗)",
+      "suggest": ["작은 차이"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "브랜드가 정한 구어 카피",
+      "examples": {
+        "bad": ["한 끗 차이를 만든다"],
+        "ok": ["한 번에 끝낸다"]
+      }
+    },
+    {
+      "id": "ko-C-gallae",
+      "category": "C",
+      "avoid": "갈래",
+      "match": "(?<![가-힣])(?:갈래)",
+      "suggest": ["종류", "경우"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "분야 용어 「문학의 갈래」",
+      "examples": {
+        "bad": ["세 갈래로 나뉜다"],
+        "ok": ["갈라진 줄을 합친다"]
+      }
+    },
+    {
+      "id": "ko-C-chuk",
+      "category": "C",
+      "avoid": "축 (판단 축·세 축)",
+      "match": "(?:판단|평가|분석|설계|기준|비교|검증)\\s*축(?![소하적약제구])|(?<![가-힣])(?:[한두세네]|다섯)\\s+축(?=[을를이가은는의과와도에로]|으로|[\\s.,)]|$)",
+      "suggest": ["기준", "항목", "영역"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "그래프·기계·센서의 축(「3축 가속도」), 숫자로 쓴 정의어(「5축 가공」)",
+      "examples": {
+        "bad": ["세 축으로 평가한다", "판단 축을 정한다"],
+        "ok": ["3축 가속도 값을 읽는다", "5축 가공기를 쓴다", "구축한다"]
+      }
+    },
+    {
+      "id": "ko-C-cheungwi",
+      "category": "C",
+      "avoid": "층위",
+      "match": "(?<![가-힣])(?:층위)",
+      "suggest": ["수준", "단계"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "언어학·지질학 용어",
+      "examples": {
+        "bad": ["층위를 나눈다"],
+        "ok": ["층별 목록을 보여 준다"]
+      }
+    },
+    {
+      "id": "ko-C-gyeolsil",
+      "category": "C",
+      "avoid": "결실",
+      "match": "(?<![가-힣])(?:결실)",
+      "suggest": ["성과", "결과"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "농업",
+      "examples": {
+        "bad": ["작업이 결실을 맺는다"],
+        "ok": ["결제 실패를 기록한다"]
+      }
+    },
+    {
+      "id": "ko-C-ssiat",
+      "category": "C",
+      "avoid": "씨앗",
+      "match": "(?<![가-힣])(?:씨앗)",
+      "suggest": ["시작", "계기"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "농업, 기능 이름",
+      "examples": {
+        "bad": ["아이디어의 씨앗이 된다"],
+        "ok": ["씨름 기록을 정리한다"]
+      }
+    },
+    {
+      "id": "ko-C-teojeon",
+      "category": "C",
+      "avoid": "터전",
+      "match": "(?<![가-힣])(?:터전)",
+      "suggest": ["기반", "공간"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "「삶의 터전」 보도",
+      "examples": {
+        "bad": ["사용자의 터전을 지킨다"],
+        "ok": ["터치 영역을 넓힌다"]
+      }
+    },
+    {
+      "id": "ko-C-minnat",
+      "category": "C",
+      "avoid": "민낯",
+      "match": "(?<![가-힣])(?:민낯)",
+      "suggest": ["실태", "실제 상황"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "탐사 보도 제목",
+      "examples": {
+        "bad": ["서비스의 민낯을 본다"],
+        "ok": ["민감 정보를 가린다"]
+      }
+    },
+    {
+      "id": "ko-C-sumgyeol",
+      "category": "C",
+      "avoid": "숨결",
+      "match": "(?<![가-힣])(?:숨결)",
+      "suggest": ["지움"],
+      "fix": "rewrite",
+      "level": "error",
+      "except": "문학",
+      "examples": {
+        "bad": ["문장에 숨결을 불어넣는다"],
+        "ok": ["숨김 필드를 비운다"]
+      }
+    },
+    {
+      "id": "ko-C-peojeul",
+      "category": "C",
+      "avoid": "퍼즐 (마지막 조각)",
+      "match": "(?<![가-힣])(?:퍼즐)",
+      "suggest": ["남은 요소"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "실제 퍼즐, 인증 방식 설명",
+      "examples": {
+        "bad": ["마지막 퍼즐을 맞춘다"],
+        "ok": ["퍼센트로 표시한다"]
+      }
+    },
+    {
+      "id": "ko-C-yeolsoe",
+      "category": "C",
+      "avoid": "열쇠 (성공의 열쇠)",
+      "match": "(?:성공|핵심|비결)의\\s*열쇠|열쇠는",
+      "suggest": ["핵심 조건"],
+      "fix": "swap",
+      "level": "info",
+      "except": "실물",
+      "examples": {
+        "bad": ["속도가 성공의 열쇠다"],
+        "ok": ["열람 권한을 확인한다"]
+      }
+    },
+    {
+      "id": "ko-C-punggyeong",
+      "category": "C",
+      "avoid": "풍경·지형도 (추상)",
+      "match": "(?<![가-힣])(?:풍경|지형도)",
+      "suggest": ["현황", "시장 상황"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "실물, 「경쟁 지형」 보도",
+      "examples": {
+        "bad": ["경쟁 풍경을 그린다"],
+        "ok": ["풍선 도움말을 연다"]
+      }
+    },
+    {
+      "id": "ko-C-saengtaegye",
+      "category": "C",
+      "avoid": "생태계 (추상)",
+      "match": "(?<![가-힣])(?:생태계)",
+      "suggest": ["관련 서비스", "시장", "도구 모음"],
+      "fix": "swap",
+      "level": "info",
+      "except": "정착 용어 「npm 생태계」, 비교표 열 이름",
+      "examples": {
+        "bad": ["도구 생태계를 정리한다"],
+        "ok": ["생태 사진을 올린다"]
+      }
+    },
+    {
+      "id": "ko-C-dongnyeok",
+      "category": "C",
+      "avoid": "동력 (성장 동력)",
+      "match": "(?:성장|혁신|추진)\\s*동력|동력(?:이|을)\\s*(?:되|얻|잃|확보)",
+      "suggest": ["원인", "수단"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "기계·전기",
+      "examples": {
+        "bad": ["성장 동력이 된다"],
+        "ok": ["동기화 상태를 본다"]
+      }
+    },
+    {
+      "id": "ko-C-pando",
+      "category": "C",
+      "avoid": "판도",
+      "match": "(?<![가-힣])(?:판도)",
+      "suggest": ["시장 구도", "순위"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "보도",
+      "examples": {
+        "bad": ["시장 판도가 달라진다"],
+        "ok": ["판단 기준을 적는다"]
+      }
+    },
+    {
+      "id": "ko-C-sinho",
+      "category": "C",
+      "avoid": "적신호·신호탄",
+      "match": "(?<![가-힣])(?:적신호|신호탄)",
+      "suggest": ["위험이 커졌다", "시작"],
+      "fix": "swap",
+      "level": "error",
+      "except": "실제 신호 장치",
+      "examples": {
+        "bad": ["이탈률이 적신호를 켠다"],
+        "ok": ["신호 대기 상태를 표시한다"]
+      }
+    },
+    {
+      "id": "ko-C-silmaeri",
+      "category": "C",
+      "avoid": "실마리",
+      "match": "(?<![가-힣])(?:실마리)",
+      "suggest": ["단서", "해결 방법"],
+      "fix": "swap",
+      "level": "info",
+      "except": "디버깅·수사 문맥",
+      "examples": {
+        "bad": ["실마리를 찾는다"],
+        "ok": ["실무 용어를 쓴다"]
+      }
+    },
+    {
+      "id": "ko-C-cheotdanchu",
+      "category": "C",
+      "avoid": "첫 단추·첫걸음·첫발",
+      "match": "(?<![가-힣])(?:첫\\s*단추|첫걸음|첫발)",
+      "suggest": ["첫 단계", "시작"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "칼럼 관용",
+      "examples": {
+        "bad": ["첫걸음을 뗀다"],
+        "ok": ["첫 단계를 정의한다"]
+      }
+    },
+    {
+      "id": "ko-C-neomeo",
+      "category": "C",
+      "avoid": "너머 (그 너머)",
+      "match": "(?:그|이)\\s*너머|(?:한계|경계|기대|상상)\\s*너머",
+      "suggest": ["범위 밖", "그 이상"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "공간 「산 너머」",
+      "examples": {
+        "bad": ["그 너머의 기능은 다음에 둔다"],
+        "ok": ["고개 너머 마을은 눈이 쌓였다"]
+      }
+    },
+    {
+      "id": "ko-C-nalgeot",
+      "category": "C",
+      "avoid": "날것",
+      "match": "(?<![가-힣])(?:날것)",
+      "suggest": ["가공하지 않은", "원본"],
+      "fix": "swap",
+      "level": "info",
+      "except": "음식, 디자인 스타일 설명(raw)",
+      "examples": {
+        "bad": ["날것의 배치를 보여 준다"],
+        "ok": ["날짜 선택 칸을 둔다"]
+      }
+    },
+    {
+      "id": "ko-C-biteum",
+      "category": "C",
+      "avoid": "빈틈 (기준의 빈틈)",
+      "match": "(?<![가-힣])(?:빈틈)",
+      "suggest": ["누락", "빠진 항목"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "물리적 틈",
+      "examples": {
+        "bad": ["기준의 빈틈을 메운다"],
+        "ok": ["빈 상태 화면을 둔다"]
+      }
+    },
+    {
+      "id": "ko-C-eolgae",
+      "category": "C",
+      "avoid": "얼개·밑그림",
+      "match": "(?<![가-힣])(?:얼개|밑그림)",
+      "suggest": ["구조", "초안"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "미술",
+      "examples": {
+        "bad": ["글의 얼개를 짠다"],
+        "ok": ["얼굴 사진을 지운다"]
+      }
+    },
+    {
+      "id": "ko-C-chaebi",
+      "category": "C",
+      "avoid": "채비",
+      "match": "(?<![가-힣])(?:채비)",
+      "suggest": ["준비"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "구어",
+      "examples": {
+        "bad": ["출시 채비를 한다"],
+        "ok": ["채널 비교표를 만든다"]
+      }
+    },
+    {
+      "id": "ko-D-balpan",
+      "category": "D",
+      "avoid": "발판 삼아, 발판·토대·교두보를 마련하다",
+      "match": "발판\\s*삼|(?:발판|토대|교두보)(?:을|를)\\s*마련",
+      "suggest": ["~을 바탕으로", "~할 수 있게 된다"],
+      "fix": "rewrite",
+      "level": "warn",
+      "except": "과거 사실, 실물 발판. 「기반을 마련」「길을 열다」는 대상이 아니다",
+      "examples": {
+        "bad": ["이번 개편을 발판 삼아 확장한다"],
+        "ok": ["기반을 마련하고 문을 연다"]
+      }
+    },
+    {
+      "id": "ko-D-jipyeong",
+      "category": "D",
+      "avoid": "지평을 열다·새 장을 열다·한 획을 긋다",
+      "match": "지평을\\s*(?:열|여|넓)|새\\s*장을\\s*(?:열|여)|한\\s*획을\\s*긋",
+      "suggest": ["처음으로 ~하다(사실로)"],
+      "fix": "rewrite",
+      "level": "error",
+      "except": "인용",
+      "examples": {
+        "bad": ["새 지평을 여는 기능이다"],
+        "ok": ["문을 열면 목록이 보인다"]
+      }
+    },
+    {
+      "id": "ko-D-mulkko",
+      "category": "D",
+      "avoid": "물꼬를 트다",
+      "match": "(?<![가-힣])(?:물꼬)",
+      "suggest": ["시작하다"],
+      "fix": "rewrite",
+      "level": "error",
+      "except": "농사",
+      "examples": {
+        "bad": ["협업의 물꼬를 튼다"],
+        "ok": ["물결 모양 구분선을 쓴다"]
+      }
+    },
+    {
+      "id": "ko-D-gwe",
+      "category": "D",
+      "avoid": "궤를 같이하다",
+      "match": "궤를\\s*같이",
+      "suggest": ["같은 방향이다", "일치한다"],
+      "fix": "rewrite",
+      "level": "warn",
+      "except": "사설",
+      "examples": {
+        "bad": ["목표와 궤를 같이한다"],
+        "ok": ["궤도 계산을 확인한다"]
+      }
+    },
+    {
+      "id": "ko-D-nalgae",
+      "category": "D",
+      "avoid": "날개를 달다·숨을 불어넣다",
+      "match": "날개를\\s*(?:달|단)|숨을\\s*불어\\s*넣|숨결을\\s*불어",
+      "suggest": ["무엇을 어떻게 강화·개선했는지"],
+      "fix": "rewrite",
+      "level": "error",
+      "except": "브랜드가 정한 광고 카피",
+      "examples": {
+        "bad": ["제품에 날개를 단다"],
+        "ok": ["날개 모양 아이콘을 쓴다"]
+      }
+    },
+    {
+      "id": "ko-D-gadak",
+      "category": "D",
+      "avoid": "가닥을 잡다",
+      "match": "가닥(?:을)?\\s*잡",
+      "suggest": ["방향을 정하다"],
+      "fix": "rewrite",
+      "level": "warn",
+      "except": "보도 관용",
+      "examples": {
+        "bad": ["방향의 가닥을 잡는다"],
+        "ok": ["가닥 수는 두 개다"]
+      }
+    },
+    {
+      "id": "ko-D-sonjapi",
+      "category": "D",
+      "avoid": "손에 잡히는 (결과)",
+      "match": "손에\\s*잡히",
+      "suggest": ["구체적인"],
+      "fix": "rewrite",
+      "level": "warn",
+      "except": "—",
+      "examples": {
+        "bad": ["손에 잡히는 결과를 낸다"],
+        "ok": ["손에 든 기기를 흔들어 새로 고친다"]
+      }
+    },
+    {
+      "id": "ko-D-gamechanger",
+      "category": "D",
+      "avoid": "판도를 바꾸다·게임 체인저",
+      "match": "판도를\\s*(?:바꾸|바꿔|바꾼|뒤집)|게임\\s*체인저|게임체인저",
+      "suggest": ["무엇이 어떻게 바뀌는지"],
+      "fix": "rewrite",
+      "level": "error",
+      "except": "인용",
+      "examples": {
+        "bad": ["시장의 게임 체인저가 된다"],
+        "ok": ["게임 화면에서 체인을 끊는다"]
+      }
+    },
+    {
+      "id": "ko-D-dive",
+      "category": "D",
+      "avoid": "깊이 파고들다·딥 다이브",
+      "match": "깊이\\s*파고|딥\\s*다이브",
+      "suggest": ["자세히 분석하다"],
+      "fix": "rewrite",
+      "level": "warn",
+      "except": "행사 세션 고유명",
+      "examples": {
+        "bad": ["사례를 깊이 파고든다"],
+        "ok": ["깊이 우선 탐색을 쓴다"]
+      }
+    },
+    {
+      "id": "ko-D-jarimaegim",
+      "category": "D",
+      "avoid": "~로 자리매김하다",
+      "match": "(?<![가-힣])(?:자리\\s*매김)",
+      "suggest": ["~이다"],
+      "fix": "rewrite",
+      "level": "warn",
+      "except": "정착 표현으로 과거 사실을 말할 때",
+      "examples": {
+        "bad": ["표준으로 자리매김했다"],
+        "ok": ["자리 배치를 바꾼다"]
+      }
+    },
+    {
+      "id": "ko-E-orosi",
+      "category": "E",
+      "avoid": "오롯이",
+      "match": "(?<![가-힣])(?:오롯이)",
+      "suggest": ["온전히", "전부"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "문학",
+      "examples": {
+        "bad": ["오롯이 사용자에게 맡긴다"],
+        "ok": ["오류 로그를 확인한다"]
+      }
+    },
+    {
+      "id": "ko-E-birosoo",
+      "category": "E",
+      "avoid": "비로소",
+      "match": "(?<![가-힣])(?:비로소)",
+      "suggest": ["그제야", "지움"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "서사",
+      "examples": {
+        "bad": ["저장한 뒤에야 비로소 보인다"],
+        "ok": ["비교 소견을 적는다"]
+      }
+    },
+    {
+      "id": "ko-E-goseuranhi",
+      "category": "E",
+      "avoid": "고스란히",
+      "match": "(?<![가-힣])(?:고스란히)",
+      "suggest": ["그대로"],
+      "fix": "swap",
+      "level": "info",
+      "except": "구어에서 흔함",
+      "examples": {
+        "bad": ["값이 고스란히 남는다"],
+        "ok": ["고정 헤더를 둔다"]
+      }
+    },
+    {
+      "id": "ko-E-hanchueng",
+      "category": "E",
+      "avoid": "한층 (더)",
+      "match": "(?<![가-힣])(?:한층)",
+      "suggest": ["더", "지움"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "보도",
+      "examples": {
+        "bad": ["한층 쉬워진다"],
+        "ok": ["한 층 올라가면 메뉴가 있다"]
+      }
+    },
+    {
+      "id": "ko-E-jinjeong",
+      "category": "E",
+      "avoid": "진정한·진정으로",
+      "match": "(?<![가-힣])(?:진정(?:한|으로))",
+      "suggest": ["지움"],
+      "fix": "rewrite",
+      "level": "warn",
+      "except": "인용",
+      "examples": {
+        "bad": ["진정한 개인화를 제공한다"],
+        "ok": ["시위를 진정시켰다는 기록이다"]
+      }
+    },
+    {
+      "id": "ko-E-namdareun",
+      "category": "E",
+      "avoid": "남다른",
+      "match": "(?<![가-힣])(?:남다른|남다르)",
+      "suggest": ["무엇이 다른지 쓴다"],
+      "fix": "rewrite",
+      "level": "warn",
+      "except": "—",
+      "examples": {
+        "bad": ["남다른 속도를 낸다"],
+        "ok": ["남은 다른 항목을 지운다"]
+      }
+    },
+    {
+      "id": "ko-E-sumeun",
+      "category": "E",
+      "avoid": "숨은 (숨은 가치·보석)",
+      "match": "숨은\\s*(?:가치|보석|매력|명소|고수|강자)",
+      "suggest": ["잘 알려지지 않은"],
+      "fix": "rewrite",
+      "level": "info",
+      "except": "정착 용어 「숨은 비용」「숨은 문자」",
+      "examples": {
+        "bad": ["숨은 가치를 찾는다"],
+        "ok": ["숨은 비용을 표로 적는다"]
+      }
+    },
+    {
+      "id": "ko-F-hyeoksin",
+      "category": "F",
+      "avoid": "혁신적인·획기적인",
+      "match": "(?<![가-힣])(?:혁신적|획기적)",
+      "suggest": ["구체 사실·수치"],
+      "fix": "rewrite",
+      "level": "error",
+      "except": "고유명(정부혁신), 인용",
+      "examples": {
+        "bad": ["혁신적인 방식을 쓴다"],
+        "ok": ["정부혁신 기본계획을 읽는다"]
+      }
+    },
+    {
+      "id": "ko-F-apdojeok",
+      "category": "F",
+      "avoid": "압도적인·독보적인·탁월한",
+      "match": "(?<![가-힣])(?:압도적|독보적|탁월)",
+      "suggest": ["근거 수치"],
+      "fix": "rewrite",
+      "level": "error",
+      "except": "실증 자료가 있을 때(표시광고 검토는 따로)",
+      "examples": {
+        "bad": ["압도적인 성능을 낸다"],
+        "ok": ["탁상 달력을 연다"]
+      }
+    },
+    {
+      "id": "ko-F-ganglyeok",
+      "category": "F",
+      "avoid": "강력한",
+      "match": "(?<![가-힣])(?:강력(?:한|하게|하다))",
+      "suggest": ["빠른·정확한 등 구체 표현과 수치"],
+      "fix": "rewrite",
+      "level": "warn",
+      "except": "정책 용어 「강력한 비밀번호」",
+      "examples": {
+        "bad": ["강력한 검색을 제공한다"],
+        "ok": ["강릉 지사를 찾는다"]
+      }
+    },
+    {
+      "id": "ko-F-wanbyeok",
+      "category": "F",
+      "avoid": "완벽한·완벽하게",
+      "match": "(?<![가-힣])(?:완벽(?:한|하게|히|하다))",
+      "suggest": ["모두", "빠짐없이(검증 범위 명시)"],
+      "fix": "rewrite",
+      "level": "warn",
+      "except": "실제 전수 검증, 수학 정의, 낱말 자체를 논의할 때",
+      "examples": {
+        "bad": ["완벽한 호환을 보장한다"],
+        "ok": ["낱말 「완벽한」을 쓰지 않는다는 규칙을 적는다"]
+      }
+    },
+    {
+      "id": "ko-F-sonswipge",
+      "category": "F",
+      "avoid": "손쉽게·손쉬운",
+      "match": "(?<![가-힣])(?:손쉽|손쉬)",
+      "suggest": ["쉽게", "한 번에", "N단계로"],
+      "fix": "rewrite",
+      "level": "warn",
+      "except": "—",
+      "examples": {
+        "bad": ["손쉽게 설정한다"],
+        "ok": ["손쓸 수 없는 오류로 분류한다"]
+      }
+    },
+    {
+      "id": "ko-F-ganpyeon",
+      "category": "F",
+      "avoid": "간편하게",
+      "match": "(?<![가-힣])(?:간편(?:하게|한|하다|히))",
+      "suggest": ["단계 수·시간"],
+      "fix": "rewrite",
+      "level": "info",
+      "except": "업계 명칭 「간편결제·간편 로그인·간편 모드」",
+      "examples": {
+        "bad": ["간편하게 가입한다"],
+        "ok": ["간편결제 버튼을 누른다"]
+      }
+    },
+    {
+      "id": "ko-F-wonhwal",
+      "category": "F",
+      "avoid": "원활한·매끄러운",
+      "match": "(?<![가-힣])(?:원활(?:한|하게|히)|매끄러운|매끄럽게)",
+      "suggest": ["끊김 없이", "바로", "지움"],
+      "fix": "rewrite",
+      "level": "warn",
+      "except": "공문 관용 「원활한 통신」",
+      "examples": {
+        "bad": ["원활한 연결을 제공한다"],
+        "ok": ["원본 활성 상태를 확인한다"]
+      }
+    },
+    {
+      "id": "ko-F-geukdaehwa",
+      "category": "F",
+      "avoid": "극대화하다",
+      "match": "(?<![가-힣])(?:극대화)",
+      "suggest": ["늘리다", "높이다(수치)"],
+      "fix": "rewrite",
+      "level": "warn",
+      "except": "최적화 수식",
+      "examples": {
+        "bad": ["효율을 극대화한다"],
+        "ok": ["극단값을 제외한다"]
+      }
+    },
+    {
+      "id": "ko-F-chawon",
+      "category": "F",
+      "avoid": "차원이 다른·새로운 차원",
+      "match": "차원이\\s*(?:다른|달라)|새로운\\s*차원",
+      "suggest": ["구체적인 차이"],
+      "fix": "rewrite",
+      "level": "error",
+      "except": "—",
+      "examples": {
+        "bad": ["차원이 다른 경험을 준다"],
+        "ok": ["차원 수를 3으로 줄인다"]
+      }
+    },
+    {
+      "id": "ko-F-nollaun",
+      "category": "F",
+      "avoid": "놀라운·무한한 가능성",
+      "match": "놀라운|무한한\\s*가능성",
+      "suggest": ["지움"],
+      "fix": "rewrite",
+      "level": "error",
+      "except": "인용",
+      "examples": {
+        "bad": ["놀라운 결과를 낸다"],
+        "ok": ["놀랐다는 사용자 반응은 3건이다"]
+      }
+    },
+    {
+      "id": "ko-F-dachaeroun",
+      "category": "F",
+      "avoid": "다채로운·풍부한",
+      "match": "(?<![가-힣])(?:다채로운|다채롭|풍부한)",
+      "suggest": ["여러", "N가지"],
+      "fix": "rewrite",
+      "level": "warn",
+      "except": "뒤에 실제 수량이 나올 때",
+      "examples": {
+        "bad": ["다채로운 기능을 담았다"],
+        "ok": ["다음 채널을 선택한다"]
+      }
+    },
+    {
+      "id": "ko-F-jeonggyo",
+      "category": "F",
+      "avoid": "정교한",
+      "match": "(?<![가-힣])(?:정교(?:한|하게|히))",
+      "suggest": ["자세한", "세밀한"],
+      "fix": "rewrite",
+      "level": "info",
+      "except": "기술적으로 정의된 뜻",
+      "examples": {
+        "bad": ["정교한 분석을 한다"],
+        "ok": ["정교사 자격 안내를 연다"]
+      }
+    },
+    {
+      "id": "ko-F-haeksimjeok",
+      "category": "F",
+      "avoid": "핵심적인",
+      "match": "(?<![가-힣])(?:핵심적)",
+      "suggest": ["주요한", "지움"],
+      "fix": "rewrite",
+      "level": "warn",
+      "except": "—",
+      "examples": {
+        "bad": ["핵심적인 역할을 한다"],
+        "ok": ["핵심 항목만 남긴다"]
+      }
+    },
+    {
+      "id": "ko-F-choejeok",
+      "category": "F",
+      "avoid": "최적의",
+      "match": "(?<![가-힣])(?:최적의)",
+      "suggest": ["알맞은", "가장 ~한(근거와 함께)"],
+      "fix": "rewrite",
+      "level": "warn",
+      "except": "최적화 결과",
+      "examples": {
+        "bad": ["최적의 경로를 안내한다"],
+        "ok": ["최적화 결과를 표로 적는다"]
+      }
+    },
+    {
+      "id": "ko-F-paradigm",
+      "category": "F",
+      "avoid": "패러다임 (전환)",
+      "match": "(?<![가-힣])(?:패러다임)",
+      "suggest": ["방식(의 변화)"],
+      "fix": "rewrite",
+      "level": "warn",
+      "except": "학술",
+      "examples": {
+        "bad": ["패러다임이 바뀐다"],
+        "ok": ["패턴 목록을 정리한다"]
+      }
+    },
+    {
+      "id": "ko-G-inhae",
+      "category": "G",
+      "avoid": "~로 인해(서)",
+      "match": "로\\s*인(?:해서?|하여)(?![가-힣])",
+      "suggest": ["때문에", "~해서"],
+      "fix": "swap",
+      "level": "info",
+      "except": "공문서",
+      "examples": {
+        "bad": ["지연으로 인해 실패한다"],
+        "ok": ["인사 조건으로 인정한다"]
+      }
+    },
+    {
+      "id": "ko-G-uihae",
+      "category": "G",
+      "avoid": "~에 의해",
+      "match": "에\\s*의(?:해서?|하여|한)(?![가-힣])",
+      "suggest": ["행위자를 주어로(「누구에 의해 실행」→「누가 실행」)"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "법조문",
+      "examples": {
+        "bad": ["담당자에 의해 실행된다"],
+        "ok": ["서버에 의존하는 부분은 따로 둔다"]
+      }
+    },
+    {
+      "id": "ko-G-gaganeunggeot",
+      "category": "G",
+      "avoid": "~하는 것이 가능하다",
+      "match": "는\\s*것이\\s*가능(?:하|합|해|했)",
+      "suggest": ["~할 수 있다"],
+      "fix": "swap",
+      "level": "error",
+      "except": "—",
+      "examples": {
+        "bad": ["저장하는 것이 가능하다"],
+        "ok": ["가능한 값은 세 개다"]
+      }
+    },
+    {
+      "id": "ko-G-gajigo",
+      "category": "G",
+      "avoid": "~을 가지고 있다",
+      "match": "[을를]\\s*(?:가지고|갖고)\\s*있",
+      "suggest": ["~이 있다", "~하다"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "실제 소유",
+      "examples": {
+        "bad": ["여러 기능을 가지고 있다"],
+        "ok": ["가지 수는 세 개다"]
+      }
+    },
+    {
+      "id": "ko-G-ijungpiddong",
+      "category": "G",
+      "avoid": "이중 피동 (되어지다·보여지다)",
+      "match": "되어(?:지|진|질|졌)|보여(?:지|진|질|졌)|쓰여(?:지|진|질|졌)|불려(?:지|진|질|졌)|읽혀(?:지|진|질|졌)|잊혀(?:지|진|질|졌)|나뉘어(?:지|진|질|졌)",
+      "suggest": ["단일 피동", "능동"],
+      "fix": "swap",
+      "level": "error",
+      "except": "—",
+      "examples": {
+        "bad": ["항목이 구분되어진다"],
+        "ok": ["보여 준다", "나뉘어 있다"]
+      }
+    },
+    {
+      "id": "ko-G-isseo",
+      "category": "G",
+      "avoid": "~에 있어(서)",
+      "match": "에\\s*있어서(?:는|도)?(?![가-힣])",
+      "suggest": ["~에서", "~할 때"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "「~에 있어야」는 다른 말이라 대상이 아니다",
+      "examples": {
+        "bad": ["설계에 있어서는 이 기준을 쓴다"],
+        "ok": ["버튼은 오른쪽에 있어야 한다"]
+      }
+    },
+    {
+      "id": "ko-G-gibanhan",
+      "category": "G",
+      "avoid": "~에 기반한·기반하여",
+      "match": "에\\s*기반(?:한|하여|하는|해)",
+      "suggest": ["~로", "~을 보고"],
+      "fix": "swap",
+      "level": "info",
+      "except": "정착어 「규칙 기반」「클라우드 기반」",
+      "examples": {
+        "bad": ["데이터에 기반한 결정이다"],
+        "ok": ["규칙 기반 검사를 돌린다"]
+      }
+    },
+    {
+      "id": "ko-G-gwanryeon",
+      "category": "G",
+      "avoid": "~와 관련하여",
+      "match": "(?<![가-힣])(?:관련하여|관련해서)",
+      "suggest": ["~에", "~을"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "—",
+      "examples": {
+        "bad": ["보안과 관련하여 점검한다"],
+        "ok": ["관련 문서를 연다"]
+      }
+    },
+    {
+      "id": "ko-G-robuteo",
+      "category": "G",
+      "avoid": "~로부터",
+      "match": "[가-힣A-Za-z0-9]로부터(?![가-힣])",
+      "suggest": ["~에게서", "~에서"],
+      "fix": "swap",
+      "level": "info",
+      "except": "출처·기점 표시",
+      "examples": {
+        "bad": ["서버로부터 값을 받는다"],
+        "ok": ["로그부터 확인한다"]
+      }
+    },
+    {
+      "id": "ko-G-ijungjosa",
+      "category": "G",
+      "avoid": "이중 조사 (~에서의·~으로의)",
+      "match": "에서의|으로의|에로의|에게서의",
+      "suggest": ["절로 풀어 쓴다"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "법령명·고유명, 단순 「~의」",
+      "examples": {
+        "bad": ["창구에서의 흐름을 그린다"],
+        "ok": ["법령명 「전자상거래 등에서의 소비자보호에 관한 법률」은 그대로 쓴다"]
+      }
+    },
+    {
+      "id": "ko-G-haeyeogeum",
+      "category": "G",
+      "avoid": "~로 하여금",
+      "match": "하여금",
+      "suggest": ["주어를 세운다"],
+      "fix": "swap",
+      "level": "error",
+      "except": "법령",
+      "examples": {
+        "bad": ["사용자로 하여금 선택하게 한다"],
+        "ok": ["하루 이틀 뒤에 다시 시도한다"]
+      }
+    },
+    {
+      "id": "ko-G-rago",
+      "category": "G",
+      "avoid": "~라고 할 수 있다",
+      "match": "(?:라고|다고)\\s*할\\s*수\\s*있",
+      "suggest": ["단정"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "정의 서술",
+      "examples": {
+        "bad": ["충분하다고 할 수 있다"],
+        "ok": ["라고 입력한다"]
+      }
+    },
+    {
+      "id": "ko-G-hanaui",
+      "category": "G",
+      "avoid": "하나의",
+      "match": "(?<![가-힣])(?:하나의)",
+      "suggest": ["한", "생략"],
+      "fix": "swap",
+      "level": "info",
+      "except": "수량을 말할 때(「파일 하나의 결과」)",
+      "examples": {
+        "bad": ["하나의 기준을 둔다"],
+        "ok": ["하나는 필수다"]
+      }
+    },
+    {
+      "id": "ko-G-gaeneunghage",
+      "category": "G",
+      "avoid": "무생물 주어 + 가능하게 하다",
+      "match": "[을를]\\s*가능(?:하게|케)\\s*(?:한다|합니다|해요|하다|해)",
+      "suggest": ["「~으로 ~할 수 있어요」"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "API 명세",
+      "examples": {
+        "bad": ["이 설정은 빠른 복구를 가능하게 한다"],
+        "ok": ["복구가 가능한 상태다"]
+      }
+    },
+    {
+      "id": "ko-G-jinhaeng",
+      "category": "G",
+      "avoid": "진행하다 (결제를 진행해 주세요)",
+      "match": "(?<![가-힣])진행(?:해\\s*주|해주|하세요|하시|해요|할게요|하겠|해\\s*보)",
+      "suggest": ["~하다"],
+      "fix": "swap",
+      "level": "warn",
+      "except": "행사·일정의 「진행」, 문서의 서술(「검사를 진행한다」)",
+      "examples": {
+        "bad": ["결제를 진행해 주세요"],
+        "ok": ["진행 상태 표시줄을 보여 준다", "검사를 진행한 뒤 결과를 적는다"]
+      }
+    },
+    {
+      "id": "ko-G-jegong",
+      "category": "G",
+      "avoid": "제공하다",
+      "match": "(?<![가-힣])(?:제공(?:한다|합니다|해|하세요|했|하여|하는|한))",
+      "suggest": ["있다", "쓸 수 있다"],
+      "fix": "swap",
+      "level": "info",
+      "except": "계약·약관",
+      "examples": {
+        "bad": ["기능을 제공한다"],
+        "ok": ["제공자 목록을 연다"]
+      }
+    },
+    {
+      "id": "ko-G-suhaeng",
+      "category": "G",
+      "avoid": "수행하다",
+      "match": "(?<![가-힣])(?:수행(?:한다|합니다|해|하세요|했|하여|하면|하는|할))",
+      "suggest": ["하다"],
+      "fix": "swap",
+      "level": "info",
+      "except": "공식 명세",
+      "examples": {
+        "bad": ["검사를 수행한다"],
+        "ok": ["수행 결과를 표로 적는다"]
+      }
+    },
+    {
+      "id": "ko-G-jeok",
+      "category": "G",
+      "avoid": "-적 남발 (기본적으로)",
+      "match": "(?<![가-힣])(?:(?:기본|전반|궁극|근본|본질|결과|전체|대체)적으로)",
+      "suggest": ["풀어 쓰기(기본으로)"],
+      "fix": "swap",
+      "level": "info",
+      "except": "정착어(법적·기술적)",
+      "examples": {
+        "bad": ["기본적으로 켜 둔다"],
+        "ok": ["기본값은 꺼짐이다"]
+      }
+    },
+    {
+      "id": "ko-H-neomeo-geuchiji",
+      "category": "H",
+      "avoid": "단순한 A를 넘어 B·~에 그치지 않고",
+      "match": "단순(?:한|히)?\\s*[^.\\n]{0,20}[을를]\\s*넘어|에\\s*그치지\\s*않고|에\\s*머무르지\\s*않고",
+      "suggest": ["B의 사실만"],
+      "fix": "rewrite",
+      "level": "error",
+      "except": "글자 그대로의 뜻(「한도를 넘어」「10줄을 넘어가면」), 사실을 말하는 문장 끝의 「~에 그치지 않았다」",
+      "examples": {
+        "bad": ["단순한 목록을 넘어 판단 도구가 된다", "기록에 그치지 않고 판단을 돕는다"],
+        "ok": [
+          "한도를 넘어 입력하면 오류가 난다",
+          "10줄을 넘어가면 파일을 나눈다",
+          "쓰는 사람이 60대 이상에 그치지 않았다"
+        ]
+      }
+    },
+    {
+      "id": "ko-H-gyeolron",
+      "category": "H",
+      "avoid": "결론적으로·요약하면·한마디로",
+      "match": "(?<![가-힣])(?:결론적으로|요약하면|한마디로|결론부터\\s*말하면)",
+      "suggest": ["지운다"],
+      "fix": "rewrite",
+      "level": "warn",
+      "except": "긴 보고서의 요약 절",
+      "examples": {
+        "bad": ["결론적으로 효율이 좋다"],
+        "ok": ["요약 절을 추가한다"]
+      }
+    },
+    {
+      "id": "ko-H-yego",
+      "category": "H",
+      "avoid": "진행 예고 (살펴보겠습니다)",
+      "match": "살펴보겠|알아보겠|알아볼까요|살펴볼까요|짚고\\s*넘어가",
+      "suggest": ["지운다"],
+      "fix": "rewrite",
+      "level": "warn",
+      "except": "강의·실습서의 위치 안내",
+      "examples": {
+        "bad": ["세 가지를 살펴보겠습니다"],
+        "ok": ["알아보기 쉬운 이름을 쓴다"]
+      }
+    },
+    {
+      "id": "ko-H-uiui",
+      "category": "H",
+      "avoid": "의의 과장 (시사하는 바가 크다)",
+      "match": "시사하는\\s*바|주목할\\s*만",
+      "suggest": ["지운다"],
+      "fix": "rewrite",
+      "level": "warn",
+      "except": "—",
+      "examples": {
+        "bad": ["시사하는 바가 크다"],
+        "ok": ["주목 표시는 노란색이다"]
+      }
+    },
+    {
+      "id": "en-unlock",
+      "category": "EN",
+      "avoid": "unlock",
+      "match": "\\bunlock(?:s|ed|ing)?\\b",
+      "suggest": ["concrete verb: enable, open, allow"],
+      "fix": "rewrite",
+      "level": "warn",
+      "except": "실제 잠금 해제(기기·계정)",
+      "examples": {
+        "bad": ["Unlock your potential with one click"],
+        "ok": ["The lock icon is gray"]
+      }
+    },
+    {
+      "id": "en-reimagine",
+      "category": "EN",
+      "avoid": "reimagine",
+      "match": "\\breimagin(?:e|es|ed|ing)\\b",
+      "suggest": ["say what changed"],
+      "fix": "rewrite",
+      "level": "warn",
+      "except": "—",
+      "examples": {
+        "bad": ["We reimagined onboarding"],
+        "ok": ["Imagine a list with three items"]
+      }
+    },
+    {
+      "id": "en-seamless",
+      "category": "EN",
+      "avoid": "seamless",
+      "match": "\\bseamless(?:ly)?\\b",
+      "suggest": ["say what is connected"],
+      "fix": "rewrite",
+      "level": "warn",
+      "except": "—",
+      "examples": {
+        "bad": ["A seamless setup experience"],
+        "ok": ["The seam of the layout is hidden"]
+      }
+    },
+    {
+      "id": "en-delve",
+      "category": "EN",
+      "avoid": "delve",
+      "match": "\\bdelv(?:e|es|ed|ing)\\b",
+      "suggest": ["look at, check"],
+      "fix": "rewrite",
+      "level": "warn",
+      "except": "—",
+      "examples": {
+        "bad": ["Let us delve into the data"],
+        "ok": ["Delivery date is shown"]
+      }
+    },
+    {
+      "id": "en-tapestry",
+      "category": "EN",
+      "avoid": "tapestry",
+      "match": "\\btapestry\\b",
+      "suggest": ["plain noun"],
+      "fix": "rewrite",
+      "level": "warn",
+      "except": "—",
+      "examples": {
+        "bad": ["A rich tapestry of features"],
+        "ok": ["Tap the story card"]
+      }
+    },
+    {
+      "id": "en-gamechanger",
+      "category": "EN",
+      "avoid": "game-changer",
+      "match": "\\bgame[- ]chang(?:er|ing)\\b",
+      "suggest": ["say what changes"],
+      "fix": "rewrite",
+      "level": "warn",
+      "except": "—",
+      "examples": {
+        "bad": ["A game-changing update"],
+        "ok": ["The game screen changes color"]
+      }
+    },
+    {
+      "id": "en-supercharge",
+      "category": "EN",
+      "avoid": "supercharge",
+      "match": "\\bsupercharg(?:e|es|ed|ing)\\b",
+      "suggest": ["say what gets faster"],
+      "fix": "rewrite",
+      "level": "warn",
+      "except": "—",
+      "examples": {
+        "bad": ["Supercharge your workflow"],
+        "ok": ["Charge status is shown"]
+      }
+    },
+    {
+      "id": "en-intoday",
+      "category": "EN",
+      "avoid": "In today's …",
+      "match": "\\bin today['’]s\\b",
+      "suggest": ["delete the opener"],
+      "fix": "rewrite",
+      "level": "warn",
+      "except": "—",
+      "examples": {
+        "bad": ["In today's fast-paced world"],
+        "ok": ["Today the page has two tabs"]
+      }
+    }
+  ],
+  "docRules": [
+    {
+      "id": "ko-doc-contrast",
+      "category": "DOC",
+      "avoid": "「A가 아니라 B」 대구가 한 파일에 3회 이상",
+      "kind": "count",
+      "match": "(?:이|가|은|는)\\s*아니라(?![가-힣])",
+      "min": 3,
+      "suggest": ["하나만 남기고 B를 단언한다"],
+      "fix": "rewrite",
+      "level": "warn",
+      "except": "실제 대조 1회",
+      "examples": {
+        "bad": ["속도가 아니라 정확도다. 도구가 아니라 습관이다. 화면이 아니라 흐름이다."],
+        "ok": ["속도가 아니라 정확도다. 나머지는 사실만 적는다."]
+      }
+    },
+    {
+      "id": "ko-doc-dash",
+      "category": "DOC",
+      "avoid": "줄표(—)가 한 줄에 2개 이상",
+      "kind": "line-count",
+      "match": "—",
+      "min": 2,
+      "suggest": ["쉼표", "괄호", "문장 분리"],
+      "fix": "rewrite",
+      "level": "info",
+      "except": "표의 「—(해당 없음)」, 원문에 있던 대시",
+      "examples": {
+        "bad": ["설정은 짧다 — 값은 둘이다 — 나머지는 비운다"],
+        "ok": ["설정은 짧다 — 값은 둘이다"]
+      }
+    },
+    {
+      "id": "ko-doc-daehae",
+      "category": "DOC",
+      "avoid": "「~에 대해」·「~에 대한」이 한 파일에 3회 이상",
+      "kind": "count",
+      "match": "(?<=[가-힣A-Za-z0-9)\\]])에\\s*대(?:해서?|하여|한(?!민국))",
+      "min": 3,
+      "suggest": ["목적격 조사(「X를 논의」)"],
+      "fix": "rewrite",
+      "level": "warn",
+      "except": "1~2회는 괜찮다",
+      "examples": {
+        "bad": ["이 기능에 대해 설명한다. 설정에 대해 묻는다. 오류에 대한 안내를 쓴다."],
+        "ok": ["이 기능에 대해 설명한다. 설정은 따로 적는다."]
+      }
+    },
+    {
+      "id": "ko-doc-tonghae",
+      "category": "DOC",
+      "avoid": "「~을 통해」가 한 파일에 3회 이상",
+      "kind": "count",
+      "match": "[을를]\\s*통(?:해서?|하여)(?![가-힣])",
+      "min": 3,
+      "suggest": ["~로", "~해서", "~에서"],
+      "fix": "rewrite",
+      "level": "warn",
+      "except": "실제 경로·수단(「배럴을 통해 가져온다」), 1~2회",
+      "examples": {
+        "bad": ["검사를 통해 확인한다. 설정을 통해 바꾼다. 로그를 통해 찾는다."],
+        "ok": ["검사를 통해 확인한다. 설정에서 바꾼다."]
+      }
+    }
+  ]
+}

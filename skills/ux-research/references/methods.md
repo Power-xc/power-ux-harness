@@ -1,6 +1,6 @@
 # 리서치 방법 고르기
 
-출처: NN/g Christian Rohrer「When to Use Which User-Experience Research Methods」(2022, 2026 검토)·Jakob Nielsen「Why You Only Need to Test with 5 Users」(2000)·Raluca Budiu·Kate Moran「How Many Participants for Quantitative Usability Studies」(2021)·Jakob Nielsen「Thinking Aloud: The #1 Usability Tool」(2012)·Marieke McCloskey「Turn User Goals into Task Scenarios for Usability Testing」(2014)·Kathryn Whitenton「Triangulation: Get Better Research Results by Using Multiple UX Methods」(2021). 원문 문장을 옮기지 않고 요약했다.
+출처: NN/g Christian Rohrer「When to Use Which User-Experience Research Methods」(2022, 2026 검토)·Jakob Nielsen「Why You Only Need to Test with 5 Users」(2000)·Raluca Budiu·Kate Moran「How Many Participants for Quantitative Usability Studies」(2021)·Jakob Nielsen「Thinking Aloud: The #1 Usability Tool」(2012)·Marieke McCloskey「Turn User Goals into Task Scenarios for Usability Testing」(2014)·Kathryn Whitenton「Triangulation: Get Better Research Results by Using Multiple UX Methods」(2021). 원문 문장을 복사하지 않고 요약했다.
 
 ## 1. 질문을 세 축에 놓는다
 

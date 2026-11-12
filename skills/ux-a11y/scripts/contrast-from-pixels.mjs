@@ -95,7 +95,7 @@ function contrastRatio(a, b) {
 
 const gray = ([r, g, b]) => Math.round(0.2126 * r + 0.7152 * g + 0.0722 * b);
 
-// 밝기 막대그래프를 둘로 가르는 문턱(Otsu)
+// 밝기 막대그래프를 둘로 나누는 문턱(Otsu)
 function otsuThreshold(values) {
   const hist = new Array(256).fill(0);
   for (const v of values) hist[v]++;
@@ -122,7 +122,7 @@ function medianColor(colors) {
   return [pick(0), pick(1), pick(2)];
 }
 
-// 상자 안 픽셀을 글자(적은 쪽)와 배경으로 가른 뒤, 글자색은 획 안쪽 중앙값, 배경은 대비가 가장 낮은 칸의 중앙값으로 잡는다.
+// 상자 안 픽셀을 글자(적은 쪽)와 배경으로 나눈 뒤, 글자색은 획 안쪽 중앙값, 배경은 대비가 가장 낮은 칸의 중앙값으로 잡는다.
 function measureBox(image, box, edge = 2) {
   const { x, y, width, height } = box;
   if (width < 1 || height < 1 || x < 0 || y < 0 || x + width > image.width || y + height > image.height) {

@@ -2,7 +2,7 @@
 
 리뷰 대상의 요소를 패턴 이름으로 적은 뒤, 그 패턴이 지금 쓰임에 맞는지 이 표로 판정한다. 수정안도 같은 이름으로 쓴다. 「로딩 넣어 주세요」라고만 하면 대부분 스피너가 되고, 「피드백 강화」는 읽는 사람마다 다른 화면이 된다.
 
-출처: NN/g Katie Sherwin「Progress Indicators Make a Slow System Less Insufferable」(2014)·Samhita Tankala「Skeleton Screens 101」(2023)·Alita Kendrick「Toggle-Switch Guidelines」(2018)·Angie Li「Date-Input Form Fields」(2017)·Aurora Harley「Slider Design: Rules of Thumb」(2015)·Jakob Nielsen「Confirmation Dialogs Can Prevent User Errors」(2018)·Page Laubheimer「Executing UX Animations」(2020)·Aurora Harley「Icon Usability」(2014)·Hoa Loranger「Infinite Scrolling Is Not for Every Website」(2014)·Kara Pernice·Raluca Budiu「Hamburger Menus and Hidden Navigation Hurt UX Metrics」(2016)·Kate Kaplan「Designing Empty States in Complex Applications: 3 Guidelines」(2021), Buell·Norton「The Labor Illusion」(Management Science, 2011), 토스「좋은 에러 메시지를 만드는 6가지 원칙」(2022), Google Material Design 3의 Snackbar·Dialogs·Bottom sheets 지침, Material Components for Android 모션 문서의 전환 패턴, W3C WCAG 2.2와 Understanding 2.2.1·2.3.1·4.1.3. 원문 문장을 옮기지 않고 요약했다.
+출처: NN/g Katie Sherwin「Progress Indicators Make a Slow System Less Insufferable」(2014)·Samhita Tankala「Skeleton Screens 101」(2023)·Alita Kendrick「Toggle-Switch Guidelines」(2018)·Angie Li「Date-Input Form Fields」(2017)·Aurora Harley「Slider Design: Rules of Thumb」(2015)·Jakob Nielsen「Confirmation Dialogs Can Prevent User Errors」(2018)·Page Laubheimer「Executing UX Animations」(2020)·Aurora Harley「Icon Usability」(2014)·Hoa Loranger「Infinite Scrolling Is Not for Every Website」(2014)·Kara Pernice·Raluca Budiu「Hamburger Menus and Hidden Navigation Hurt UX Metrics」(2016)·Kate Kaplan「Designing Empty States in Complex Applications: 3 Guidelines」(2021), Buell·Norton「The Labor Illusion」(Management Science, 2011), 토스「좋은 에러 메시지를 만드는 6가지 원칙」(2022), Google Material Design 3의 Snackbar·Dialogs·Bottom sheets 지침, Material Components for Android 모션 문서의 전환 패턴, W3C WCAG 2.2와 Understanding 2.2.1·2.3.1·4.1.3. 원문 문장을 복사하지 않고 요약했다.
 
 ## 1. 알림·피드백 — 방해 수준
 
@@ -131,7 +131,7 @@ AI 응답 화면의 패턴(스트리밍·중지·출처·다시 생성)은 `ux-a
 | -------------- | --------------------------------------------------------------- | ----------------------- | ---------------------------------------------------------------------------------------------------- |
 | 작고 자주      | 체크 그리기 · 할 일 줄긋기 · 버튼 모핑(누른 버튼이 체크로 바뀜) | 할 일 항목, 저장, 담기  | 매번 컨페티·전체 화면 연출 · 연출이 끝나야 다음 입력이 됨                                            |
 | 진행이 있던 일 | 진행률 완료 · 보냄 애니메이션 · 스탬프                          | 업로드·전송·제출이 끝남 | 진행 바가 100%에서 멈춘 채 결과가 없음 · 보냄 연출 뒤 실패를 알리지 않음                             |
-| 드문 이정표    | 배지 획득 · 컨페티                                              | 첫 완주, 목표 달성      | 매일 하는 일에 배지를 남발 · 돈·위험이 걸린 행동(거래·대출)의 완료를 축하(`ux-benchmark` 사례 MT-01) |
+| 드물고 큰 일   | 배지 획득 · 컨페티                                              | 첫 완주, 목표 달성      | 매일 하는 일에 배지를 남발 · 돈·위험이 걸린 행동(거래·대출)의 완료를 축하(`ux-benchmark` 사례 MT-01) |
 | 긴 과제의 끝   | 완료 화면                                                       | 가입·신청·결제·예약     | 무엇이 끝났는지(금액·번호·날짜)와 다음 할 일 없이 「완료!」만 · 완료 화면에서 갈 곳이 없음           |
 
 접근성 대조: 완료 결과는 연출과 따로 `role="status"`로 알린다. 컨페티·스탬프 같은 움직임은 움직임 줄이기 설정에서 끄고, 1초에 세 번 넘게 번쩍이지 않게 한다(WCAG 2.3.1).

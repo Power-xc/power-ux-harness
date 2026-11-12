@@ -1,6 +1,6 @@
 # 휴리스틱 평가 기준
 
-출처: NN/g Jakob Nielsen「10 Usability Heuristics for User Interface Design」(1994, 2024 검토)·「Severity Ratings for Usability Problems」(1994), Kate Moran·Kelley Gordon「How to Conduct a Heuristic Evaluation」(2023), Jon Yablonski『Laws of UX』(2판, 2024)와 lawsofux.com. 원문 문장을 옮기지 않고 리뷰 절차에 맞게 요약했다.
+출처: NN/g Jakob Nielsen「10 Usability Heuristics for User Interface Design」(1994, 2024 검토)·「Severity Ratings for Usability Problems」(1994), Kate Moran·Kelley Gordon「How to Conduct a Heuristic Evaluation」(2023), Jon Yablonski『Laws of UX』(2판, 2024)와 lawsofux.com. 원문 문장을 복사하지 않고 리뷰 절차에 맞게 요약했다.
 
 ## 1. 10 휴리스틱
 

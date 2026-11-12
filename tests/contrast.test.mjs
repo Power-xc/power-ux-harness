@@ -91,7 +91,7 @@ test('배경이 고르지 않으면 대비가 가장 낮은 칸의 배경으로 
   assert.match(out, /10\.93:1 .* PASS/);
 });
 
-test('어두운 바탕의 밝은 글자도 글자와 배경을 가른다', () => {
+test('어두운 바탕의 밝은 글자도 글자와 배경을 나눈다', () => {
   const file = png('light.png', 96, 48, (x, y) => (bars(8)(x, y) ? [255, 255, 255] : [51, 51, 51]));
   const { out } = measure(file);
   assert.match(out, /글자색 {2}#ffffff/);
