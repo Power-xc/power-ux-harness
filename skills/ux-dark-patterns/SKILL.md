@@ -28,7 +28,7 @@ license: MIT
 2. 결정 지점마다 [`references/kr-guideline.md`](./references/kr-guideline.md)의 13개 유형을 대조한다. EU·미국 범위면 [`references/global-rules.md`](./references/global-rules.md)를 함께 대조한다.
 3. 잴 수 있는 것은 잰다 — 가입과 해지의 단계·클릭 수와 경로(같은 채널인가, 로그인 첫 화면이나 한 번 이동으로 닿는가), 첫 가격 화면의 금액과 최종 결제 금액, 미리 선택된 항목, 수락·거절 버튼의 크기·색·대비, 거절 뒤 같은 요구의 재노출 횟수, 「7일간 다시 보지 않기」 선택지, 가격 인상·유료 전환 전 동의 절차.
 4. 마감 시계·재고·「지금 N명이 보는 중」·후기는 데이터 출처를 확인한다. 출처를 확인하지 못하면 PASS가 아니라 `NOT_CHECKED`다.
-5. 심리 장치는 [`references/decision-devices.md`](./references/decision-devices.md)로 정직한 쓰임과 기만의 경계를 판정한다. 요금제 표·할인가는 같은 문서의 가격표 장치 표와 확인 항목 4개를 적용한다. 광고·협찬·추천으로 버는 서비스면 광고와 콘텐츠의 구분 표시를 [`references/ad-disclosure.md`](./references/ad-disclosure.md)로 확인한다.
+5. 심리 장치는 [`references/decision-devices.md`](./references/decision-devices.md)로 정직한 쓰임과 기만의 경계를 판정한다. 요금제 표·할인가는 같은 문서의 가격표 장치 표와 확인 항목 4개를, 권한 요청 앞뒤 화면은 권한 요청 장치 표를 적용한다. 광고·협찬·추천으로 버는 서비스면 광고와 콘텐츠의 구분 표시를 [`references/ad-disclosure.md`](./references/ad-disclosure.md)로 확인한다.
 6. finding마다 유형(국내 가이드라인 유형·근거 조항, 해외 유형), 위치, 측정값이나 캡처, 사용자 피해, 정직한 대안, 우선순위, 법무 확인 필요 여부를 적는다. 법정 유형과 기만 유형은 P1, 법정 기준에 못 미치는 압박(죄책감 문구 등)은 P2다.
 7. 정직한 대안은 사업 목표를 함께 지킨다 — 해지 화면의 한 번뿐인 혜택 안내, 일시 정지 선택지, 남은 이용 기간 안내, 선택 사항인 해지 이유 설문, 같은 무게의 두 버튼.
 8. 결론은 「위법이다」가 아니라 「○○ 유형 해당 소지 — 법무 확인 권장」으로 쓴다. 법령과 지침은 바뀌므로 판정에 쓴 자료의 날짜를 적는다.

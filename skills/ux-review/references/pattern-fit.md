@@ -2,7 +2,7 @@
 
 리뷰 대상의 요소를 패턴 이름으로 적은 뒤, 그 패턴이 지금 쓰임에 맞는지 이 표로 판정한다. 수정안도 같은 이름으로 쓴다. 「로딩 넣어 주세요」라고만 하면 대부분 스피너가 되고, 「피드백 강화」는 읽는 사람마다 다른 화면이 된다.
 
-출처: NN/g Katie Sherwin「Progress Indicators Make a Slow System Less Insufferable」(2014)·Samhita Tankala「Skeleton Screens 101」(2023)·Alita Kendrick「Toggle-Switch Guidelines」(2018)·Angie Li「Date-Input Form Fields」(2017)·Aurora Harley「Slider Design: Rules of Thumb」(2015)·Jakob Nielsen「Confirmation Dialogs Can Prevent User Errors」(2018)·Page Laubheimer「Executing UX Animations」(2020)·Aurora Harley「Icon Usability」(2014)·Hoa Loranger「Infinite Scrolling Is Not for Every Website」(2014)·Kara Pernice·Raluca Budiu「Hamburger Menus and Hidden Navigation Hurt UX Metrics」(2016)·Kate Kaplan「Designing Empty States in Complex Applications: 3 Guidelines」(2021), Buell·Norton「The Labor Illusion」(Management Science, 2011), 토스「좋은 에러 메시지를 만드는 6가지 원칙」(2022), Google Material Design 3의 Snackbar·Dialogs·Bottom sheets 지침, Material Components for Android 모션 문서의 전환 패턴, W3C WCAG 2.2와 Understanding 2.2.1·2.3.1·4.1.3. 원문 문장을 복사하지 않고 요약했다.
+출처: NN/g Katie Sherwin「Progress Indicators Make a Slow System Less Insufferable」(2014)·Samhita Tankala「Skeleton Screens 101」(2023)·Alita Kendrick「Toggle-Switch Guidelines」(2018)·Angie Li「Date-Input Form Fields」(2017)·Aurora Harley「Slider Design: Rules of Thumb」(2015)·Jakob Nielsen「Confirmation Dialogs Can Prevent User Errors」(2018)·Page Laubheimer「Executing UX Animations」(2020)·Aurora Harley「Icon Usability」(2014)·Hoa Loranger「Infinite Scrolling Is Not for Every Website」(2014)·Kara Pernice·Raluca Budiu「Hamburger Menus and Hidden Navigation Hurt UX Metrics」(2016)·Kate Kaplan「Designing Empty States in Complex Applications: 3 Guidelines」(2021), Buell·Norton「The Labor Illusion」(Management Science, 2011), 토스「좋은 에러 메시지를 만드는 6가지 원칙」(2022), Google Material Design 3의 Snackbar·Dialogs·Bottom sheets 지침, Material Components for Android 모션 문서의 전환 패턴, W3C WCAG 2.2와 Understanding 2.2.1·2.3.1·4.1.3. 9절은 Apple HIG Privacy, App Store 심사 지침 5.1.1·5.1.2, Android 개발자 문서「Request runtime permissions」(2026-11-16 확인). 원문 문장을 복사하지 않고 요약했다.
 
 ## 1. 알림·피드백 — 방해 수준
 
@@ -105,17 +105,17 @@ AI 응답 화면의 패턴(스트리밍·중지·출처·다시 생성)은 `ux-a
 
 빈 화면은 비어 있는 이유가 다르면 해야 할 말과 다음 행동이 다르다. 먼저 「비었다」와 「불러오지 못했다」를 구분하는지 본다. 실패를 빈 상태로 그리면(거짓 빈 상태) 사용자는 데이터가 사라졌다고 믿는다. 어느 빈 상태든 지금 상태 한 줄과 다음 행동 하나를 보인다 — 상태 알리기, 배울 단서, 바로 가는 길(Kaplan 2021). 종류 이름은 이 저장소에서 정했다.
 
-| 종류           | 왜 비었나                       | 보여 줄 것                                                 | 이렇게 쓰면 finding                                          |
-| -------------- | ------------------------------- | ---------------------------------------------------------- | ------------------------------------------------------------ |
-| 첫 사용        | 아직 만든 것이 없음             | 여기에 무엇이 쌓이는지 한 줄 + 만들기 버튼(예시·샘플 선택) | 「데이터가 없습니다」만 · 다음 행동 없음                     |
-| 검색 결과 없음 | 검색어에 맞는 것이 없음         | 검색어를 되보여 주고 철자 고치기·비슷한 검색어·범위 넓히기 | 검색어를 지움 · 필터 결과 없음과 같은 화면                   |
-| 필터 결과 없음 | 거르기 조건이 너무 좁음         | 걸린 조건과 「필터 해제」(조건 하나씩 빼기)                | 필터가 걸린 사실이 안 보임 · 검색 결과 없음 문구를 그대로 씀 |
-| 오프라인       | 연결이 끊겨 불러오지 못함       | 연결 상태, 저장해 둔 내용(있으면), 「다시 시도」           | 「아직 없어요」로 그림(거짓 빈 상태)                         |
-| 권한 필요      | 위치·사진·알림 같은 권한이 꺼짐 | 왜 필요한지 한 줄, 설정으로 가는 버튼, 권한 없이 쓰는 길   | 거부 뒤 빈 화면만 · 설정 경로 없음                           |
-| 모두 완료      | 할 일·알림을 다 처리함          | 다 끝냈다는 확인, 새것이 언제 오는지                       | 첫 사용·오류와 같은 모양이라 다 끝낸 것이 실패처럼 보임      |
-| 비운 직후      | 사용자가 방금 지우거나 비움     | 무엇을 비웠는지 + 되돌리기(스낵바, 1절)                    | 되돌리기 없이 첫 사용 화면으로 바뀜                          |
-| 불러오기 실패  | 서버·요청 오류                  | 무엇이 안 됐는지, 다시 시도, 지원 경로                     | 「아직 없어요」로 그림(거짓 빈 상태)                         |
-| 잠김           | 등급·결제·로그인·나이 조건      | 무엇이 있는지 미리보기, 여는 조건과 방법                   | 조건 없이 자물쇠만 · 결제 버튼만 있고 조건·가격이 없음       |
+| 종류           | 왜 비었나                       | 보여 줄 것                                                               | 이렇게 쓰면 finding                                                                   |
+| -------------- | ------------------------------- | ------------------------------------------------------------------------ | ------------------------------------------------------------------------------------- |
+| 첫 사용        | 아직 만든 것이 없음             | 여기에 무엇이 쌓이는지 한 줄 + 만들기 버튼(예시·샘플 선택)               | 「데이터가 없습니다」만 · 다음 행동 없음                                              |
+| 검색 결과 없음 | 검색어에 맞는 것이 없음         | 검색어를 되보여 주고 철자 고치기·비슷한 검색어·범위 넓히기               | 검색어를 지움 · 필터 결과 없음과 같은 화면 · 대화상자로 알려 닫아야 다시 찾을 수 있음 |
+| 필터 결과 없음 | 거르기 조건이 너무 좁음         | 걸린 조건과 「필터 해제」(조건 하나씩 빼기)                              | 필터가 걸린 사실이 안 보임 · 검색 결과 없음 문구를 그대로 씀                          |
+| 오프라인       | 연결이 끊겨 불러오지 못함       | 상단 배너의 연결 상태, 보던 내용과 저장해 둔 내용(있으면), 「다시 시도」 | 「아직 없어요」로 그림(거짓 빈 상태) · 보던 내용을 지우고 전체 화면 오류로 바꿈       |
+| 권한 필요      | 위치·사진·알림 같은 권한이 꺼짐 | 왜 필요한지 한 줄, 설정으로 가는 버튼, 권한 없이 쓰는 길                 | 거부 뒤 빈 화면만 · 설정 경로 없음                                                    |
+| 모두 완료      | 할 일·알림을 다 처리함          | 다 끝냈다는 확인, 새것이 언제 오는지                                     | 첫 사용·오류와 같은 모양이라 다 끝낸 것이 실패처럼 보임                               |
+| 비운 직후      | 사용자가 방금 지우거나 비움     | 무엇을 비웠는지 + 되돌리기(스낵바, 1절)                                  | 되돌리기 없이 첫 사용 화면으로 바뀜                                                   |
+| 불러오기 실패  | 서버·요청 오류                  | 무엇이 안 됐는지, 다시 시도, 지원 경로                                   | 「아직 없어요」로 그림(거짓 빈 상태)                                                  |
+| 잠김           | 등급·결제·로그인·나이 조건      | 무엇이 있는지 미리보기, 여는 조건과 방법                                 | 조건 없이 자물쇠만 · 결제 버튼만 있고 조건·가격이 없음                                |
 
 판정 순서:
 
@@ -135,3 +135,16 @@ AI 응답 화면의 패턴(스트리밍·중지·출처·다시 생성)은 `ux-a
 | 긴 과제의 끝   | 완료 화면                                                       | 가입·신청·결제·예약     | 무엇이 끝났는지(금액·번호·날짜)와 다음 할 일 없이 「완료!」만 · 완료 화면에서 갈 곳이 없음           |
 
 접근성 대조: 완료 결과는 연출과 따로 `role="status"`로 알린다. 컨페티·스탬프 같은 움직임은 움직임 줄이기 설정에서 끄고, 1초에 세 번 넘게 번쩍이지 않게 한다(WCAG 2.3.1).
+
+## 9. 권한 요청 — 언제·어떻게 묻나
+
+권한은 한 번 거절되면 다시 묻기 어렵다. Android에서 같은 권한을 두 번 거절하면 시스템 창은 더 뜨지 않는다. 물을지, 언제 물을지, 거절하면 어떻게 할지를 차례로 판정한다. 화면 이름은 `ux-spec`의 컴포넌트 이름표 22절.
+
+판정 순서:
+
+1. 권한 없이 되는지 먼저 본다. 사진 고르기는 시스템 사진 선택기, 보내기는 공유 시트, 주소는 직접 입력으로 끝나면 권한을 묻지 않는다.
+2. 기능을 쓰려는 순간에 묻는다. 첫 실행에 묻는 것은 그 권한 없이 앱이 제 일을 못 할 때(길 안내의 위치)뿐이다. 첫 실행에 권한 창을 여러 개 연달아 띄우면 P2다.
+3. 맥락만으로 이유가 분명하지 않을 때만 미리 안내를 둔다. 무엇에 쓰는지 한 줄, 버튼은 iOS면 「계속」 하나, Android면 「계속」과 「괜찮아요」. 시스템 창처럼 그리거나, 버튼을 「허용」이라 쓰거나, 허용에 보상을 걸면 P1이다(`ux-dark-patterns`의 권한 요청 장치).
+4. 필요한 만큼만 받는다. 대략 위치·고른 사진만·앱을 쓰는 동안만으로 되는 기능에 정확한 위치·전체 사진·항상 허용을 요구하지 않는다. 일부만 허용한 사용자에게 전체 허용을 거듭 요구하지 않는다.
+5. 거절하면 쓸 수 있는 만큼 쓰게 한다. 앱 전체를 막지 않고, 빠진 기능의 자리에서 무엇이 안 되는지 알린다(7절의 권한 필요). 위치를 거절하면 주소 직접 입력처럼 같은 일을 하는 길을 준다.
+6. 사용자가 그 기능을 다시 쓰려 할 때만 다시 묻는다. 시스템 창이 더 뜨지 않으면 설정으로 가는 버튼과 켤 항목 이름을 보인다. 거절 직후 설정으로 보내 결정을 바꾸게 하지 않는다.

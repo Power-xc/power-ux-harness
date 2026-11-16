@@ -1,6 +1,6 @@
 # 결정 장치 — 정직한 쓰임과 기만의 경계
 
-출처: 행동경제학의 널리 알려진 개념(앵커링·손실 회피·기본값 효과·사회적 증거·희소성·프레이밍·선택 과부하·피크엔드 법칙·자이가르닉 효과)을 Jon Yablonski『Laws of UX』(2판, 2024)와 공정위 가이드라인(2026)의 유형에 맞춰 이 저장소에서 정리했다. 가격표 장치는 Tversky·Kahneman「Judgment under Uncertainty」(Science, 1974), Huber·Payne·Puto「Adding Asymmetrically Dominated Alternatives」(Journal of Consumer Research, 1982), Simonson「Choice Based on Reasons」(Journal of Consumer Research, 1989), Thomas·Morwitz「Penny Wise and Pound Foolish」(Journal of Consumer Research, 2005), Valenzuela·Raghubir「Position-Based Beliefs: The Center-Stage Effect」(Journal of Consumer Psychology, 2009), Frederick·Lee·Baskin「The Limits of Attraction」(Journal of Marketing Research, 2014)를, 노동 착시는 Buell·Norton「The Labor Illusion」(Management Science, 2011)을 요약했다.
+출처: 행동경제학의 널리 알려진 개념(앵커링·손실 회피·기본값 효과·사회적 증거·희소성·프레이밍·선택 과부하·피크엔드 법칙·자이가르닉 효과)을 Jon Yablonski『Laws of UX』(2판, 2024)와 공정위 가이드라인(2026)의 유형에 맞춰 이 저장소에서 정리했다. 가격표 장치는 Tversky·Kahneman「Judgment under Uncertainty」(Science, 1974), Huber·Payne·Puto「Adding Asymmetrically Dominated Alternatives」(Journal of Consumer Research, 1982), Simonson「Choice Based on Reasons」(Journal of Consumer Research, 1989), Thomas·Morwitz「Penny Wise and Pound Foolish」(Journal of Consumer Research, 2005), Valenzuela·Raghubir「Position-Based Beliefs: The Center-Stage Effect」(Journal of Consumer Psychology, 2009), Frederick·Lee·Baskin「The Limits of Attraction」(Journal of Marketing Research, 2014)를, 노동 착시는 Buell·Norton「The Labor Illusion」(Management Science, 2011)을, 권한 요청 장치는 Apple HIG Privacy와 App Store 심사 지침 5.1.1(iv)·5.1.2(i), Android 개발자 문서「Request runtime permissions」(2026-11-16 확인)를 요약했다.
 
 같은 장치도 사실에 근거하면 결정을 돕고, 사실이 아니거나 사용자의 이익에 반하면 기만이다. 경계를 넘으면 P1이다.
 
@@ -37,6 +37,18 @@
 2. 요금제 사이의 차이를 같은 항목·같은 단위로 보여 주는가.
 3. 강조한 요금제의 근거(추천 기준이나 실제 집계)를 댈 수 있는가, 미리 선택돼 있지 않은가.
 4. 취소선 정가에 판매 이력이 있고, 첫 화면 가격이 최종 결제 금액과 같은가.
+
+## 권한 요청 장치
+
+시스템 허용 창은 앱이 모양을 바꿀 수 없다. 그래서 조작은 그 앞(미리 안내)과 뒤(거절 뒤 화면)에서 일어난다. Apple은 추적 허용 창 앞에 보상을 걸거나, 허용 창처럼 생긴 화면을 띄우거나, 허용 창 그림에 「허용」을 표시한 화면을 심사에서 거절한다.
+
+| 장치         | 정직한 쓰임                                          | 기만으로 넘어가는 선                                                                  |
+| ------------ | ---------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| 미리 안내    | 무엇에 쓰는지 한 줄과 시스템 창을 여는 「계속」 버튼 | 버튼을 「허용」이라 씀 · 시스템 창과 같은 모양 · 시스템 창 그림에서 「허용」을 가리킴 |
+| 보상         | —                                                    | 허용하면 적립금·쿠폰을 줌 · 알림·위치를 켜야 기능이나 보상을 줌(App Store 5.1.2(i))   |
+| 다시 묻기    | 거절한 기능을 사용자가 다시 쓰려 할 때 한 번         | 화면을 열 때마다 다시 띄움(끈질긴 요구) · 거절 직후 설정 화면으로 보냄                |
+| 거절 뒤 화면 | 권한 없이 쓸 수 있는 만큼 쓰게 하고 빠진 기능만 알림 | 거절하면 앱 전체를 막음 · 상관없는 기능까지 그 권한을 요구함(5.1.1(iv))               |
+| 일부만 허용  | 고른 사진·대략 위치로 되는 기능은 그대로 둠          | 일부 허용을 거절처럼 다뤄 전체 허용을 거듭 요구                                       |
 
 ## 판정 질문
 

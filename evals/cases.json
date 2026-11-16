@@ -40,6 +40,13 @@
       "why": "경계 양성 — 빈 상태의 종류 구분과 실패를 빈 상태로 그린 문제를 판정, 문구 다듬기가 아님"
     },
     {
+      "id": "review-7",
+      "prompt": "우리 앱이 처음 켜자마자 알림·위치·카메라 권한 창을 연달아 띄우고, 거절하면 앱 전체를 막는 경고가 떠. 이 화면 흐름 리뷰해 줘",
+      "expectSkill": "ux-review",
+      "shouldNotFire": "ux-spec",
+      "why": "경계 양성 — 만든 권한 요청 흐름의 묻는 시점과 거절 뒤 처리 평가, 새 설계서 작성이 아님"
+    },
+    {
       "id": "research-1",
       "prompt": "@ux interview 30대 맞벌이 부부의 장보기 습관",
       "expectSkill": "ux-research",
@@ -130,6 +137,13 @@
       "why": "경계 양성 — 생김새와 뭉뚱그린 지시를 컴포넌트 이름으로 바꿔 설계서에 적는 일, 만든 화면 평가가 아님"
     },
     {
+      "id": "spec-7",
+      "prompt": "주문 내역 화면 설계서 써 줘. 목록은 리스트로 할지 테이블로 할지, 월별 결제 금액은 무슨 그래프로 보일지, 검색 칸의 최근 검색어·자동완성까지 이름으로 정해서 영역별로 적어 줘",
+      "expectSkill": "ux-spec",
+      "shouldNotFire": "ux-review",
+      "why": "경계 양성 — 목록 방식·그래프·검색 화면의 이름을 골라 설계서 영역에 적는 일, 만든 화면 평가가 아님"
+    },
+    {
       "id": "write-1",
       "prompt": "@ux write 결제 실패 오류 문구",
       "expectSkill": "ux-writing",
@@ -212,6 +226,13 @@
       "expectSkill": "ux-dark-patterns",
       "shouldNotFire": "ux-review",
       "why": "광고와 콘텐츠의 구분 표시(기만) 여부를 묻는다"
+    },
+    {
+      "id": "dark-6",
+      "prompt": "알림 허용하면 적립금 1,000원 준다는 안내 화면을 권한 창 앞에 띄우고 버튼을 '허용'으로 하려는데, 이거 다크패턴이야?",
+      "expectSkill": "ux-dark-patterns",
+      "shouldNotFire": "ux-writing",
+      "why": "권한 요청 앞 화면의 보상·허용 문구가 기만 경계를 넘는지 판단, 문구 다듬기가 아님"
     },
     {
       "id": "metrics-1",

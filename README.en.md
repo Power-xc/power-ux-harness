@@ -211,7 +211,7 @@ Given a domain, links and a planning doc, it opens every source and tags it with
 </picture>
 
 - **When** — "A spec developers can build from", "A screen spec an agent can implement directly"
-- **What it does** — pins down names people mix up (toast vs. snackbar, dialog vs. bottom sheet) so design, engineering and agents call the same thing by the same name, writes icon-only buttons known by their shape (hamburger, kebab, meatball) by function and accessible name, picks between 18 look-alike pairs (switch vs. checkbox, menu vs. select, tooltip vs. popover …) with one deciding question, names indicators, rating widgets, share icons, screen transitions, page layouts, date pickers, first-run screens, button states, text effects and gestures, looks a name up from a description ("the panel that slides up from the bottom"), rewrites vague requests ("add a loader") as instructions with a name, a condition and a duration, and, when an AI draws the screen, replaces "make it pretty" with a style name plus the accessibility criteria that style breaks first. It runs a handoff checklist for missing states and copy.
+- **What it does** — pins down names people mix up (toast vs. snackbar, dialog vs. bottom sheet) so design, engineering and agents call the same thing by the same name, writes icon-only buttons known by their shape (hamburger, kebab, meatball) by function and accessible name, picks between 18 look-alike pairs (switch vs. checkbox, menu vs. select, tooltip vs. popover …) with one deciding question, names indicators, rating widgets, share icons, screen transitions, page layouts, date pickers, first-run screens, button states, text effects and gestures, picks a list display (list, grid, table, masonry …) by what people choose with and a chart by the question the number answers, names each moment of search (recent searches, autocomplete, no results, scope tabs) and each permission screen (pre-permission, system dialog, limited access, denied state), looks a name up from a description ("the panel that slides up from the bottom"), rewrites vague requests ("add a loader") as instructions with a name, a condition and a duration, and, when an AI draws the screen, replaces "make it pretty" with a style name plus the accessibility criteria that style breaks first, including 18 named type styles for headings. It runs a handoff checklist for missing states and copy.
 - **Alias** — `@ux spec`
 
 ### ux-writing
@@ -237,7 +237,7 @@ Given a domain, links and a planning doc, it opens every source and tags it with
 </picture>
 
 - **When** — "Users seem lost in onboarding", "Delete only shows a toast; Undo or a confirmation dialog?", "A switch plus a Save button, is that OK?"
-- **What it does** — finds heuristic violations along the observed path, checks whether each notification fits its interruption level (0–3) and whether a pricing table shows its comparison items, the basis of its recommendation and the billed amount, and whether a completion cue fits the size of the task, then converts severity to P1–P3 and picks the one to three fixes to do first.
+- **What it does** — finds heuristic violations along the observed path, checks whether each notification fits its interruption level (0–3) and whether a pricing table shows its comparison items, the basis of its recommendation and the billed amount, whether a completion cue fits the size of the task, and whether permissions are asked at the moment of use and the app stays usable after a denial, then converts severity to P1–P3 and picks the one to three fixes to do first.
 - **Scope of the verdict** — splits empty states by why they are empty (first use, no results, offline, permission, all caught up, just emptied, failed to load, locked) and catches false empty states that show a failed load as "nothing here yet"; also checks near-empty first-run (cold start), error and end states; errors that cannot be triggered safely in production are reproduced by failing requests in a demo build or confirmed in code. A state still unseen adds "partial" to the verdict, and a block that happens only on some devices, permissions or data adds "conditional". When a screen renders differently in demo and production, every finding records the observed build.
 - **Aliases** — `@ux review` · `@ux funnel`
 
@@ -264,7 +264,7 @@ Given a domain, links and a planning doc, it opens every source and tags it with
 </picture>
 
 - **When** — "Is our cancel flow legal?", "An add-on is pre-checked at checkout", "Is this pop-up too frequent?", "Can we add a pricier plan so the middle one sells?", "Where should the label go on ad cards mixed into the feed?"
-- **What it does** — counts the steps of the sign-up and cancel paths side by side, pairs each type with an honest alternative, separates honest use from deception for pricing-table nudges (anchoring, the compromise effect, decoy plans, struck-through list prices), checks how ads are told apart from content in ad- or sponsorship-funded services, measures whether cancellation and account deletion show the restore deadline as a date and offer the app-store account-deletion path, adds EU DSA and US FTC checks for overseas users, and leaves the final legal call to counsel.
+- **What it does** — counts the steps of the sign-up and cancel paths side by side, pairs each type with an honest alternative, separates honest use from deception for pricing-table nudges (anchoring, the compromise effect, decoy plans, struck-through list prices) and for screens around a permission prompt (an "Allow" button, rewards, nagging after a denial), checks how ads are told apart from content in ad- or sponsorship-funded services, measures whether cancellation and account deletion show the restore deadline as a date and offer the app-store account-deletion path, adds EU DSA and US FTC checks for overseas users, and leaves the final legal call to counsel.
 - **Alias** — `@ux dark`
 
 ### ux-metrics
@@ -311,7 +311,7 @@ Given a domain, links and a planning doc, it opens every source and tags it with
 | Set metrics and guardrails to tell whether the onboarding revamp worked                           | `ux-metrics`       |
 | What confirmation should an AI agent show before sending an email for me?                         | `ux-ai`            |
 
-All 58 request–skill pairs live in [`evals/cases.json`](evals/cases.json). Requests that are easy to confuse with a neighboring skill carry `shouldNotFire`, which pins the boundary.
+All 61 request–skill pairs live in [`evals/cases.json`](evals/cases.json). Requests that are easy to confuse with a neighboring skill carry `shouldNotFire`, which pins the boundary.
 
 ## Install
 
