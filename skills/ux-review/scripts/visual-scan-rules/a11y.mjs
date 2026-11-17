@@ -1,3 +1,4 @@
+// visual-scan-disable-file: 규칙 예시 문자열이 있어 스캐너가 이 파일을 건너뛴다
 import { R, rx, lineHits, has } from "./helpers.mjs";
 
 const GLYPH_LABEL =

@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// visual-scan-disable-file: 규칙 예시 문자열이 있어 스캐너가 이 파일을 건너뛴다
 // 코드에서 시각 디테일 단서(글자·색·배치·표면·접근성·문구)를 찾아 `파일:줄`로 낸다. 의존성 없음.
 // 기준 문서는 규칙마다 doc 에 이름으로 적는다. 단서는 확정이 아니므로 맥락을 보고 판정한다.
 import { readFileSync, readdirSync, statSync } from "node:fs";
@@ -9,12 +10,21 @@ import { RULES } from "./visual-scan-rules/index.mjs";
 
 export { RULES };
 
+const DISABLE_MARKER = "visual-scan-disable-file";
+const DISABLE_SCAN_LINES = 5;
+const COMMENT_START = /^\s*(?:\/\/|\/\*|\*|<!--|#)/;
+
+const isDisabled = (text) =>
+  text.split("\n", DISABLE_SCAN_LINES).some((line) => COMMENT_START.test(line) && line.includes(DISABLE_MARKER));
+
 const USAGE = `사용법: node visual-scan.mjs <파일·폴더…> [--level error|warn|info] [--json] [--rules]
 
   <파일·폴더…>  검사할 대상. 폴더는 재귀로 돈다(.css .scss .sass .less .html .htm .jsx .tsx .js .ts .mjs .cjs .vue .svelte .astro)
   --level       보여 줄 가장 낮은 등급 (기본 warn)
   --json        결과를 JSON 배열로 낸다
   --rules       규칙 표를 내고 끝낸다
+
+  파일 첫 5줄 안의 주석에 visual-scan-disable-file 이 있으면 그 파일은 건너뛴다(요약에 개수를 붙인다)
 
   종료 코드: 0 오류 등급 없음 · 1 오류 등급 있음 · 2 사용법·파일 읽기 실패`;
 
@@ -183,7 +193,7 @@ function printRules() {
   console.log(`\n규칙 ${RULES.length}개`);
 }
 
-function printText(shown, results, level, fileCount) {
+function printText(shown, results, level, fileCount, disabled) {
   let last = null;
   for (const f of shown) {
     if (last !== null && last !== f.file) console.log("");
@@ -195,7 +205,9 @@ function printText(shown, results, level, fileCount) {
     levelRank(name) > levelRank(level) && count(name) > 0
       ? `${name} ${count(name)}(숨김, --level ${name}로 보기)`
       : `${name} ${count(name)}`;
-  console.log(`${shown.length > 0 ? "\n" : ""}${LEVELS.map(label).join(" · ")} — 파일 ${fileCount}개 검사`);
+  console.log(
+    `${shown.length > 0 ? "\n" : ""}${LEVELS.map(label).join(" · ")} — 파일 ${fileCount}개 검사${disabled > 0 ? `, ${disabled}개 끔` : ""}`,
+  );
 }
 
 function main(argv) {
@@ -205,17 +217,19 @@ function main(argv) {
     return 0;
   }
   const files = collect(opts.targets);
-  const sources = files.map((file) => {
+  const all = files.map((file) => {
     try {
       return { path: file, text: readFileSync(file, "utf8") };
     } catch (error) {
       throw new UsageError(`${file}: 읽을 수 없다 (${error.code ?? error.message})`);
     }
   });
+  const sources = all.filter((s) => !isDisabled(s.text));
+  const disabled = all.length - sources.length;
   const results = scanSources(sources);
   const shown = results.filter((r) => levelRank(r.level) <= levelRank(opts.level));
   if (opts.json) console.log(JSON.stringify(shown, null, 2));
-  else printText(shown, results, opts.level, files.length);
+  else printText(shown, results, opts.level, sources.length, disabled);
   return results.some((r) => r.level === "error") ? 1 : 0;
 }
 

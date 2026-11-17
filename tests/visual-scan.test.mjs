@@ -283,3 +283,24 @@ test("규칙 파일은 800줄을 넘지 않고 area·doc 은 id 접두사에서 
   assert.equal(RULES.find((r) => r.id === "copy-locale-default").doc, "ux-writing/references/ko-rules.md");
   assert.equal(RULES.find((r) => r.id === "copy-oops").doc, "ux-writing/references/en-rules.md");
 });
+
+test("첫 5줄 주석에 visual-scan-disable-file 이 있는 파일은 건너뛰고 개수를 요약에 붙인다", () => {
+  const bad = '<p className="text-justify">x</p>\n';
+  const off = put(dir, "disable/off.tsx", `// visual-scan-disable-file\n${bad}`);
+  const on = put(dir, "disable/on.tsx", bad);
+  const late = put(dir, "disable/late.tsx", `\n\n\n\n\n// visual-scan-disable-file\n${bad}`);
+  assert.equal(run([off]).stdout.includes("type-justify"), false);
+  assert.match(run([off]).stdout, /파일 0개 검사, 1개 끔/);
+  assert.deepEqual([...new Set(jsonRun([join(dir, "disable")]).map((f) => f.file))], [late, on].sort());
+  assert.match(run([join(dir, "disable")]).stdout, /파일 2개 검사, 1개 끔/);
+  assert.doesNotMatch(run([on]).stdout, /끔/);
+});
+
+test("이 저장소의 visual-scan 규칙 파일에서는 error 가 나오지 않는다", () => {
+  const found = jsonRun([join(ROOT, "skills", "ux-review", "scripts")]);
+  assert.deepEqual(
+    found.filter((f) => f.level === "error"),
+    [],
+  );
+  assert.equal(run([join(ROOT, "skills", "ux-review", "scripts")]).status, 0);
+});
