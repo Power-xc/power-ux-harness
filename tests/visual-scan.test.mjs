@@ -218,3 +218,68 @@ test("이 저장소 skills/ 아래 .mjs 에 돌려도 읽기 실패(종료 코�
   assert.notEqual(result.status, CODES.usage, result.stderr);
   assert.match(result.stdout, /파일 \d+개 검사/);
 });
+
+test("점으로 시작하는 폴더와 테스트 파일은 폴더를 걸을 때 건너뛰고, 직접 이름으로 준 파일은 검사한다", () => {
+  const root = join(dir, "dotskip");
+  const bad = '<p className="text-justify">x</p>\n';
+  put(root, "src/ok.tsx", bad);
+  for (const name of [
+    ".next-e2e/a.css",
+    ".vercel/a.tsx",
+    ".expo/a.tsx",
+    "src/a.test.tsx",
+    "src/a.spec.ts",
+    "src/__tests__/a.tsx",
+    "src/__mocks__/a.tsx",
+  ]) {
+    put(root, name, bad);
+  }
+  assert.deepEqual([...new Set(jsonRun([root]).map((f) => f.file))], [join(root, "src", "ok.tsx")]);
+  const direct = join(root, "src", "a.test.tsx");
+  assert.deepEqual([...new Set(jsonRun([direct]).map((f) => f.file))], [direct]);
+});
+
+test("마크업 규칙은 CSS 파일의 속성 선택자에서 돌지 않는다", () => {
+  assert.deepEqual(ruleIds('[role="button"] { cursor: pointer; }', "a.css"), []);
+  assert.ok(ruleIds('<div role="button" onClick={f}>x</div>', "a.tsx").includes("a11y-role-no-key"));
+  assert.ok(ruleIds("button:focus { outline: none; }", "a.css").includes("a11y-outline-none"));
+});
+
+test("tabindex -1 인 제목은 outline 을 지워도 걸리지 않는다", () => {
+  const line = '<h2 ref={headingRef} tabIndex={-1} className="text-lg focus:outline-none">';
+  assert.ok(!ruleIds(line, "a.tsx").includes("a11y-outline-none"));
+  assert.ok(ruleIds('<h2 className="focus:outline-none">', "a.tsx").includes("a11y-outline-none"));
+});
+
+test("React Native 파일의 한글은 keep-all 후보에서 빠진다", () => {
+  const rn = { path: "a.tsx", text: 'import { Text } from "react-native";\n<Text>안녕</Text>' };
+  assert.deepEqual(scanSources([rn]), []);
+  const web = { path: "b.tsx", text: "<p>안녕</p>" };
+  assert.deepEqual(
+    scanSources([rn, web]).map((f) => f.file),
+    ["b.tsx"],
+  );
+});
+
+test("요약은 --level 로 숨긴 등급도 세고 숨겼다고 밝힌다", () => {
+  const file = put(dir, "summary/a.tsx", '<p className="text-justify select-none">x</p>\n');
+  const out = run([file]).stdout;
+  assert.match(out, /error 0 · warn 1 · info 1\(숨김, --level info로 보기\) — 파일 1개 검사/);
+  assert.match(run([file, "--level", "info"]).stdout, /error 0 · warn 1 · info 1 — 파일 1개 검사/);
+});
+
+test("copy-locale-default 는 날짜와 숫자 모두 locale 인자 없는 호출에 걸린다", () => {
+  assert.ok(ruleIds("d.toLocaleDateString()", "a.tsx").includes("copy-locale-default"));
+  assert.ok(ruleIds("price.toLocaleString()", "a.tsx").includes("copy-locale-default"));
+  assert.ok(!ruleIds('price.toLocaleString("ko-KR")', "a.tsx").includes("copy-locale-default"));
+  assert.ok(!RULES.some((r) => r.id === "copy-date-no-locale"));
+});
+
+test("규칙 파일은 800줄을 넘지 않고 area·doc 은 id 접두사에서 채워진다", () => {
+  for (const r of RULES) {
+    const prefix = r.id.split("-")[0];
+    assert.equal(r.area, RULES.find((o) => o.id.startsWith(`${prefix}-`)).area, r.id);
+  }
+  assert.equal(RULES.find((r) => r.id === "copy-locale-default").doc, "ux-writing/references/ko-rules.md");
+  assert.equal(RULES.find((r) => r.id === "copy-oops").doc, "ux-writing/references/en-rules.md");
+});
