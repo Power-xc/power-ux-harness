@@ -8,6 +8,7 @@ Sources: Apple Human Interface Guidelines "Writing" (updated 2025), Material Des
 - Address the user as "you". Avoid "we" and do not mix "my" and "your" on one screen.
 - Prefer plain words over jargon and Latin abbreviations (e.g. → for example).
 - Keep one message per string. Cut words that do not change the meaning.
+- Before writing, find the existing nouns and verbs in the locale files and reuse them. Naming one thing two ways is a finding.
 - Use the right verb for the device: "tap" on touch screens, "click" with a pointer, or a neutral verb ("select") when both apply.
 
 ## 2. Surface rules
@@ -22,6 +23,8 @@ Sources: Apple Human Interface Guidelines "Writing" (updated 2025), Material Des
 | Dialog             | The headline asks about the action, not "Are you sure?". The body states the consequence and whether it can be undone. At most two actions; the confirm action is a specific verb, not OK                  | Headline "Cancel your plan?" · body "You can keep using it until November 30" · "Keep plan" / "Cancel plan" |
 | Toast or snackbar  | A short result; a snackbar may add one action such as "Undo"                                                                                                                                               | "Note deleted" · "Undo"                                                                                     |
 | Empty state        | The next step, with a button or link. When a screen can be empty for different reasons, write copy per reason (no search results ≠ no filter results ≠ failed to load — `ux-review` pattern-fit section 7) | "Write your first note"                                                                                     |
+| Toggle             | Describe the ON state: "Send read receipts", not "Don't send read receipts". Link straight to a referenced setting instead of describing the path to it                                                    | "Send read receipts" · "Notification settings" link                                                         |
+| Placeholder        | A realistic example in the accepted format, never an instruction and never a label                                                                                                                         | `name@example.com` · `DD/MM/YYYY`                                                                           |
 | Permission request | Why it is needed now and what it is used for. The system prompt's purpose string is one active sentence; a pre-permission button says "Continue", never "Allow"                                            |                                                                                                             |
 | Progress           | What is happening, not "Processing…"                                                                                                                                                                       | "Requesting approval from your bank"                                                                        |
 
@@ -33,8 +36,9 @@ Sources: Apple Human Interface Guidelines "Writing" (updated 2025), Material Des
 | "Invalid", "valid", "not valid"                             | Does not say what is wrong     | State the condition               |
 | "This field is required"                                    | No instruction                 | "Enter …"                         |
 | "Oops", "Whoops", "Sorry"                                   | Adds tone, removes information | Remove; give the fix              |
-| "Please" in errors                                          | Padding                        | Remove                            |
+| "Please" in errors and routine instructions                 | Padding                        | Remove                            |
 | "You forgot to …"                                           | Blame                          | State the instruction             |
+| "successfully"                                              | Filler                         | "Changes saved"                   |
 | "Click here", "Learn more" alone                            | Meaningless out of context     | Name the destination              |
 | OK / Yes on consequential actions                           | Does not name the result       | Specific verb                     |
 | Guilt in decline options ("No, I don't want to save money") | Pressure                       | Neutral decline ("Not now")       |
