@@ -211,7 +211,7 @@ Given a domain, links and a planning doc, it opens every source and tags it with
 </picture>
 
 - **When** — "A spec developers can build from", "A screen spec an agent can implement directly"
-- **What it does** — pins down names people mix up (toast vs. snackbar, dialog vs. bottom sheet) so design, engineering and agents call the same thing by the same name, writes icon-only buttons known by their shape (hamburger, kebab, meatball) by function and accessible name, picks between 18 look-alike pairs (switch vs. checkbox, menu vs. select, tooltip vs. popover …) with one deciding question, names indicators, rating widgets, share icons, screen transitions, page layouts, date pickers, first-run screens, button states, text effects and gestures, picks a list display (list, grid, table, masonry …) by what people choose with and a chart by the question the number answers, names each moment of search (recent searches, autocomplete, no results, scope tabs) and each permission screen (pre-permission, system dialog, limited access, denied state), looks a name up from a description ("the panel that slides up from the bottom"), rewrites vague requests ("add a loader") as instructions with a name, a condition and a duration, and, when an AI draws the screen, replaces "make it pretty" with a style name plus the accessibility criteria that style breaks first, including 18 named type styles for headings. It runs a handoff checklist for missing states and copy.
+- **What it does** — pins down names people mix up (toast vs. snackbar, dialog vs. bottom sheet) so design, engineering and agents call the same thing by the same name, writes icon-only buttons known by their shape (hamburger, kebab, meatball) by function and accessible name, picks between 18 look-alike pairs (switch vs. checkbox, menu vs. select, tooltip vs. popover …) with one deciding question, names indicators, rating widgets, share icons, screen transitions, page layouts, date pickers, first-run screens, button states, text effects and gestures, picks a list display (list, grid, table, masonry …) by what people choose with and a chart by the question the number answers, names each moment of search (recent searches, autocomplete, no results, scope tabs) and each permission screen (pre-permission, system dialog, limited access, denied state), looks a name up from a description ("the panel that slides up from the bottom"), rewrites vague requests ("add a loader") as instructions with a name, a condition and a duration, and, when an AI draws the screen, replaces "make it pretty" with a style name plus the accessibility criteria that style breaks first, including 18 named type styles for headings. Type scale, line height, color steps with two token layers, spacing, nested radii, shadows and motion durations and curves are written as roles and token names, split into exact values (a violation is a finding) and starting values that follow the project's own scale. A "situations that break it" axis lists long names, Korean composition, zero items and narrow widths as the spec's exceptions. It runs a handoff checklist for missing states and copy.
 - **Alias** — `@ux spec`
 
 ### ux-writing
@@ -224,7 +224,7 @@ Given a domain, links and a planning doc, it opens every source and tags it with
 </picture>
 
 - **When** — "Polish these error messages", "Every button says OK, what should each say?", "Review our English UI copy"
-- **What it does** — writes errors, buttons, empty states, notifications, confirmation dialogs, permission requests and form labels by Korean and English rules, and builds a glossary so one thing keeps one name. It also finds Korean words that read fine but that people rarely use at work (a literary verb where a plain business term is the norm) with a word list and a bundled script, and replaces them.
+- **What it does** — writes errors, buttons, empty states, notifications, confirmation dialogs, permission requests and form labels by Korean and English rules, and builds a glossary so one thing keeps one name. It also finds Korean words that read fine but that people rarely use at work (a literary verb where a plain business term is the norm) with a word list and a bundled script, and replaces them. A settings toggle is named for what happens when it is on, placeholder text is a real example of the expected format, and translation files reuse words that already exist before inventing new ones.
 - **Aliases** — `@ux write` · `@ux copy-review`
 
 ### ux-review
@@ -237,8 +237,8 @@ Given a domain, links and a planning doc, it opens every source and tags it with
 </picture>
 
 - **When** — "Users seem lost in onboarding", "Delete only shows a toast; Undo or a confirmation dialog?", "A switch plus a Save button, is that OK?"
-- **What it does** — finds heuristic violations along the observed path, checks whether each notification fits its interruption level (0–3) and whether a pricing table shows its comparison items, the basis of its recommendation and the billed amount, whether a completion cue fits the size of the task, and whether permissions are asked at the moment of use and the app stays usable after a denial, then converts severity to P1–P3 and picks the one to three fixes to do first.
-- **Scope of the verdict** — splits empty states by why they are empty (first use, no results, offline, permission, all caught up, just emptied, failed to load, locked) and catches false empty states that show a failed load as "nothing here yet"; also checks near-empty first-run (cold start), error and end states; errors that cannot be triggered safely in production are reproduced by failing requests in a demo build or confirmed in code. A state still unseen adds "partial" to the verdict, and a block that happens only on some devices, permissions or data adds "conditional". When a screen renders differently in demo and production, every finding records the observed build.
+- **What it does** — finds heuristic violations along the observed path, checks whether each notification fits its interruption level (0–3) and whether a pricing table shows its comparison items, the basis of its recommendation and the billed amount, whether a completion cue fits the size of the task, and whether permissions are asked at the moment of use and the app stays usable after a denial, then converts severity to P1–P3 and picks the one to three fixes to do first. Fixes are chosen cheapest first: delete, then a platform feature, then something that already exists, then fix a value, then add. When the target is a branch, a PR or uncommitted changes, it reviews only the changed lines and tags each finding with its cause: new, regression or pre-existing. A bundled script finds visual-detail clues in code, such as `transition: all`, a line height with a unit or Enter during composition, and the reference docs make the call (66 rules).
+- **Scope of the verdict** — splits empty states by why they are empty (first use, no results, offline, permission, all caught up, just emptied, failed to load, locked) and catches false empty states that show a failed load as "nothing here yet"; also checks near-empty first-run (cold start), error and end states; errors that cannot be triggered safely in production are reproduced by failing requests in a demo build or confirmed in code. A state still unseen adds "partial" to the verdict, and a block that happens only on some devices, permissions or data adds "conditional". When a screen renders differently in demo and production, every finding records the observed build. Thirteen items, such as a control with no name, no focus indicator or content lost at 320px, are never downgraded: they are P1 even on a small or rarely used screen.
 - **Aliases** — `@ux review` · `@ux funnel`
 
 ### ux-a11y
@@ -251,7 +251,7 @@ Given a domain, links and a planning doc, it opens every source and tags it with
 </picture>
 
 - **When** — "Prepare for an accessibility certification", "Can a screen-reader user finish checkout?", "Are our touch targets big enough?"
-- **What it does** — checks keyboard and focus, accessible names and roles, contrast, target size, time limits, forms and authentication, and labels each result as automated, manual, code-inferred or not checked. Text over images, gradients or translucent layers is measured from screenshot pixels with a bundled script.
+- **What it does** — checks keyboard and focus, accessible names and roles, contrast, target size, time limits, forms and authentication, and labels each result as automated, manual, code-inferred or not checked. Text over images, gradients or translucent layers is measured from screenshot pixels with a bundled script. It also covers code-level implementation patterns: moving focus and returning it, dialogs, live regions, linking form errors, hit areas and Enter during Korean composition.
 - **Alias** — `@ux a11y`
 
 ### ux-dark-patterns
@@ -303,15 +303,18 @@ Given a domain, links and a planning doc, it opens every source and tags it with
 | I'm testing a new booking flow with five users next week, write the tasks and the script          | `ux-research`      |
 | List the screens and edge cases from sign-up to first order                                       | `ux-flow`          |
 | Spec just the payment-method screen: components, states and copy by region                        | `ux-spec`          |
+| Put the type scale and color token values in the spec too                                         | `ux-spec`          |
 | Every button says OK, decide what each screen's button should say                                 | `ux-writing`       |
 | The Korean UI copy has literary words people don't use at work; replace them with plain ones      | `ux-writing`       |
 | Delete only shows a toast that disappears; should we add Undo or a confirmation dialog?           | `ux-review`        |
+| Tell me what this PR broke on screen                                                              | `ux-review`        |
 | Can a screen-reader user get through checkout? Check contrast and focus order                     | `ux-a11y`          |
+| How should I code the focus movement when a modal opens and closes?                               | `ux-a11y`          |
 | The cancel button sits small at the bottom of My Page, is that a dark pattern?                    | `ux-dark-patterns` |
 | Set metrics and guardrails to tell whether the onboarding revamp worked                           | `ux-metrics`       |
 | What confirmation should an AI agent show before sending an email for me?                         | `ux-ai`            |
 
-All 61 request–skill pairs live in [`evals/cases.json`](evals/cases.json). Requests that are easy to confuse with a neighboring skill carry `shouldNotFire`, which pins the boundary.
+All 69 request–skill pairs live in [`evals/cases.json`](evals/cases.json). Requests that are easy to confuse with a neighboring skill carry `shouldNotFire`, which pins the boundary.
 
 ## Install
 
@@ -363,6 +366,7 @@ Verdicts rest on published standards; each skill's `references/` opens with its 
 - **Deceptive design** — the dark-pattern provisions of Korea's e-commerce consumer-protection act (in force 2025-02-14), the Korea Fair Trade Commission's guideline on online interfaces against dark patterns (2026-10-06) and its review guideline on endorsements and testimonials in advertising, EU DSA Article 25, the US FTC staff report and Endorsement Guides
 - **Research and metrics** — heuristic evaluation and severity, cognitive walkthroughs, choosing methods by question type and triangulation, HEART, SUS, controlled-experiment design
 - **Synthetic users** — the repeat, baseline, decoy and rank-only reporting rules come from studies of the positivity bias, reduced variance and option-order bias of synthetic responses
+- **Visual detail** — the type, color, layout, surface and motion, accessibility and interface-review skills of jakubkrehel/skills (MIT) are rewritten to fit this harness's procedure, with Korean-screen criteria added. Sources and license are in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)
 - **Context and cases** — the context card builds on ISO 9241-11's view of usability within a context of use and adds business and risk fields; the eyesight, motor and cognition fields lean on WCAG 2.2 and Korea's digital divide survey. The 38 cases were checked against official help pages, press releases and regulators' documents, with the date each was opened
 
 ## Checks and contributing

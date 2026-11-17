@@ -397,6 +397,60 @@
       "expectSkill": "ux-benchmark",
       "shouldNotFire": "ux-flow",
       "why": "경계 양성 — 유형별 예외의 근거를 다른 서비스 사례에서 찾는 일, 흐름도 작성이 아님"
+    },
+    {
+      "id": "review-8",
+      "prompt": "이 PR이 화면에서 뭘 망가뜨렸는지 봐줘",
+      "expectSkill": "ux-review",
+      "why": "자연어 — PR·브랜치·작업 중 변경이 화면을 나쁘게 했는지 보는 변경 리뷰, finding마다 원인으로 상태(새로 생김·회귀·원래 있음)를 붙임"
+    },
+    {
+      "id": "review-9",
+      "prompt": "이번 브랜치에서 결제 폼을 새 컴포넌트로 바꿨는데, 커밋 안 한 변경까지 포함해서 예전보다 나빠진 데가 있는지 봐줘",
+      "expectSkill": "ux-review",
+      "shouldNotFire": "ux-a11y",
+      "why": "경계 양성 — 변경이 화면을 나쁘게 했는지 가리는 변경 리뷰, 접근성 기준 번호로 감사하는 일이 아님"
+    },
+    {
+      "id": "review-10",
+      "prompt": "`transition: all`이나 `will-change` 같은 시각 디테일을 코드에서 찾아줘",
+      "expectSkill": "ux-review",
+      "shouldNotFire": "ux-spec",
+      "why": "경계 양성 — 만든 코드에서 시각 디테일 단서를 찾아 기준 문서로 판정하는 일(visual-scan), 값을 정해 설계서에 적는 일이 아님"
+    },
+    {
+      "id": "spec-8",
+      "prompt": "상품 상세 화면 설계서에 글자 크기 체계랑 색 토큰 값까지 적어 줘",
+      "expectSkill": "ux-spec",
+      "shouldNotFire": "ux-review",
+      "why": "경계 양성 — 글자·색·간격 값을 역할·토큰 이름으로 정해 설계서에 적는 일, 만든 화면의 값을 판정하는 일이 아님"
+    },
+    {
+      "id": "spec-9",
+      "prompt": "상품 카드 설계서에 이름이 아주 긴 상품이나 후기 0개, 320px 폭일 때 어떻게 되는지도 예외로 적어 줘",
+      "expectSkill": "ux-spec",
+      "shouldNotFire": "ux-flow",
+      "why": "경계 양성 — 한 화면 안에서 글 길이·개수·폭이 극단일 때의 모양을 부서지는 상황 축으로 적는 일, 화면 사이의 예외 경로를 그리는 일이 아님"
+    },
+    {
+      "id": "a11y-4",
+      "prompt": "모달 열고 닫을 때 포커스 이동 코드 어떻게 짜야 해?",
+      "expectSkill": "ux-a11y",
+      "why": "자연어 — 대화상자의 포커스 이동과 복귀를 코드로 구현하는 패턴"
+    },
+    {
+      "id": "a11y-5",
+      "prompt": "폼에서 제출했는데 오류가 있으면 스크린 리더가 읽어 주게 하고 싶어. 오류 문구 연결이랑 알림 영역 코드는 어떻게 짜?",
+      "expectSkill": "ux-a11y",
+      "shouldNotFire": "ux-review",
+      "why": "경계 양성 — 폼 오류 연결과 알림 영역의 코드 구현 패턴을 묻는 일, 화면을 관찰해 휴리스틱으로 판정하는 리뷰가 아님"
+    },
+    {
+      "id": "write-6",
+      "prompt": "설정 토글 이름을 '알림 받지 않기'로 했는데 괜찮아?",
+      "expectSkill": "ux-writing",
+      "shouldNotFire": "ux-review",
+      "why": "경계 양성 — 토글 이름을 켰을 때 일어나는 일로 쓰는 문구 문제, 스위치와 체크박스 중 패턴을 고르는 일이 아님"
     }
   ]
 }
